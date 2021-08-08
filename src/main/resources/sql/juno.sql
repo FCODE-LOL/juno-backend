@@ -18,42 +18,6 @@ CREATE SCHEMA IF NOT EXISTS `junodb` DEFAULT CHARACTER SET utf8mb4 ;
 USE `junodb` ;
 
 -- -----------------------------------------------------
--- Table `junodb`.`PAGE`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `junodb`.`PAGE` (
-  `id` INT(11) NOT NULL AUTO_INCREMENT,
-  `name` VARCHAR(90) NULL DEFAULT NULL,
-  `created_timestamp` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `is_disable` TINYINT(1) NULL DEFAULT NULL,
-  PRIMARY KEY (`id`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4;
-
-
--- -----------------------------------------------------
--- Table `junodb`.`ARTICLE`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `junodb`.`ARTICLE` (
-  `id` INT(11) NOT NULL AUTO_INCREMENT,
-  `title` VARCHAR(90) NULL DEFAULT NULL,
-  `link_contents` TEXT NULL DEFAULT NULL,
-  `description` TEXT NULL DEFAULT NULL,
-  `template_id` INT(11) NULL DEFAULT NULL,
-  `page_link` VARCHAR(90) NULL DEFAULT NULL,
-  `is_disable` TINYINT(1) NULL DEFAULT NULL,
-  `PAGE_id` INT(11) NOT NULL,
-  PRIMARY KEY (`id`, `PAGE_id`),
-  INDEX `fk_ARTICLE_PAGE1_idx` (`PAGE_id` ASC),
-  CONSTRAINT `fk_ARTICLE_PAGE1`
-    FOREIGN KEY (`PAGE_id`)
-    REFERENCES `junodb`.`PAGE` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4;
-
-
--- -----------------------------------------------------
 -- Table `junodb`.`BILL`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `junodb`.`BILL` (
@@ -163,7 +127,7 @@ DEFAULT CHARACTER SET = utf8mb4;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `junodb`.`USER` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
-  `email` VARCHAR(45) NOT NULL,
+  `email` VARCHAR(45) NULL DEFAULT NULL,
   `password` VARCHAR(70) NULL DEFAULT NULL,
   `phone` CHAR(10) NULL DEFAULT NULL,
   `name` VARCHAR(20) NULL DEFAULT NULL,
@@ -176,6 +140,7 @@ CREATE TABLE IF NOT EXISTS `junodb`.`USER` (
   `token` VARCHAR(45) NULL DEFAULT NULL,
   `token_timestamp` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `point` INT(11) NULL DEFAULT NULL,
+  `role` VARCHAR(45) NULL,
   `is_disable` TINYINT(1) NULL DEFAULT NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB
