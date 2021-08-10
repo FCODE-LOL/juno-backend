@@ -36,6 +36,17 @@ DEFAULT CHARACTER SET = utf8mb4;
 
 
 -- -----------------------------------------------------
+-- Table `junodb`.`TYPE`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `junodb`.`TYPE` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(45) NULL,
+  `children_id` VARCHAR(45) NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
 -- Table `junodb`.`PRODUCT`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `junodb`.`PRODUCT` (
@@ -43,18 +54,23 @@ CREATE TABLE IF NOT EXISTS `junodb`.`PRODUCT` (
   `name` VARCHAR(60) NULL DEFAULT NULL,
   `link_images` TEXT NULL DEFAULT NULL,
   `colors_id` VARCHAR(90) NULL DEFAULT NULL,
-  `type_id` TINYINT(4) NULL DEFAULT NULL,
   `description` TEXT NULL DEFAULT NULL,
   `origin` VARCHAR(60) NULL DEFAULT NULL,
   `material` VARCHAR(45) NULL DEFAULT NULL,
-  `size` VARCHAR(30) NULL DEFAULT NULL,
-  `total_quantity` INT(11) NULL DEFAULT NULL,
-  `curremt_quantity` INT(11) NULL DEFAULT NULL,
+  `sizes` VARCHAR(30) NULL DEFAULT NULL,
+  `quantity` INT(11) NULL DEFAULT NULL,
   `price` DECIMAL(20,3) NULL DEFAULT NULL,
+  `TYPE_id` INT NOT NULL,
   `created_timestamp` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `is_gettable` TINYINT(1) NULL DEFAULT NULL,
   `is_disable` TINYINT(1) NULL DEFAULT NULL,
-  PRIMARY KEY (`id`))
+  PRIMARY KEY (`id`),
+  INDEX `fk_PRODUCT_TYPE1_idx` (`TYPE_id` ASC),
+  CONSTRAINT `fk_PRODUCT_TYPE1`
+    FOREIGN KEY (`TYPE_id`)
+    REFERENCES `junodb`.`TYPE` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4;
 
@@ -132,7 +148,6 @@ CREATE TABLE IF NOT EXISTS `junodb`.`USER` (
   `phone` CHAR(10) NULL DEFAULT NULL,
   `name` VARCHAR(20) NULL DEFAULT NULL,
   `date_of_birth` CHAR(10) NULL DEFAULT NULL,
-  `rank_id` INT(11) NULL DEFAULT NULL,
   `is_admin` TINYINT(1) NULL DEFAULT NULL,
   `area_id` INT(11) NULL DEFAULT NULL,
   `address` VARCHAR(60) NULL DEFAULT NULL,
