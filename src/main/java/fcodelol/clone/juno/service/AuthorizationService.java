@@ -1,11 +1,14 @@
 package fcodelol.clone.juno.service;
 
+import fcodelol.clone.juno.interceptor.GatewayConstant;
 import fcodelol.clone.juno.repository.UserRepository;
 
 import org.apache.logging.log4j.LogManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.apache.logging.log4j.Logger;
+
+import java.sql.Timestamp;
 
 
 @Service
@@ -16,7 +19,12 @@ public class AuthorizationService {
     public String getRoleByToken(String token)
     {
         try{
-            return userRepository.findRoleByToken(token);
+            System.out.println(System.currentTimeMillis() + "/n" +
+            (System.currentTimeMillis() + GatewayConstant.validAuthenticationTime));
+            Boolean isAdmin =userRepository.findRoleByToken(token,new Timestamp(System.currentTimeMillis() + GatewayConstant.validAuthenticationTime));
+            if(isAdmin == null)
+                return null;
+            return isAdmin.booleanValue() ? "ADMIN" : "MEMBER";
         }
         catch (Exception e){
             logger.error(e.getMessage());

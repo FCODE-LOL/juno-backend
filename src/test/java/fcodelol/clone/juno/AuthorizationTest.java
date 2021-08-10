@@ -17,6 +17,7 @@ public class AuthorizationTest {
     AuthorizationService authorizationService;
     @Test
     public void getUserByRole(){
-        Assert.assertEquals("a",authorizationService.getRoleByToken("ABC"));
+        Assert.assertEquals("MEMBER",authorizationService.getRoleByToken("2YXNKA"));
     }
+
 }
