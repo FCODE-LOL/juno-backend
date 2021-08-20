@@ -41,8 +41,15 @@ DEFAULT CHARACTER SET = utf8mb4;
 CREATE TABLE IF NOT EXISTS `junodb`.`TYPE` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NULL,
-  `children_id` VARCHAR(45) NULL,
-  PRIMARY KEY (`id`))
+  `parent_id` INT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `fk_TYPE_TYPE1_idx` (`parent_id` ASC),
+  UNIQUE INDEX `name_UNIQUE` (`name` ASC),
+  CONSTRAINT `fk_TYPE_TYPE1`
+    FOREIGN KEY (`parent_id`)
+    REFERENCES `junodb`.`TYPE` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
@@ -60,7 +67,7 @@ CREATE TABLE IF NOT EXISTS `junodb`.`PRODUCT` (
   `sizes` VARCHAR(30) NULL DEFAULT NULL,
   `quantity` INT(11) NULL DEFAULT NULL,
   `price` DECIMAL(20,3) NULL DEFAULT NULL,
-  `TYPE_id` INT NOT NULL,
+  `TYPE_id` INT NULL,
   `created_timestamp` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `is_gettable` TINYINT(1) NULL DEFAULT NULL,
   `is_disable` TINYINT(1) NULL DEFAULT NULL,

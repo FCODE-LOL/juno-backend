@@ -14,4 +14,5 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     Boolean findRoleByToken(String token, Timestamp startTime);
     User findByEmailAndIsDisable(String email,boolean isDisable);
     User findBySocialMediaId(String socialMediaId);
+    boolean existsByIdAndIsDisable(int id, boolean isDisable);
 }

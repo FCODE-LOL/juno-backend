@@ -46,7 +46,7 @@ public class User {
     private Integer point;
     @Column(name = "social_media_id")
     private String socialMediaId;
-    @Column(name = "is_disable",insertable = false)
+    @Column(name = "is_disable", insertable = false)
     @Type(type = "org.hibernate.type.NumericBooleanType")
     private Boolean isDisable;
 
