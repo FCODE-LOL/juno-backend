@@ -10,12 +10,10 @@ import fcodelol.clone.juno.repository.entity.Product;
 import fcodelol.clone.juno.repository.entity.Type;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.type.ListType;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.UnexpectedRollbackException;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
@@ -101,6 +99,17 @@ public class ProductService {
         }
     }
 
+    public ProductDto getProductId(String id){
+        try {
+            return modelMapper.map(productRepository.findOneById(id),ProductDto.class);
+        }
+        catch (Exception e)
+        {
+            logger.error("Get product by id error: ");
+            return null;
+        }
+    }
+
     public List<TypeDto> getType() {
         try {
             List<TypeDto> typeDtoList = typeRepository.findAll(Sort.by(Sort.Direction.ASC, "name")).stream().map(type -> modelMapper.map(type, TypeDto.class)).collect(Collectors.toList());
@@ -150,6 +159,8 @@ public class ProductService {
     @Transactional
     public String deleteType(int typeId) {
         try {
+            if(!typeRepository.existsById(typeId))
+                return "Type is not exists";
             List<Type> typeList = typeRepository.findByParentId(typeId);
             for (Type type : typeList) {
                 List<Product> productList = type.getProducts();
