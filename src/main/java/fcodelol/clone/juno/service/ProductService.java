@@ -29,34 +29,34 @@ public class ProductService {
     @Autowired
     ModelMapper modelMapper;
 
-    public String addProduct(ProductDto productDto) {
+    public ProductDto addProduct(ProductDto productDto) {
         try {
             if (productRepository.existsByIdAndIsDisable(productDto.getId(), false))
-                return "Id has already exist";
+                return null;
             Product product = modelMapper.map(productDto, Product.class);
-            return productRepository.save(product) != null ? "Add product success" : "Add product failed";
+            return modelMapper.map(productRepository.save(product),ProductDto.class);
         } catch (Exception e) {
             logger.error("Add product error: " + e.getMessage());
-            return "Error at adding product: " + e.getMessage();
+            return null;
         }
     }
 
-    public String updateProduct(ProductDto productDto) {
+    public ProductDto updateProduct(ProductDto productDto) {
         try {
             if (!productRepository.existsByIdAndIsDisable(productDto.getId(), false))
-                return "Id is not exist";
+                return null;
             Product product = modelMapper.map(productDto, Product.class);
-            return productRepository.save(product) != null ? "Update product success" : "Update product failed";
+            return modelMapper.map(productRepository.save(product),ProductDto.class);
         } catch (Exception e) {
             logger.error("Update product error: " + e.getMessage());
-            return "Error at updating product: " + e.getMessage();
+            return null;
         }
     }
 
     public String deleteProduct(String id) {
         try {
             if (!productRepository.existsByIdAndIsDisable(id, false))
-                return "Id is not exist";
+                return null;
             Product product = productRepository.findOneById(id);
             if (product != null) {
                 product.setIsDisable(Boolean.TRUE);

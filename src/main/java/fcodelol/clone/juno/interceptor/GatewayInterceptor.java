@@ -71,7 +71,6 @@ public class GatewayInterceptor implements HandlerInterceptor {
         String roles[] = pathRole.split("&");
         for (String role : roles)
             if (role.equals(userRole)) {
-                System.out.println(role + '\n' + userRole);
                 return true;
             }
         return false;

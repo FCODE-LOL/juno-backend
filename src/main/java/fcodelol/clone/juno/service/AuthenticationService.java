@@ -26,7 +26,9 @@ public class AuthenticationService {
 
     public String login(PrimaryUser primaryUser) {
         try {
-            User user = userRepository.findByEmailAndIsDisable(primaryUser.getEmail(),false);
+            User user = userRepository.findByEmail(primaryUser.getEmail());
+            if (user.getIsDisable())
+                return "This account is banned";
             if (user.getPassword() == null)
                 return "This email account is not existed";
             if (new BCryptPasswordEncoder().matches(primaryUser.getPassword(), user.getPassword())) {
@@ -40,29 +42,35 @@ public class AuthenticationService {
             return "Login failed";
         }
     }
+
     public String loginBySocialMedia(SocialMediaUser socialMediaUser) {
         try {
-            User user =userRepository.findBySocialMediaId(socialMediaUser.getSocialMediaId());
+            User user = userRepository.findBySocialMediaId(socialMediaUser.getSocialMediaId());
+            if (user.getIsDisable())
+                return "This account is banned";
             String token = renderAuthenticationToken();
-            if(user == null)
+            if (user == null)
                 user = registerForSocialMedia(socialMediaUser);
             user.setToken(token);
             userRepository.save(user);
             return token;
         } catch (Exception e) {
-            logger.error("Error in login with social media " + socialMediaUser.getSocialMediaId() + " password: " + socialMediaUser.getName() + '\n' + e.getMessage() +'\n');
+            logger.error("Error in login with social media " + socialMediaUser.getSocialMediaId() + " password: " + socialMediaUser.getName() + '\n' + e.getMessage() + '\n');
             return "Login failed";
         }
     }
+
     private String renderAuthenticationToken() {
         return UUID.randomUUID().toString();
     }
 
     public String register(RegisterUser registerUser) {
         try {
-            User temporaryUser = userRepository.findByEmailAndIsDisable(registerUser.getEmail(), false);
+            User temporaryUser = userRepository.findByEmail(registerUser.getEmail());
             if (temporaryUser == null)
                 return "Please click sent token button";
+            if(temporaryUser.getIsDisable())
+                return "This account is banned";
             if (temporaryUser.getPassword() != null)
                 return "Email has already registered";
             String sentToken = temporaryUser.getToken();
@@ -77,20 +85,23 @@ public class AuthenticationService {
             return "Register failed";
         }
     }
-    public User  registerForSocialMedia(SocialMediaUser socialMediaUser){
+
+    public User registerForSocialMedia(SocialMediaUser socialMediaUser) {
         try {
-            User user = new User(socialMediaUser.getName(),socialMediaUser.getSocialMediaId());
+            User user = new User(socialMediaUser.getName(), socialMediaUser.getSocialMediaId());
             return userRepository.save(user);
         } catch (Exception e) {
             logger.error("Error at register for social media:" + e.getMessage());
-            return null ;
+            return null;
         }
     }
+
     public String sendTokenToEmail(String email) {
         try {
-            User temporaryUser = userRepository.findByEmailAndIsDisable(email, false);
-            if(temporaryUser == null)
-            {
+            User temporaryUser = userRepository.findByEmail(email);
+            if(temporaryUser.getIsDisable())
+                return "This account is banned";
+            if (temporaryUser == null) {
                 temporaryUser = new User();
                 temporaryUser.setEmail(email);
             }

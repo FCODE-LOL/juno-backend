@@ -28,11 +28,11 @@ public class ProductTest {
     ProductService productService;
     @Test
     public void addProduct(){
-        Assert.assertEquals("Add product success",productService.addProduct(new ProductDto("SE123","a","s","b","d","d","e","g",12,new Type(1),new BigDecimal(20))));
+        Assert.assertEquals("Add product success",productService.addProduct(new ProductDto("SE123","a","s","b","d","d","e","g",12,new Type(1),new BigDecimal(20),new BigDecimal(20))));
     }
     @Test
     public void updateProduct(){
-        Assert.assertEquals("Update product success",productService.updateProduct(new ProductDto("SE124","c","s","b","d","d","e","g",12,new Type(1),new BigDecimal(20))));
+        Assert.assertEquals("Update product success",productService.updateProduct(new ProductDto("SE124","c","s","b","d","d","e","g",12,new Type(1),new BigDecimal(20),new BigDecimal(20))));
     }
     @Test
     public void deleteProduct(){

@@ -13,27 +13,33 @@ import java.util.Comparator;
 import java.util.List;
 
 @RestController
+@RequestMapping(value = "/product")
 public class ProductController {
     @Autowired
     ProductService productService;
-    @PostMapping(value = "/product")
-    public String addProduct(@RequestBody ProductDto productDto){
+
+    @PostMapping
+    public ProductDto addProduct(@RequestBody ProductDto productDto) {
         return productService.addProduct(productDto);
     }
-    @PutMapping(value = "/product")
-    public String updateProduct(@RequestBody ProductDto productDto){
+
+    @PutMapping
+    public ProductDto updateProduct(@RequestBody ProductDto productDto) {
         return productService.updateProduct(productDto);
     }
-    @PutMapping(value = "/product/delete/{id}")
-    public String deleteProduct(@PathVariable String id){
+
+    @PutMapping(value = "/delete/{id}")
+    public String deleteProduct(@PathVariable String id) {
         return productService.deleteProduct(id);
     }
-    @GetMapping(value = "/product/{id}")
-    public ProductDto getProductById(@PathVariable String id){
+
+    @GetMapping(value = "/{id}")
+    public ProductDto getProductById(@PathVariable String id) {
         return productService.getProductId(id);
     }
-    @GetMapping(value = "/product/type/{id}")
-    public List<ProductByGroupDto> getProductByTypeId(@PathVariable int id){
+
+    @GetMapping(value = "/type/{id}")
+    public List<ProductByGroupDto> getProductByTypeId(@PathVariable int id) {
         return productService.getProductByType(id, new Comparator<ProductByGroupDto>() {
             @Override
             public int compare(ProductByGroupDto productByGroupDto1, ProductByGroupDto productByGroupDto2) {
@@ -41,20 +47,24 @@ public class ProductController {
             }
         });
     }
-    @GetMapping(value = "/product/id/{name}")
-    public List<ProductByGroupDto> getProductByName(@PathVariable String name ){
-        return productService.getProductByName(name, Sort.by(Sort.Direction.DESC,"createdTimestamp"));
+
+    @GetMapping(value = "/id/{name}")
+    public List<ProductByGroupDto> getProductByName(@PathVariable String name) {
+        return productService.getProductByName(name, Sort.by(Sort.Direction.DESC, "createdTimestamp"));
     }
+
     @PostMapping(value = "/type")
-    public String  addTypes(@RequestBody List<AddedTypeDto> types){
+    public String addTypes(@RequestBody List<AddedTypeDto> types) {
         return productService.addTypeList(types);
     }
+
     @PutMapping(value = "/type")
-    public String updateTypes(@RequestBody List<TypeDto> types){
+    public String updateTypes(@RequestBody List<TypeDto> types) {
         return productService.updateTypeList(types);
     }
+
     @DeleteMapping(value = "/type/{id}")
-    public String deleteType(@PathVariable int id){
+    public String deleteType(@PathVariable int id) {
         return productService.deleteType(id);
 
     }

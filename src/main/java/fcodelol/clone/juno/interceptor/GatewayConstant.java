@@ -13,6 +13,12 @@ public class GatewayConstant {
     public static final String AUTHORIZATION_HEADER = "Authorization";
     public static final long validAuthenticationTime = 1800000;
     public static void addApiEntities(){
-
+        apiEntities.add(new ApiEntity("setBillStatus","/bill/*","PUT","ADMIN"));
+        apiEntities.add(new ApiEntity("deleteBill","/bill/delete/*","PUT","ADMIN"));
+        apiEntities.add(new ApiEntity("statistic","/statistic/**","GET","ADMIN"));
+        apiEntities.add(new ApiEntity("productGet","/product/**","GET","ADMIN"));
+        apiEntities.add(new ApiEntity("productPost","/product/**","POST","ADMIN"));
+        apiEntities.add(new ApiEntity("productPut","/product/**","PUT","ADMIN"));
+        apiEntities.add(new ApiEntity("productDelete","/product/**","DELETE","ADMIN"));
     }
 }

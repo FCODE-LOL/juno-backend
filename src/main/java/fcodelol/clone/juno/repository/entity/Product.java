@@ -7,6 +7,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.util.List;
 
 @Entity
 @Table(name = "`PRODUCT`")
@@ -35,6 +36,8 @@ public class Product {
     private int quantity;
     @Column
     private BigDecimal price;
+    @Column(name = "discount_price")
+    private BigDecimal discountPrice;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "TYPE_id")
     private Type type;
@@ -43,7 +46,8 @@ public class Product {
     @Column(name = "is_disable", insertable = false)
     @org.hibernate.annotations.Type(type = "org.hibernate.type.NumericBooleanType")
     private Boolean isDisable;
-
+    @OneToMany(fetch = FetchType.LAZY)
+    private List<BillProduct> billProducts;
     @Override
     public String toString() {
         return "Product{" +

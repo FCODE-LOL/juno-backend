@@ -24,4 +24,5 @@ public class ProductDto {
     private int quantity;
     private Type type;
     private BigDecimal price;
+    private BigDecimal discountPrice;
 }
