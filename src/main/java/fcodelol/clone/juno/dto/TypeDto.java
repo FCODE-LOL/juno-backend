@@ -18,4 +18,8 @@ public class TypeDto {
         this.name = name;
         this.parentId = parentId;
     }
+
+    public TypeDto(int id) {
+        this.id = id;
+    }
 }

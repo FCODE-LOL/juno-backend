@@ -5,6 +5,8 @@ import fcodelol.clone.juno.service.BillService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping(value = "/bill")
 public class BillController {
@@ -17,6 +19,10 @@ public class BillController {
     @PutMapping(value = "/delete/{id}")
     public String deleteBill(@PathVariable int id ){
         return billService.deleteBill(id);
+    }
+    @GetMapping
+    public List<BillDto> getAllBill(){
+        return billService.getAllBill();
     }
 
 }

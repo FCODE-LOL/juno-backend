@@ -6,6 +6,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.util.List;
 
 @Entity
@@ -34,10 +35,14 @@ public class Bill {
     private BigDecimal payment;
     @Column(name = "transport_fee")
     private String transportFee;
+    @Column(name = "create_timestamp")
+    private Timestamp createTimestamp;
+    @Column(name = "update_timestamp")
+    private Timestamp updateTimestamp;
     @Column
     private Integer status;
-    @Column(name = "update_timestamp")
-    private String updateTimestamp;
+    @Column
+    private String info;
     @Column(name = "is_disable", insertable = false)
     @org.hibernate.annotations.Type(type = "org.hibernate.type.NumericBooleanType")
     private Boolean isDisable;

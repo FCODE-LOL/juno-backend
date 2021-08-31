@@ -1,6 +1,5 @@
-package fcodelol.clone.juno.dto;
+package fcodelol.clone.juno.controller.request;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -8,10 +7,10 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class RegisterUser extends PrimaryUser{
+public class RegisterRequest extends LoginRequest {
     private String token;
 
-    public RegisterUser(String email,String password,String token) {
+    public RegisterRequest(String email, String password, String token) {
         super(email,password);
         this.token = token;
     }

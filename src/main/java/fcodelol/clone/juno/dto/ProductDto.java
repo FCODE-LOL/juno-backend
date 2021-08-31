@@ -22,7 +22,7 @@ public class ProductDto {
     private String material;
     private String sizes;
     private int quantity;
-    private Type type;
+    private TypeDto typeDto;
     private BigDecimal price;
     private BigDecimal discountPrice;
 }

@@ -1,8 +1,8 @@
 package fcodelol.clone.juno.service;
 
-import fcodelol.clone.juno.dto.PrimaryUser;
-import fcodelol.clone.juno.dto.RegisterUser;
-import fcodelol.clone.juno.dto.SocialMediaUser;
+import fcodelol.clone.juno.controller.request.LoginRequest;
+import fcodelol.clone.juno.controller.request.RegisterRequest;
+import fcodelol.clone.juno.controller.request.SocialMediaLoginRequest;
 import fcodelol.clone.juno.repository.UserRepository;
 import fcodelol.clone.juno.repository.entity.User;
 import org.apache.logging.log4j.LogManager;
@@ -24,38 +24,38 @@ public class AuthenticationService {
     private static final String DATA_FOR_RANDOM_STRING = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     private static SecureRandom random = new SecureRandom();
 
-    public String login(PrimaryUser primaryUser) {
+    public String login(LoginRequest loginRequest) {
         try {
-            User user = userRepository.findByEmail(primaryUser.getEmail());
+            User user = userRepository.findByEmail(loginRequest.getEmail());
             if (user.getIsDisable())
                 return "This account is banned";
             if (user.getPassword() == null)
                 return "This email account is not existed";
-            if (new BCryptPasswordEncoder().matches(primaryUser.getPassword(), user.getPassword())) {
+            if (new BCryptPasswordEncoder().matches(loginRequest.getPassword(), user.getPassword())) {
                 String token = renderAuthenticationToken();
                 user.setToken(token);
                 return userRepository.save(user) != null ? token : "Login failed, please log in again";
             }
             return "Wrong password";
         } catch (Exception e) {
-            logger.error("Error in login with " + primaryUser.getEmail() + " password: " + primaryUser.getPassword() + "/n");
+            logger.error("Error in login with " + loginRequest.getEmail() + " password: " + loginRequest.getPassword() + "/n");
             return "Login failed";
         }
     }
 
-    public String loginBySocialMedia(SocialMediaUser socialMediaUser) {
+    public String loginBySocialMedia(SocialMediaLoginRequest socialMediaLoginRequest) {
         try {
-            User user = userRepository.findBySocialMediaId(socialMediaUser.getSocialMediaId());
+            User user = userRepository.findBySocialMediaId(socialMediaLoginRequest.getSocialMediaId());
             if (user.getIsDisable())
                 return "This account is banned";
             String token = renderAuthenticationToken();
             if (user == null)
-                user = registerForSocialMedia(socialMediaUser);
+                user = registerForSocialMedia(socialMediaLoginRequest);
             user.setToken(token);
             userRepository.save(user);
             return token;
         } catch (Exception e) {
-            logger.error("Error in login with social media " + socialMediaUser.getSocialMediaId() + " password: " + socialMediaUser.getName() + '\n' + e.getMessage() + '\n');
+            logger.error("Error in login with social media " + socialMediaLoginRequest.getSocialMediaId() + " password: " + socialMediaLoginRequest.getName() + '\n' + e.getMessage() + '\n');
             return "Login failed";
         }
     }
@@ -64,7 +64,7 @@ public class AuthenticationService {
         return UUID.randomUUID().toString();
     }
 
-    public String register(RegisterUser registerUser) {
+    public String register(RegisterRequest registerUser) {
         try {
             User temporaryUser = userRepository.findByEmail(registerUser.getEmail());
             if (temporaryUser == null)
@@ -86,9 +86,9 @@ public class AuthenticationService {
         }
     }
 
-    public User registerForSocialMedia(SocialMediaUser socialMediaUser) {
+    public User registerForSocialMedia(SocialMediaLoginRequest socialMediaLoginRequest) {
         try {
-            User user = new User(socialMediaUser.getName(), socialMediaUser.getSocialMediaId());
+            User user = new User(socialMediaLoginRequest.getName(), socialMediaLoginRequest.getSocialMediaId());
             return userRepository.save(user);
         } catch (Exception e) {
             logger.error("Error at register for social media:" + e.getMessage());

@@ -7,8 +7,12 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.LinkedList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -39,6 +43,17 @@ public class BillService {
             return "Delete success";
         }catch (Exception e){
             logger.error("Delete bill:" + e.getMessage());
+            return null;
+        }
+    }
+    public List<BillDto> getAllBill(){
+        try{
+            List<BillDto> billDtoList = billRepository.findAll(Sort.by(Sort.Direction.DESC,"update_timestamp"))
+                    .stream().map(bill -> modelMapper.map(bill,BillDto.class)).collect(Collectors.toList());
+            return billDtoList;
+        }
+        catch (Exception e){
+            logger.error("Get all bill:" + e.getMessage());
             return null;
         }
     }

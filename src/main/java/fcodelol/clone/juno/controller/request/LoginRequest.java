@@ -1,4 +1,4 @@
-package fcodelol.clone.juno.dto;
+package fcodelol.clone.juno.controller.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class SocialMediaUser {
-    private String socialMediaId;
-    private String name;
+public class LoginRequest {
+    private String email;
+    private String password;
 }
