@@ -23,12 +23,22 @@ public class AuthorizationService {
             (System.currentTimeMillis() + GatewayConstant.validAuthenticationTime));
             Boolean isAdmin =userRepository.findRoleByToken(token,new Timestamp(System.currentTimeMillis() + GatewayConstant.validAuthenticationTime));
             if(isAdmin == null)
-                return null;
+                return "GUESS";
             return isAdmin.booleanValue() ? "ADMIN" : "MEMBER";
         }
         catch (Exception e){
             logger.error(e.getMessage());
             return null;
+        }
+    }
+    public int getIdByToken(String token)
+    {
+        try {
+            return userRepository.getIdByToken(token);
+        }
+        catch (Exception e){
+            logger.error("Get id by token" + e.getMessage());
+            return 0;
         }
     }
 }

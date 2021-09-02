@@ -3,6 +3,7 @@ package fcodelol.clone.juno.service;
 import fcodelol.clone.juno.dto.UserByGroupExtendDto;
 import fcodelol.clone.juno.dto.UserDto;
 import fcodelol.clone.juno.repository.UserRepository;
+import fcodelol.clone.juno.repository.entity.User;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.modelmapper.ModelMapper;
@@ -34,6 +35,21 @@ public class UserService {
         } catch (Exception e) {
             logger.error("Get user by id: " + e.getMessage());
             return null;
+        }
+    }
+
+    public String banUser(int id){
+        try {
+            User user = userRepository.findOneById(id);
+            if(user == null)
+                return "User is not exist";
+            user.setIsDisable(true);
+            userRepository.save(user);
+            return "Ban user success";
+        }
+        catch (Exception e){
+            logger.error("Ban user error:" + e.getMessage());
+            return "Ban user failed";
         }
     }
 }

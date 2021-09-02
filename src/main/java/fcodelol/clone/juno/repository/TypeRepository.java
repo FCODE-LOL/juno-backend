@@ -7,8 +7,9 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface TypeRepository extends JpaRepository<Type,Integer> {
+public interface TypeRepository extends JpaRepository<Type, Integer> {
     List<Type> findByParentId(int typeId);
+
     boolean existsByName(String name);
 
 }

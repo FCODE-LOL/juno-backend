@@ -4,7 +4,6 @@ package fcodelol.clone.juno.interceptor;
 
 import fcodelol.clone.juno.dto.ApiEntity;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,7 +15,6 @@ public class GatewayConstant {
         apiEntities.add(new ApiEntity("setBillStatus","/bill/*","PUT","ADMIN"));
         apiEntities.add(new ApiEntity("deleteBill","/bill/delete/*","PUT","ADMIN"));
         apiEntities.add(new ApiEntity("statistic","/statistic/**","GET","ADMIN"));
-        apiEntities.add(new ApiEntity("productGet","/product/**","GET","ADMIN"));
         apiEntities.add(new ApiEntity("productPost","/product/**","POST","ADMIN"));
         apiEntities.add(new ApiEntity("productPut","/product/**","PUT","ADMIN"));
         apiEntities.add(new ApiEntity("productDelete","/product/**","DELETE","ADMIN"));

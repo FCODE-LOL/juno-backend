@@ -1,10 +1,14 @@
 package fcodelol.clone.juno.dto;
 
-import org.hibernate.annotations.Type;
 
-import javax.persistence.Column;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import java.sql.Timestamp;
-
+@Getter
+@Setter
+@NoArgsConstructor
 public class UserDto {
     private int id;
     private String email;
