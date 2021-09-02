@@ -10,6 +10,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
@@ -34,5 +35,9 @@ public class AuthenticationTest {
     @Test
     public void login(){
         System.out.println(authenticationService.login(new LoginRequest("trannhathoang8678@gmail.com","123456")));
+    }
+    @Test
+    public void demo(){
+        System.out.println(new BCryptPasswordEncoder().encode("123456789"));
     }
 }

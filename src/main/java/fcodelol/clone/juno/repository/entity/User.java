@@ -28,8 +28,6 @@ public class User {
     private String name;
     @Column(name = "date_of_birth")
     private String dateOfBirth;
-    @Column(name = "rank_id")
-    private String rankId;
     @Column(name = "is_admin")
     private Boolean isAdmin;
     @Column(name = "area_id")

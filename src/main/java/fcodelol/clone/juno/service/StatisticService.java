@@ -18,13 +18,13 @@ import java.util.List;
 
 @Service
 public class StatisticService {
-    private static final Logger logger = LogManager.getLogger(StatisticService.class);
     @Autowired
     BillRepository billRepository;
     @Autowired
     UserRepository userRepository;
     @Autowired
     ProductRepository productRepository;
+    private static final Logger logger = LogManager.getLogger(StatisticService.class);
     @Transactional
     public List<BigDecimal> getIncomePerTime(List<PeriodTime> periodTimes) {
         try {
