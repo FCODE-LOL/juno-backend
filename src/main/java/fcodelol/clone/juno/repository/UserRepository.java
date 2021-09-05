@@ -1,6 +1,8 @@
 package fcodelol.clone.juno.repository;
 
+import fcodelol.clone.juno.dto.UserByGroupExtendDto;
 import fcodelol.clone.juno.repository.entity.User;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -18,14 +20,15 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
     User findBySocialMediaId(String socialMediaId);
 
-    @Query(nativeQuery = true, value = "SELECT `id`,`name` FROM `USER` WHERE `is_disable` = 0 ORDER BY POINT DESC LIMIT ?1 ")
-    List<?> getTopCustomer(int numberOfUser);
+    @Query("SELECT new fcodelol.clone.juno.dto.UserByGroupDto(id,name) FROM User WHERE isDisable = 0 ORDER BY point DESC  ")
+    List<User> getTopCustomer(Pageable pageable);
 
-    @Query(nativeQuery = true, value = "SELECT `id`,`name`,`point`,`register_timestamp` AS registerTimestamp,`is_disable` FROM USER;")
-    public List<?> getALLUser();
+    @Query("SELECT new fcodelol.clone.juno.dto.UserByGroupExtendDto(id,name,point,registerTimestamp,isDisable) FROM User")
+    public List<UserByGroupExtendDto> getAllUser();
 
     @Query(nativeQuery = true, value = "SELECT `id` FROM `USER` WHERE `token` = ?1")
     public int getIdByToken(String token);
 
     User findOneById(int id);
+
 }

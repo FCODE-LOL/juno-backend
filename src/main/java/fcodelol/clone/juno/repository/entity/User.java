@@ -6,6 +6,7 @@ import lombok.Setter;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.sql.Timestamp;
 
 @Entity
@@ -13,7 +14,7 @@ import java.sql.Timestamp;
 @Getter
 @Setter
 @NoArgsConstructor
-public class User {
+public class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
@@ -51,5 +52,13 @@ public class User {
     public User(String name, String socialMediaId) {
         this.name = name;
         this.socialMediaId = socialMediaId;
+    }
+
+    public User(Integer id, String name, Integer point ,Timestamp registerTimestamp, Boolean isDisable) {
+        this.id = id;
+        this.name = name;
+        this.registerTimestamp = registerTimestamp;
+        this.point = point;
+        this.isDisable = isDisable;
     }
 }

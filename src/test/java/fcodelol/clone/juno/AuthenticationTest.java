@@ -37,7 +37,7 @@ public class AuthenticationTest {
         System.out.println(authenticationService.login(new LoginRequest("trannhathoang8678@gmail.com","123456")));
     }
     @Test
-    public void demo(){
-        System.out.println(new BCryptPasswordEncoder().encode("123456789"));
+    public void renderPassword(){
+        System.out.println(1);
     }
 }

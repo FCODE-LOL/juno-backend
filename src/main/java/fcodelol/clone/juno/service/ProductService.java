@@ -87,6 +87,19 @@ public class ProductService {
             return null;
         }
     }
+    @Transactional
+    public List<ProductByGroupDto> getAllProduct() {
+        try {
+            List<ProductByGroupDto> productByGroupDtoList = new LinkedList<>();
+                List<ProductByGroupDto> productByGroupDtos =
+                        productRepository.findAll().stream().map(product -> modelMapper.map(product, ProductByGroupDto.class)).collect(Collectors.toList());
+                Optional.ofNullable(productByGroupDtos).ifPresent(productByGroupDtoList::addAll);
+            return productByGroupDtoList;
+        } catch (Exception e) {
+            logger.error("Get product by type: " + e.getMessage());
+            return null;
+        }
+    }
 
     public List<ProductByGroupDto> getProductByName(String name, Sort sort) {
         try {

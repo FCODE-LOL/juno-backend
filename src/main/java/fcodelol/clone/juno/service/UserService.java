@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -22,7 +23,7 @@ public class UserService {
 
     public List<UserByGroupExtendDto> getAllUser() {
         try {
-            return (List<UserByGroupExtendDto>) userRepository.getALLUser();
+            return  userRepository.getAllUser().stream().map(user -> modelMapper.map(user,UserByGroupExtendDto.class)).collect(Collectors.toList());
         } catch (Exception e) {
             logger.error("Get all users error: " + e.getMessage());
             return null;
