@@ -1,5 +1,6 @@
 package fcodelol.clone.juno.controller;
 
+import fcodelol.clone.juno.dto.BillByGroupDto;
 import fcodelol.clone.juno.dto.BillDto;
 import fcodelol.clone.juno.service.BillService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,17 +13,24 @@ import java.util.List;
 public class BillController {
     @Autowired
     BillService billService;
+
     @PutMapping(value = "/{id}")
-    public BillDto setBillStatus(@PathVariable int id, @RequestBody int status){
-        return billService.setBillStatus(id,status);
+    public BillByGroupDto setBillStatus(@PathVariable int id, @RequestBody int status) {
+        return billService.setBillStatus(id, status);
     }
+
     @PutMapping(value = "/delete/{id}")
-    public String deleteBill(@PathVariable int id ){
+    public String deleteBill(@PathVariable int id) {
         return billService.deleteBill(id);
     }
+
     @GetMapping
-    public List<BillDto> getAllBill(){
+    public List<BillByGroupDto> getAllBill() {
         return billService.getAllBill();
     }
 
+    @GetMapping(value = "/{id}")
+    public BillDto getBillById(@PathVariable int id) {
+        return billService.getBillById(id);
+    }
 }

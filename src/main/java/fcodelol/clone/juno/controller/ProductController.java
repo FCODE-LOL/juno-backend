@@ -18,6 +18,11 @@ public class ProductController {
     @Autowired
     ProductService productService;
 
+    @GetMapping
+    public List<ProductByGroupDto> getAllProduct() {
+        return productService.getAllProduct();
+    }
+
     @PostMapping
     public ProductDto addProduct(@RequestBody ProductDto productDto) {
         return productService.addProduct(productDto);
@@ -51,6 +56,11 @@ public class ProductController {
     @GetMapping(value = "/id/{name}")
     public List<ProductByGroupDto> getProductByName(@PathVariable String name) {
         return productService.getProductByName(name, Sort.by(Sort.Direction.DESC, "createdTimestamp"));
+    }
+
+    @GetMapping(value = "/type")
+    public List<TypeDto> getAllType() {
+        return productService.getType();
     }
 
     @PostMapping(value = "/type")

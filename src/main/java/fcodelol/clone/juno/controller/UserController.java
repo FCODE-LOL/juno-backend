@@ -28,8 +28,12 @@ public class UserController {
             return null;
         return userService.getUserById(id);
     }
-    @PutMapping(value = "/{id}")
+    @PutMapping(value = "/ban/{id}")
     public String banUser(int id){
         return userService.banUser(id);
+    }
+    @PutMapping(value = "/unban/{id}")
+    public String unbanUser(int id){
+        return userService.unbanUser(id);
     }
 }

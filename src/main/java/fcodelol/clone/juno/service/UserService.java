@@ -53,5 +53,19 @@ public class UserService {
             return "Ban user failed";
         }
     }
+    public String unbanUser(int id){
+        try {
+            User user = userRepository.findOneById(id);
+            if(user == null)
+                return "User is not exist";
+            user.setIsDisable(true);
+            userRepository.save(user);
+            return "Ban user success";
+        }
+        catch (Exception e){
+            logger.error("Ban user error:" + e.getMessage());
+            return "Ban user failed";
+        }
+    }
 }
 

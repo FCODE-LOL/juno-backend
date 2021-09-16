@@ -36,8 +36,10 @@ public class Bill implements Serializable {
     private BigDecimal payment;
     @Column(name = "transport_fee")
     private String transportFee;
-    @Column(name = "create_timestamp")
+    @Column(name = "created_timestamp")
     private Timestamp createTimestamp;
+    @Column(name = "receive_timestamp")
+    private Timestamp receiveTimestamp;
     @Column(name = "update_timestamp")
     private Timestamp updateTimestamp;
     @Column

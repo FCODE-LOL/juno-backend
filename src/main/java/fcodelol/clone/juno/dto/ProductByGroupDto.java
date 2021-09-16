@@ -18,6 +18,7 @@ public class ProductByGroupDto {
     private String linkImages;
     private String colorsId;
     private BigDecimal price;
+    private BigDecimal discountPrice;
     private Timestamp createdTimestamp;
 
     public ProductByGroupDto(Object[] property) {
@@ -26,6 +27,7 @@ public class ProductByGroupDto {
         this.linkImages = (String)property[2];
         this.colorsId = (String)property[3];
         this.price = (BigDecimal)property[4];
-        this.createdTimestamp = (Timestamp)property[5];
+        this.discountPrice = (BigDecimal)property[5];
+        this.createdTimestamp = (Timestamp)property[6];
     }
 }

@@ -1,8 +1,12 @@
 package fcodelol.clone.juno.repository.entity;
 
+import fcodelol.clone.juno.dto.ProductDto;
+import fcodelol.clone.juno.dto.TypeDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -34,7 +38,7 @@ public class Product implements Serializable {
     @Column
     private String sizes;
     @Column
-    private int quantity;
+    private Integer quantity;
     @Column
     private BigDecimal price;
     @Column(name = "discount_price")
@@ -49,6 +53,21 @@ public class Product implements Serializable {
     private Boolean isDisable;
     @OneToMany(fetch = FetchType.LAZY)
     private List<BillProduct> billProducts;
+    public void setProductDtoProperty(ProductDto productDto){
+
+        id = productDto.getId();
+        linkImages = productDto.getLinkImages();
+        name = productDto.getName();
+        colorsId = productDto.getColorsId();
+        description = productDto.getDescription();
+        origin = productDto.getOrigin();
+        material = productDto.getMaterial();
+        sizes = productDto.getSizes();
+        quantity = productDto.getQuantity();
+        type.setId(productDto.getTypeDto().getId());
+        price = productDto.getPrice();
+        discountPrice = productDto.getDiscountPrice();
+    }
     @Override
     public String toString() {
         return "Product{" +

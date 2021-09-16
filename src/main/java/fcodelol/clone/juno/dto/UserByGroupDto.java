@@ -1,6 +1,5 @@
 package fcodelol.clone.juno.dto;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 
 @Getter

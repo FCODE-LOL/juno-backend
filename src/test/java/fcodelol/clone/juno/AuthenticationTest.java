@@ -38,6 +38,6 @@ public class AuthenticationTest {
     }
     @Test
     public void renderPassword(){
-        System.out.println(1);
+        System.out.println(new BCryptPasswordEncoder().encode("123456789"));
     }
 }

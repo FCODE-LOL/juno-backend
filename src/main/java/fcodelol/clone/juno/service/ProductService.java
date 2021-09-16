@@ -34,7 +34,7 @@ public class ProductService {
             if (productRepository.existsByIdAndIsDisable(productDto.getId(), false))
                 return null;
             Product product = modelMapper.map(productDto, Product.class);
-            return modelMapper.map(productRepository.save(product),ProductDto.class);
+            return modelMapper.map(productRepository.save(product), ProductDto.class);
         } catch (Exception e) {
             logger.error("Add product error: " + e.getMessage());
             return null;
@@ -43,10 +43,12 @@ public class ProductService {
 
     public ProductDto updateProduct(ProductDto productDto) {
         try {
-            if (!productRepository.existsByIdAndIsDisable(productDto.getId(), false))
+            Product product = productRepository.findByIdAndIsDisable(productDto.getId(), false);
+            if (product == null) {
                 return null;
-            Product product = modelMapper.map(productDto, Product.class);
-            return modelMapper.map(productRepository.save(product),ProductDto.class);
+            }
+            product.setProductDtoProperty(productDto);
+            return modelMapper.map(productRepository.save(product), ProductDto.class);
         } catch (Exception e) {
             logger.error("Update product error: " + e.getMessage());
             return null;
@@ -87,13 +89,14 @@ public class ProductService {
             return null;
         }
     }
+
     @Transactional
     public List<ProductByGroupDto> getAllProduct() {
         try {
             List<ProductByGroupDto> productByGroupDtoList = new LinkedList<>();
-                List<ProductByGroupDto> productByGroupDtos =
-                        productRepository.findAll().stream().map(product -> modelMapper.map(product, ProductByGroupDto.class)).collect(Collectors.toList());
-                Optional.ofNullable(productByGroupDtos).ifPresent(productByGroupDtoList::addAll);
+            List<ProductByGroupDto> productByGroupDtos =
+                    productRepository.findAll().stream().map(product -> modelMapper.map(product, ProductByGroupDto.class)).collect(Collectors.toList());
+            Optional.ofNullable(productByGroupDtos).ifPresent(productByGroupDtoList::addAll);
             return productByGroupDtoList;
         } catch (Exception e) {
             logger.error("Get product by type: " + e.getMessage());
@@ -112,12 +115,10 @@ public class ProductService {
         }
     }
 
-    public ProductDto getProductId(String id){
+    public ProductDto getProductId(String id) {
         try {
-            return modelMapper.map(productRepository.findOneById(id),ProductDto.class);
-        }
-        catch (Exception e)
-        {
+            return modelMapper.map(productRepository.findOneById(id), ProductDto.class);
+        } catch (Exception e) {
             logger.error("Get product by id error: ");
             return null;
         }
@@ -172,7 +173,7 @@ public class ProductService {
     @Transactional
     public String deleteType(int typeId) {
         try {
-            if(!typeRepository.existsById(typeId))
+            if (!typeRepository.existsById(typeId))
                 return "Type is not exists";
             List<Type> typeList = typeRepository.findByParentId(typeId);
             for (Type type : typeList) {

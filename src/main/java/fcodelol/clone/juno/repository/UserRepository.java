@@ -23,7 +23,7 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     @Query("SELECT new fcodelol.clone.juno.dto.UserByGroupDto(id,name) FROM User WHERE isDisable = 0 ORDER BY point DESC  ")
     List<User> getTopCustomer(Pageable pageable);
 
-    @Query("SELECT new fcodelol.clone.juno.dto.UserByGroupExtendDto(id,name,point,registerTimestamp,isDisable) FROM User")
+    @Query("SELECT new fcodelol.clone.juno.dto.UserByGroupExtendDto(id,name,point,phone,address,registerTimestamp,isDisable) FROM User")
     public List<UserByGroupExtendDto> getAllUser();
 
     @Query(nativeQuery = true, value = "SELECT `id` FROM `USER` WHERE `token` = ?1")
