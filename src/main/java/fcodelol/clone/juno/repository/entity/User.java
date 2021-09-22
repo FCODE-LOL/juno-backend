@@ -8,6 +8,7 @@ import org.hibernate.annotations.Type;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.List;
 
 @Entity
 @Table(name = "`USER`")
@@ -48,7 +49,8 @@ public class User implements Serializable {
     @Column(name = "is_disable", insertable = false)
     @Type(type = "org.hibernate.type.NumericBooleanType")
     private Boolean isDisable;
-
+    @OneToMany(mappedBy = "user")
+    private List<Bill> billList;
     public User(String name, String socialMediaId) {
         this.name = name;
         this.socialMediaId = socialMediaId;

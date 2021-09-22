@@ -1,5 +1,6 @@
 package fcodelol.clone.juno.controller;
 
+import fcodelol.clone.juno.controller.request.StatusRequest;
 import fcodelol.clone.juno.dto.BillByGroupDto;
 import fcodelol.clone.juno.dto.BillDto;
 import fcodelol.clone.juno.service.BillService;
@@ -15,8 +16,8 @@ public class BillController {
     BillService billService;
 
     @PutMapping(value = "/{id}")
-    public BillByGroupDto setBillStatus(@PathVariable int id, @RequestBody int status) {
-        return billService.setBillStatus(id, status);
+    public BillByGroupDto setBillStatus(@PathVariable int id, @RequestBody StatusRequest statusRequest) {
+        return billService.setBillStatus(id, statusRequest);
     }
 
     @PutMapping(value = "/delete/{id}")

@@ -53,8 +53,8 @@ public class Product implements Serializable {
     private Boolean isDisable;
     @OneToMany(fetch = FetchType.LAZY)
     private List<BillProduct> billProducts;
-    public void setProductDtoProperty(ProductDto productDto){
 
+    public void setProductDtoProperty(ProductDto productDto) {
         id = productDto.getId();
         linkImages = productDto.getLinkImages();
         name = productDto.getName();
@@ -68,6 +68,7 @@ public class Product implements Serializable {
         price = productDto.getPrice();
         discountPrice = productDto.getDiscountPrice();
     }
+
     @Override
     public String toString() {
         return "Product{" +

@@ -51,6 +51,7 @@ public class Bill implements Serializable {
     private Boolean isDisable;
     @OneToMany(fetch = FetchType.LAZY)
     private List<BillProduct> billProducts;
-    @OneToMany(fetch = FetchType.LAZY)
-    private List<UserBill> userBills;
+    @ManyToOne
+    @JoinColumn(name = "USER_id")
+    private User user;
 }

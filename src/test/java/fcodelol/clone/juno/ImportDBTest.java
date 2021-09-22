@@ -1,6 +1,6 @@
 package fcodelol.clone.juno;
 
-import fcodelol.clone.juno.service.BillService;
+import fcodelol.clone.juno.service.ImportDBService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,12 +11,15 @@ import org.springframework.test.context.junit4.SpringRunner;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-public class BillTest {
+public class ImportDBTest {
     @Autowired
-    BillService billService;
-
+    ImportDBService importDBService;
     @Test
-    public void deleteBill(){
-        System.out.println(billService.deleteBill(1));
+    public void loadData(){
+        importDBService.loadDBData();
+    }
+    @Test
+    public void clearData(){
+        importDBService.clearDBData();
     }
 }

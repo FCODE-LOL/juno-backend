@@ -21,13 +21,13 @@ import java.util.stream.Collectors;
 
 @Service
 public class ProductService {
-    private static final Logger logger = LogManager.getLogger(ProductService.class);
     @Autowired
     ProductRepository productRepository;
     @Autowired
     TypeRepository typeRepository;
     @Autowired
     ModelMapper modelMapper;
+    private static final Logger logger = LogManager.getLogger(ProductService.class);
 
     public ProductDto addProduct(ProductDto productDto) {
         try {

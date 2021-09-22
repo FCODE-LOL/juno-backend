@@ -1,5 +1,6 @@
 package fcodelol.clone.juno.service;
 
+import fcodelol.clone.juno.controller.request.StatusRequest;
 import fcodelol.clone.juno.dto.BillByGroupDto;
 import fcodelol.clone.juno.dto.BillDto;
 import fcodelol.clone.juno.dto.ProductByGroupDto;
@@ -24,10 +25,11 @@ public class BillService {
     BillRepository billRepository;
     private static final Logger logger = LogManager.getLogger(BillService.class);
 
-    public BillByGroupDto setBillStatus(int id, int status) {
+    public BillByGroupDto setBillStatus(int id, StatusRequest statusRequest) {
         try {
             Bill bill = billRepository.findByIdAndIsDisable(id, false);
-            bill.setStatus(status);
+            bill.setStatus(statusRequest.getStatus());
+            bill.setInfo(statusRequest.getInfo());
             return modelMapper.map(billRepository.save(bill), BillByGroupDto.class);
         } catch (Exception e) {
             logger.error("Set status bill error: " + e.getMessage());
