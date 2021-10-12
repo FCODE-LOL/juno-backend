@@ -5,31 +5,26 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.io.Serializable;
-import java.math.BigDecimal;
+import java.sql.Timestamp;
 
 @Entity
-@Table(name = "`BILL_PRODUCT`")
+@Table(name = "DISCOUNT_MODEL")
 @Getter
 @Setter
 @NoArgsConstructor
-public class BillProduct implements Serializable {
+public class DiscountModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Integer id;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "Model_id")
-    private Model model;
+    @JoinColumn(name = "DISCOUNT_id")
+    private Discount discount;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "BILL_id")
-    private Bill bill;
+    @JoinColumn(name = "MODEL_id")
+    private Discount model;
     @Column
     private Integer quantity;
-    @Column
-    private BigDecimal price;
-    @Column
-    private String note;
     @Column(name = "is_disable", insertable = false)
     @org.hibernate.annotations.Type(type = "org.hibernate.type.NumericBooleanType")
     private Boolean isDisable;

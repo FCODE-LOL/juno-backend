@@ -1,7 +1,6 @@
 package fcodelol.clone.juno.repository.entity;
 
 import fcodelol.clone.juno.dto.ProductDto;
-import fcodelol.clone.juno.dto.TypeDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -13,6 +12,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "`PRODUCT`")
@@ -22,23 +22,18 @@ import java.util.List;
 public class Product implements Serializable {
     @Id
     @Column
+    @Access(AccessType.PROPERTY)
     private String id;
     @Column
     private String name;
     @Column(name = "link_images")
     private String linkImages;
-    @Column(name = "colors_id")
-    private String colorsId;
-    @Column(name = "description")
+    @Column
     private String description;
     @Column
     private String origin;
     @Column
     private String material;
-    @Column
-    private String sizes;
-    @Column
-    private Integer quantity;
     @Column
     private BigDecimal price;
     @Column(name = "discount_price")
@@ -52,38 +47,18 @@ public class Product implements Serializable {
     @org.hibernate.annotations.Type(type = "org.hibernate.type.NumericBooleanType")
     private Boolean isDisable;
     @OneToMany(fetch = FetchType.LAZY)
-    private List<BillProduct> billProducts;
-
-    public void setProductDtoProperty(ProductDto productDto) {
-        id = productDto.getId();
-        linkImages = productDto.getLinkImages();
+    private List<Model> modelList;
+    public void setProductProperty(ProductDto productDto){
+        ModelMapper modelMapper = new ModelMapper();
         name = productDto.getName();
-        colorsId = productDto.getColorsId();
+        linkImages = productDto.getLinkImages();
         description = productDto.getDescription();
         origin = productDto.getOrigin();
         material = productDto.getMaterial();
-        sizes = productDto.getSizes();
-        quantity = productDto.getQuantity();
-        type.setId(productDto.getTypeDto().getId());
         price = productDto.getPrice();
         discountPrice = productDto.getDiscountPrice();
+        type = modelMapper.map(productDto.getTypeDto(),Type.class);
+        modelList = productDto.getModelList().stream().map(modelDto -> modelMapper.map(modelDto,Model.class)).collect(Collectors.toList());
     }
 
-    @Override
-    public String toString() {
-        return "Product{" +
-                "id='" + id + '\'' +
-                ", name='" + name + '\'' +
-                ", linkImages='" + linkImages + '\'' +
-                ", colorsId='" + colorsId + '\'' +
-                ", description='" + description + '\'' +
-                ", origin='" + origin + '\'' +
-                ", material='" + material + '\'' +
-                ", sizes='" + sizes + '\'' +
-                ", quantity=" + quantity +
-                ", price=" + price +
-                ", type=" + type +
-                ", createdTimestamp=" + createdTimestamp +
-                '}';
-    }
 }

@@ -3,6 +3,7 @@ package fcodelol.clone.juno.repository.entity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -19,6 +20,7 @@ public class Bill implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
+    @Access(AccessType.PROPERTY)
     private Integer id;
     @Column(name = "customer_name")
     private String customerName;
@@ -36,11 +38,11 @@ public class Bill implements Serializable {
     private BigDecimal payment;
     @Column(name = "transport_fee")
     private String transportFee;
-    @Column(name = "created_timestamp")
+    @Column(name = "created_timestamp", updatable = false, insertable = false)
     private Timestamp createTimestamp;
     @Column(name = "receive_timestamp")
     private Timestamp receiveTimestamp;
-    @Column(name = "update_timestamp")
+    @Column(name = "update_timestamp", updatable = false, insertable = false)
     private Timestamp updateTimestamp;
     @Column
     private Integer status;
@@ -50,7 +52,8 @@ public class Bill implements Serializable {
     @org.hibernate.annotations.Type(type = "org.hibernate.type.NumericBooleanType")
     private Boolean isDisable;
     @OneToMany(fetch = FetchType.LAZY)
-    private List<BillProduct> billProducts;
+    @Cascade(value = org.hibernate.annotations.CascadeType.ALL)
+    private List<BillProduct> billProductList;
     @ManyToOne
     @JoinColumn(name = "USER_id")
     private User user;

@@ -21,9 +21,7 @@ public class BillByGroupDto {
     private String discountCode;
     private BigDecimal payment;
     private String transportFee;
-    private Timestamp createdTimestamp;
     private Timestamp receiveTimestamp;
-    private Timestamp updateTimestamp;
     private int status;
     private String info;
 }

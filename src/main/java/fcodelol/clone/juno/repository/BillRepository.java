@@ -16,4 +16,6 @@ public interface BillRepository extends JpaRepository<Bill, Integer> {
     Bill findByIdAndIsDisable(int id, boolean isDisable);
 
     List<Bill> findAll(Sort sort);
+
+    Bill findOneById(int id);
 }

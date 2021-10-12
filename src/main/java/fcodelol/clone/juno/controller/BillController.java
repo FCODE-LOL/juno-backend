@@ -2,7 +2,7 @@ package fcodelol.clone.juno.controller;
 
 import fcodelol.clone.juno.controller.request.StatusRequest;
 import fcodelol.clone.juno.dto.BillByGroupDto;
-import fcodelol.clone.juno.dto.BillDto;
+import fcodelol.clone.juno.controller.reponse.BillResponseDto;
 import fcodelol.clone.juno.service.BillService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -31,7 +31,7 @@ public class BillController {
     }
 
     @GetMapping(value = "/{id}")
-    public BillDto getBillById(@PathVariable int id) {
+    public BillResponseDto getBillById(@PathVariable int id) {
         return billService.getBillById(id);
     }
 }

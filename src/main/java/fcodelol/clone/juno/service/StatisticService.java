@@ -52,11 +52,20 @@ public class StatisticService {
         }
     }
 
-    public List<ProductByGroupDto> getTopProduct(int numberOfProduct) {
+    public List<ProductByGroupDto> getTopSaleProduct(int numberOfProduct) {
         try {
-            return  productRepository.getTopProduct(numberOfProduct).stream().map(product -> new ProductByGroupDto((Object[]) product)).collect(Collectors.toList());
+            return  productRepository.getTopSaleProduct(numberOfProduct).stream().map(product -> new ProductByGroupDto((Object[]) product)).collect(Collectors.toList());
         } catch (Exception e) {
-            logger.error("Get top student:" + e.getMessage());
+            logger.error("Get top sale product:" + e.getMessage());
+            return null;
+        }
+    }
+
+    public List<ProductByGroupDto> getTopIncomeProduct(int numberOfProduct) {
+        try {
+            return  productRepository.getTopIncomeProduct(numberOfProduct).stream().map(product -> new ProductByGroupDto((Object[]) product)).collect(Collectors.toList());
+        } catch (Exception e) {
+            logger.error("Get top income product:" + e.getMessage());
             return null;
         }
     }

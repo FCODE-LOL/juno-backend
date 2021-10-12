@@ -1,8 +1,25 @@
+-- MySQL Workbench Forward Engineering
 
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
+
+-- -----------------------------------------------------
+-- Schema mydb
+-- -----------------------------------------------------
+-- -----------------------------------------------------
+-- Schema junodb
+-- -----------------------------------------------------
+
+-- -----------------------------------------------------
+-- Schema junodb
+-- -----------------------------------------------------
 CREATE SCHEMA IF NOT EXISTS `junodb` DEFAULT CHARACTER SET utf8mb4 ;
 USE `junodb` ;
 
-
+-- -----------------------------------------------------
+-- Table `junodb`.`USER`
+-- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `junodb`.`USER` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
   `email` VARCHAR(45) NULL DEFAULT NULL,
@@ -24,6 +41,9 @@ ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4;
 
 
+-- -----------------------------------------------------
+-- Table `junodb`.`BILL`
+-- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `junodb`.`BILL` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
   `customer_name` VARCHAR(45) NULL DEFAULT NULL,
@@ -52,6 +72,9 @@ ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4;
 
 
+-- -----------------------------------------------------
+-- Table `junodb`.`TYPE`
+-- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `junodb`.`TYPE` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NULL,
@@ -67,19 +90,19 @@ CREATE TABLE IF NOT EXISTS `junodb`.`TYPE` (
 ENGINE = InnoDB;
 
 
+-- -----------------------------------------------------
+-- Table `junodb`.`PRODUCT`
+-- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `junodb`.`PRODUCT` (
-  `id` VARCHAR(6) NOT NULL,
+  `id` VARCHAR(10) NOT NULL,
   `name` VARCHAR(60) NULL DEFAULT NULL,
   `link_images` TEXT NULL DEFAULT NULL,
-  `colors_id` VARCHAR(90) NULL DEFAULT NULL,
   `description` TEXT NULL DEFAULT NULL,
   `origin` VARCHAR(60) NULL DEFAULT NULL,
   `material` VARCHAR(45) NULL DEFAULT NULL,
-  `sizes` VARCHAR(30) NULL DEFAULT NULL,
-  `quantity` INT(11) NULL DEFAULT NULL,
+  `TYPE_id` INT NULL,
   `price` DECIMAL(20,3) NULL DEFAULT NULL,
   `discount_price` VARCHAR(45) NULL,
-  `TYPE_id` INT NULL,
   `created_timestamp` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `is_gettable` TINYINT(1) NULL DEFAULT NULL,
   `is_disable` TINYINT(1) NULL DEFAULT 0,
@@ -94,23 +117,49 @@ ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4;
 
 
+-- -----------------------------------------------------
+-- Table `junodb`.`MODEL`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `junodb`.`MODEL` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `PRODUCT_id` VARCHAR(10) NOT NULL,
+  `color_id` VARCHAR(10) NULL DEFAULT NULL,
+  `link_images` TEXT NULL DEFAULT NULL,
+  `size` INT(11) NULL DEFAULT NULL,
+  `quantity` INT(11) NULL DEFAULT NULL,
+  `price` DECIMAL(20,3) NULL DEFAULT NULL,
+  `discount_price` VARCHAR(45) NULL,
+  `is_disable` TINYINT(1) NULL,
+  PRIMARY KEY (`id`),
+  INDEX `fk_MODEL_PRODUCT1_idx` (`PRODUCT_id` ASC),
+  CONSTRAINT `fk_MODEL_PRODUCT1`
+    FOREIGN KEY (`PRODUCT_id`)
+    REFERENCES `junodb`.`PRODUCT` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `junodb`.`BILL_PRODUCT`
+-- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `junodb`.`BILL_PRODUCT` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
   `BILL_id` INT(11) NULL DEFAULT NULL,
-  `PRODUCT_id` VARCHAR(6) NULL DEFAULT NULL,
+  `MODEL_id` INT NOT NULL,
   `quantity` INT(11) NULL DEFAULT NULL,
-  `color` VARCHAR(10) NULL DEFAULT NULL,
-  `size` INT(11) NULL DEFAULT NULL,
   `is_disable` INT(11) NULL DEFAULT 0,
   PRIMARY KEY (`id`),
   INDEX `BILL_id` (`BILL_id` ASC),
-  INDEX `PRODUCT_id` (`PRODUCT_id` ASC),
+  INDEX `fk_BILL_PRODUCT_MODEL1_idx` (`MODEL_id` ASC),
   CONSTRAINT `BILL_PRODUCT_ibfk_1`
     FOREIGN KEY (`BILL_id`)
     REFERENCES `junodb`.`BILL` (`id`),
-  CONSTRAINT `BILL_PRODUCT_ibfk_2`
-    FOREIGN KEY (`PRODUCT_id`)
-    REFERENCES `junodb`.`PRODUCT` (`id`))
+  CONSTRAINT `fk_BILL_PRODUCT_MODEL1`
+    FOREIGN KEY (`MODEL_id`)
+    REFERENCES `junodb`.`MODEL` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4;
 
@@ -157,3 +206,6 @@ ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4;
 
 
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;

@@ -17,7 +17,10 @@ public interface ProductRepository extends JpaRepository<Product, String> {
 
     boolean existsByIdAndIsDisable(String id, boolean isDisable);
     Product findByIdAndIsDisable(String id, boolean isDisable);
-    @Query(nativeQuery = true, value = "SELECT `PRODUCT_id` AS `id`,`name`,`link_images` AS `linkImages`,`price`,`created_timestamp` AS `createdTimestamp` FROM `BILL_PRODUCT` AS B " +
-            "INNER JOIN `PRODUCT` AS `P` ON `B`.`PRODUCT_id` = `P`.`id`  WHERE `P`.`is_disable` = 0 GROUP BY `PRODUCT_id` ORDER BY sum( `B`.`quantity`) desc LIMIT ?1 ")
-    List<?> getTopProduct(int numberOfProduct);
+    @Query(nativeQuery = true, value = "SELECT P.id, P.name,P.created_timestamp FROM `MODEL` AS `M` JOIN `BILL_PRODUCT` AS `B` ON  M.id = B.MODEL_id " +
+            "JOIN `PRODUCT` AS P ON M.PRODUCT_id = P.id WHERE B.is_disable = 0 GROUP BY `PRODUCT_id` ORDER BY SUM(B.quantity) DESC; ")
+    List<?> getTopSaleProduct(int numberOfProduct);
+    @Query(nativeQuery = true, value = "SELECT P.id, P.name,P.created_timestamp FROM `MODEL` AS `M` JOIN `BILL_PRODUCT` AS `B` ON  M.id = B.MODEL_id " +
+            "JOIN `PRODUCT` AS P ON M.PRODUCT_id = P.id WHERE B.is_disable = 0 GROUP BY `PRODUCT_id` ORDER BY SUM(B.price) DESC ")
+    List<?> getTopIncomeProduct(int numberOfProduct);
 }

@@ -16,9 +16,14 @@ public class StatisticController {
     @Autowired
     StatisticService statisticService;
 
-    @GetMapping(value = "/top/product/{number}")
-    public List<ProductByGroupDto> getTopProducts(@PathVariable int number) {
-        return statisticService.getTopProduct(number);
+    @GetMapping(value = "/top/product/sale/{number}")
+    public List<ProductByGroupDto> getTopSaleProducts(@PathVariable int number) {
+        return statisticService.getTopSaleProduct(number);
+    }
+
+    @GetMapping(value = "/top/product/income/{number}")
+    public List<ProductByGroupDto> getTopIncomeProducts(@PathVariable int number) {
+        return statisticService.getTopSaleProduct(number);
     }
 
     @GetMapping(value = "/top/customer/{number}")

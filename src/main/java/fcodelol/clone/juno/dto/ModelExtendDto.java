@@ -1,28 +1,23 @@
 package fcodelol.clone.juno.dto;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
-import java.util.List;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProductDto {
-    private String id;
-    private String name;
+public class ModelExtendDto {
+    private Integer id;
     private String linkImages;
-    private String colorsId;
-    private String description;
-    private String origin;
-    private String material;
-    private TypeDto typeDto;
+    private String colorId;
+    private Integer size;
+    private Integer quantity;
     private BigDecimal price;
     private BigDecimal discountPrice;
-    List<ModelDto> modelList;
+    private ProductDto product;
 }

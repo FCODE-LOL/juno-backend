@@ -21,7 +21,7 @@ public class StatisticTest {
     StatisticService statisticService;
     @Test
     public void getProduct(){
-        System.out.println(statisticService.getTopProduct(1));
+        System.out.println(statisticService.getTopSaleProduct(1));
     }
     @Test
     public void getCustomer(){

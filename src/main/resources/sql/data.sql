@@ -1,7 +1,212 @@
-SET foreign_key_checks = 0;
-INSERT INTO `TYPE` VALUES (1,'Phụ kiện',1),(2,'Trang sức',1),(3,'Mắt kính',1),(4,'Vớ',1);
-INSERT INTO `USER` VALUES (1,'1@gmail.com','$2a$10$QYfEnwjFomI.4IZLv1Aw1.WIfczkw6BzxCB9Yywi0.qy2lIeLphLm','0329609321','a',NULL,1,NULL,NULL,'2021-09-15 22:50:56','1','2021-09-15 22:50:56',1,NULL,0),(2,'test@gmail','$2a$10$QYfEnwjFomI.4IZLv1Aw1.WIfczkw6BzxCB9Yywi0.qy2lIeLphLm',NULL,NULL,NULL,1,NULL,NULL,'2021-09-18 06:20:46','2','2021-09-18 06:20:46',10,NULL,0),(3,'2@gmail.com','$2a$10$QYfEnwjFomI.4IZLv1Aw1.WIfczkw6BzxCB9Yywi0.qy2lIeLphLm',NULL,NULL,NULL,0,NULL,NULL,'2021-09-19 12:16:27','3','2021-09-19 12:16:27',21,NULL,0);
-INSERT INTO `PRODUCT` VALUES ('A2E3RS','Bông tai S','linkimage1','2','description','TQ','Bạc ',NULL,13,210000.000,'180000',2,'2021-09-19 12:14:29',1,0),('A2E3RT','Mắt kính đen','linkimage1','2','description','TQ','Bạc ',NULL,13,210000.000,'180000',3,'2021-09-19 11:52:42',1,0),('A2E3RV','Vòng cổ J','linkimage1','2','description','TQ','Bạc ',NULL,14,220000.000,'200000',2,'2021-09-19 12:14:29',1,0),('A2E3RZ','Khuyên tai Z','linkimage1','2','description','Nhật','Vàng ',NULL,15,500000.000,'200000',2,'2021-09-19 12:14:29',1,0),('A4E3RT','Vớ R','linkimage1&linkimage2','1&2','description','TQ','Cotton ',NULL,16,110000.000,'80000',4,'2021-09-19 12:14:56',1,0),('abc','abc','1','1','description',NULL,NULL,NULL,12,123000.000,'110000',1,'2021-09-16 01:36:54',1,0);
-INSERT INTO `BILL` VALUES (1,'Hoang','0123456789',1,'ads',2,'12345',123000.000,12000.000,'2021-09-19 12:39:17',NULL,'2021-09-19 12:39:17',1,'a',0,1),(2,'Vinh','0123456779',2,'ads',2,'12345',123000.000,12000.000,'2021-09-19 12:41:04',NULL,'2021-09-19 12:41:04',1,'a',0,2),(3,'Hoang','0123456769',22,'ads',1,'12345',123000.000,12000.000,'2021-09-19 12:41:04',NULL,'2021-09-19 12:41:04',2,'a',0,3);
-INSERT INTO `BILL_PRODUCT` VALUES (1,1,'A2E3RS',12,'1',1,0),(2,1,'A2E3RT',2,'1',2,0),(3,2,'A2E3RV',7,'2',1,0);
-SET foreign_key_checks = 1;
+-- MySQL Workbench Forward Engineering
+
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
+
+-- -----------------------------------------------------
+-- Schema mydb
+-- -----------------------------------------------------
+-- -----------------------------------------------------
+-- Schema junodb
+-- -----------------------------------------------------
+
+-- -----------------------------------------------------
+-- Schema junodb
+-- -----------------------------------------------------
+CREATE SCHEMA IF NOT EXISTS `junodb` DEFAULT CHARACTER SET utf8mb4 ;
+USE `junodb` ;
+
+-- -----------------------------------------------------
+-- Table `junodb`.`USER`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `junodb`.`USER` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `email` VARCHAR(45) NULL DEFAULT NULL,
+  `password` VARCHAR(70) NULL DEFAULT NULL,
+  `phone` CHAR(10) NULL DEFAULT NULL,
+  `name` VARCHAR(20) NULL DEFAULT NULL,
+  `date_of_birth` CHAR(10) NULL DEFAULT NULL,
+  `is_admin` TINYINT(1) NULL DEFAULT NULL,
+  `area_id` INT(11) NULL DEFAULT NULL,
+  `address` VARCHAR(60) NULL DEFAULT NULL,
+  `register_timestamp` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `token` VARCHAR(45) NULL DEFAULT NULL,
+  `token_timestamp` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `point` INT(11) NULL DEFAULT NULL,
+  `social_media_id` VARCHAR(45) NULL,
+  `is_disable` TINYINT(1) NOT NULL DEFAULT 0,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4;
+
+
+-- -----------------------------------------------------
+-- Table `junodb`.`BILL`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `junodb`.`BILL` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `customer_name` VARCHAR(45) NULL DEFAULT NULL,
+  `phone` VARCHAR(45) NULL DEFAULT NULL,
+  `area_id` INT(11) NULL DEFAULT NULL,
+  `address` VARCHAR(45) NULL DEFAULT NULL,
+  `payment_method` INT(11) NULL DEFAULT NULL,
+  `discount_code` VARCHAR(10) NULL DEFAULT NULL,
+  `payment` DECIMAL(20,3) NULL,
+  `transport_fee` DECIMAL(20,3) NULL DEFAULT NULL,
+  `created_timestamp` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `receive_timestamp` TIMESTAMP NULL,
+  `update_timestamp` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `status` TINYINT NULL,
+  `info` TEXT NULL,
+  `is_disable` TINYINT(1) NOT NULL DEFAULT 0,
+  `USER_id` INT(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `fk_BILL_USER1_idx` (`USER_id` ASC),
+  CONSTRAINT `fk_BILL_USER1`
+    FOREIGN KEY (`USER_id`)
+    REFERENCES `junodb`.`USER` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4;
+
+
+-- -----------------------------------------------------
+-- Table `junodb`.`TYPE`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `junodb`.`TYPE` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(45) NULL,
+  `parent_id` INT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `fk_TYPE_TYPE1_idx` (`parent_id` ASC),
+  UNIQUE INDEX `name_UNIQUE` (`name` ASC),
+  CONSTRAINT `fk_TYPE_TYPE1`
+    FOREIGN KEY (`parent_id`)
+    REFERENCES `junodb`.`TYPE` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `junodb`.`PRODUCT`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `junodb`.`PRODUCT` (
+  `id` VARCHAR(10) NOT NULL,
+  `name` VARCHAR(60) NULL DEFAULT NULL,
+  `link_images` TEXT NULL DEFAULT NULL,
+  `description` TEXT NULL DEFAULT NULL,
+  `origin` VARCHAR(60) NULL DEFAULT NULL,
+  `material` VARCHAR(45) NULL DEFAULT NULL,
+  `TYPE_id` INT NULL,
+  `price` DECIMAL(20,3) NULL DEFAULT NULL,
+  `discount_price` VARCHAR(45) NULL,
+  `created_timestamp` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `is_gettable` TINYINT(1) NULL DEFAULT NULL,
+  `is_disable` TINYINT(1) NULL DEFAULT 0,
+  PRIMARY KEY (`id`),
+  INDEX `fk_PRODUCT_TYPE1_idx` (`TYPE_id` ASC),
+  CONSTRAINT `fk_PRODUCT_TYPE1`
+    FOREIGN KEY (`TYPE_id`)
+    REFERENCES `junodb`.`TYPE` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4;
+
+
+-- -----------------------------------------------------
+-- Table `junodb`.`MODEL`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `junodb`.`MODEL` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `PRODUCT_id` VARCHAR(10) NOT NULL,
+  `color_id` VARCHAR(10) NULL DEFAULT NULL,
+  `link_images` TEXT NULL DEFAULT NULL,
+  `size` INT(11) NULL DEFAULT NULL,
+  `quantity` INT(11) NULL DEFAULT NULL,
+  `price` DECIMAL(20,3) NULL DEFAULT NULL,
+  `discount_price` VARCHAR(45) NULL,
+  `is_disable` TINYINT(1) NULL,
+  PRIMARY KEY (`id`),
+  INDEX `fk_MODEL_PRODUCT1_idx` (`PRODUCT_id` ASC),
+  CONSTRAINT `fk_MODEL_PRODUCT1`
+    FOREIGN KEY (`PRODUCT_id`)
+    REFERENCES `junodb`.`PRODUCT` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `junodb`.`BILL_PRODUCT`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `junodb`.`BILL_PRODUCT` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `BILL_id` INT(11) NULL DEFAULT NULL,
+  `MODEL_id` INT NOT NULL,
+  `quantity` INT(11) NULL DEFAULT NULL,
+  `price` VARCHAR(45) NULL,
+  `is_disable` INT(11) NULL DEFAULT 0,
+  PRIMARY KEY (`id`),
+  INDEX `BILL_id` (`BILL_id` ASC),
+  INDEX `fk_BILL_PRODUCT_MODEL1_idx` (`MODEL_id` ASC),
+  CONSTRAINT `BILL_PRODUCT_ibfk_1`
+    FOREIGN KEY (`BILL_id`)
+    REFERENCES `junodb`.`BILL` (`id`),
+  CONSTRAINT `fk_BILL_PRODUCT_MODEL1`
+    FOREIGN KEY (`MODEL_id`)
+    REFERENCES `junodb`.`MODEL` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4;
+
+
+-- -----------------------------------------------------
+-- Table `junodb`.`DISCOUNT`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `junodb`.`DISCOUNT` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `code` VARCHAR(10) NULL DEFAULT NULL,
+  `price` DECIMAL(20,3) NULL DEFAULT NULL,
+  `percent` TINYINT(4) NULL DEFAULT NULL,
+  `start_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `end_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `is_disable` TINYINT(1) NULL DEFAULT 0,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4;
+
+
+-- -----------------------------------------------------
+-- Table `junodb`.`PRODUCT_DISCOUNT`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `junodb`.`PRODUCT_DISCOUNT` (
+  `id` INT(11) NOT NULL,
+  `PRODUCT_id` VARCHAR(6) NULL DEFAULT NULL,
+  `DISCOUNT_id` INT(11) NULL DEFAULT NULL,
+  `quantity` VARCHAR(45) NULL,
+  `start_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `end_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `is_disable` TINYINT(1) NULL DEFAULT 0,
+  PRIMARY KEY (`id`),
+  INDEX `PRODUCT_id` (`PRODUCT_id` ASC),
+  INDEX `DISCOUNT_id` (`DISCOUNT_id` ASC),
+  CONSTRAINT `PRODUCT_DISCOUNT_ibfk_1`
+    FOREIGN KEY (`PRODUCT_id`)
+    REFERENCES `junodb`.`PRODUCT` (`id`)
+    ON DELETE RESTRICT
+    ON UPDATE RESTRICT,
+  CONSTRAINT `PRODUCT_DISCOUNT_ibfk_2`
+    FOREIGN KEY (`DISCOUNT_id`)
+    REFERENCES `junodb`.`DISCOUNT` (`id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4;
+
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;

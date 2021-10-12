@@ -19,6 +19,7 @@ public class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
+    @Access(AccessType.PROPERTY)
     private Integer id;
     @Column
     private String email;

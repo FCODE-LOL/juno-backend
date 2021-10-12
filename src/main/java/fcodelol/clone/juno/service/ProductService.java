@@ -47,7 +47,7 @@ public class ProductService {
             if (product == null) {
                 return null;
             }
-            product.setProductDtoProperty(productDto);
+            product.setProductProperty(productDto);
             return modelMapper.map(productRepository.save(product), ProductDto.class);
         } catch (Exception e) {
             logger.error("Update product error: " + e.getMessage());

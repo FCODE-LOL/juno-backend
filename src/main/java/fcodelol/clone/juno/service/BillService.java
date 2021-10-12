@@ -2,8 +2,8 @@ package fcodelol.clone.juno.service;
 
 import fcodelol.clone.juno.controller.request.StatusRequest;
 import fcodelol.clone.juno.dto.BillByGroupDto;
-import fcodelol.clone.juno.dto.BillDto;
-import fcodelol.clone.juno.dto.ProductByGroupDto;
+import fcodelol.clone.juno.controller.reponse.BillResponseDto;
+import fcodelol.clone.juno.dto.ModelExtendDto;
 import fcodelol.clone.juno.repository.BillRepository;
 import fcodelol.clone.juno.repository.entity.Bill;
 import org.apache.logging.log4j.LogManager;
@@ -62,14 +62,14 @@ public class BillService {
         }
     }
 
-    public BillDto getBillById(int id) {
+    public BillResponseDto getBillById(int id) {
         try {
             System.out.println(billRepository.findByIdAndIsDisable(id, false));
             Bill bill = billRepository.findByIdAndIsDisable(id, false);
-            BillDto billDto = modelMapper.map(bill, BillDto.class);
-            billDto.setProductOfBill(bill.getBillProducts().stream()
-                    .map(billProduct -> modelMapper.map(billProduct.getProduct(), ProductByGroupDto.class)).collect(Collectors.toList()));
-            return billDto;
+            BillResponseDto billResponseDto = modelMapper.map(bill, BillResponseDto.class);
+            billResponseDto.setProductOfBill(bill.getBillProductList().stream()
+                    .map(billProduct -> modelMapper.map(billProduct.getModel(), ModelExtendDto.class)).collect(Collectors.toList()));
+            return billResponseDto;
         } catch (Exception e) {
             logger.error("Get bill by id error: " + e.getMessage());
             return null;
