@@ -14,4 +14,7 @@ public interface ModelRepository extends JpaRepository<Model, Integer> {
     List<?> getModelOfProduct(int productId);
     @Query(nativeQuery = true, value = "SELECT `discount_price` FROM `MODEL` WHERE `id` = ?1;")
     BigDecimal findDiscountPrice(int modelId);
+    @Query(nativeQuery = true, value = "SELECT `quantity` FROM `MODEL` WHERE `id` = ?1;")
+    Integer findQuantity(int modelId);
+    Model findOneById(int id);
 }

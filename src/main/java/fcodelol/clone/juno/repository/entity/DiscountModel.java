@@ -5,7 +5,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
 
 @Entity
 @Table(name = "DISCOUNT_MODEL")
@@ -25,8 +24,6 @@ public class DiscountModel {
     private Discount model;
     @Column
     private Integer quantity;
-    @Column(name = "is_disable", insertable = false)
-    @org.hibernate.annotations.Type(type = "org.hibernate.type.NumericBooleanType")
-    private Boolean isDisable;
+
 
 }

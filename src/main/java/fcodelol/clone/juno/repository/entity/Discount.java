@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.util.List;
 
 @Entity
@@ -24,9 +25,9 @@ public class Discount {
     @Column
     private String percent;
     @Column(name = "start_time")
-    private String startTime;
+    private Timestamp startTime;
     @Column(name = "end_time")
-    private String endTime;
+    private Timestamp endTime;
     @Column(name = "is_disable", insertable = false)
     @org.hibernate.annotations.Type(type = "org.hibernate.type.NumericBooleanType")
     private Boolean isDisable;

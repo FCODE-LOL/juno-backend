@@ -5,17 +5,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.math.BigDecimal;
-
-
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
-public class BillProductDto {
-    private Integer id;
-    private BillByGroupDto bill;
+@AllArgsConstructor
+public class DiscountModelDto {
+    private int id;
+    private DiscountDto discount;
     private ModelDto model;
-    private Integer quantity;
-    private BigDecimal price;
+    private int quantity;
+
 }

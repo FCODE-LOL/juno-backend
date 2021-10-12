@@ -1,8 +1,9 @@
 package fcodelol.clone.juno.service;
 
 import fcodelol.clone.juno.controller.request.StatusRequest;
+import fcodelol.clone.juno.controller.response.BillProductResponse;
 import fcodelol.clone.juno.dto.BillByGroupDto;
-import fcodelol.clone.juno.controller.reponse.BillResponseDto;
+import fcodelol.clone.juno.controller.response.BillResponseDto;
 import fcodelol.clone.juno.dto.ModelExtendDto;
 import fcodelol.clone.juno.repository.BillRepository;
 import fcodelol.clone.juno.repository.entity.Bill;
@@ -68,7 +69,7 @@ public class BillService {
             Bill bill = billRepository.findByIdAndIsDisable(id, false);
             BillResponseDto billResponseDto = modelMapper.map(bill, BillResponseDto.class);
             billResponseDto.setProductOfBill(bill.getBillProductList().stream()
-                    .map(billProduct -> modelMapper.map(billProduct.getModel(), ModelExtendDto.class)).collect(Collectors.toList()));
+                    .map(billProduct -> modelMapper.map(billProduct, BillProductResponse.class)).collect(Collectors.toList()));
             return billResponseDto;
         } catch (Exception e) {
             logger.error("Get bill by id error: " + e.getMessage());

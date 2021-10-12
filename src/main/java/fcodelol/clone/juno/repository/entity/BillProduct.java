@@ -19,7 +19,7 @@ public class BillProduct implements Serializable {
     @Column(name = "id", nullable = false)
     private Integer id;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "Model_id")
+    @JoinColumn(name = "MODEL_id")
     private Model model;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "BILL_id")
@@ -30,8 +30,5 @@ public class BillProduct implements Serializable {
     private BigDecimal price;
     @Column
     private String note;
-    @Column(name = "is_disable", insertable = false)
-    @org.hibernate.annotations.Type(type = "org.hibernate.type.NumericBooleanType")
-    private Boolean isDisable;
 
 }

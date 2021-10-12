@@ -46,8 +46,9 @@ DEFAULT CHARACTER SET = utf8mb4;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `junodb`.`BILL` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `USER_id` INT(11) NULL DEFAULT NULL,
   `customer_name` VARCHAR(45) NULL DEFAULT NULL,
-  `phone` VARCHAR(45) NULL DEFAULT NULL,
+  `phone` VARCHAR(45) CHARACTER SET 'cp850' NULL DEFAULT NULL,
   `area_id` INT(11) NULL DEFAULT NULL,
   `address` VARCHAR(45) NULL DEFAULT NULL,
   `payment_method` INT(11) NULL DEFAULT NULL,
@@ -60,7 +61,6 @@ CREATE TABLE IF NOT EXISTS `junodb`.`BILL` (
   `status` TINYINT NULL,
   `info` TEXT NULL,
   `is_disable` TINYINT(1) NOT NULL DEFAULT 0,
-  `USER_id` INT(11) NOT NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_BILL_USER1_idx` (`USER_id` ASC),
   CONSTRAINT `fk_BILL_USER1`
@@ -102,7 +102,7 @@ CREATE TABLE IF NOT EXISTS `junodb`.`PRODUCT` (
   `material` VARCHAR(45) NULL DEFAULT NULL,
   `TYPE_id` INT NULL,
   `price` DECIMAL(20,3) NULL DEFAULT NULL,
-  `discount_price` VARCHAR(45) NULL,
+  `discount_price` DECIMAL(20,3) NULL,
   `created_timestamp` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `is_gettable` TINYINT(1) NULL DEFAULT NULL,
   `is_disable` TINYINT(1) NULL DEFAULT 0,
@@ -128,7 +128,7 @@ CREATE TABLE IF NOT EXISTS `junodb`.`MODEL` (
   `size` INT(11) NULL DEFAULT NULL,
   `quantity` INT(11) NULL DEFAULT NULL,
   `price` DECIMAL(20,3) NULL DEFAULT NULL,
-  `discount_price` VARCHAR(45) NULL,
+  `discount_price` DECIMAL(20,3) NULL,
   `is_disable` TINYINT(1) NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_MODEL_PRODUCT1_idx` (`PRODUCT_id` ASC),
@@ -145,12 +145,11 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `junodb`.`BILL_PRODUCT` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
-  `BILL_id` INT(11) NULL DEFAULT NULL,
+  `BILL_id` INT(11) NOT NULL,
   `MODEL_id` INT NOT NULL,
   `quantity` INT(11) NULL DEFAULT NULL,
-  `price` VARCHAR(45) NULL,
-  `is_disable` INT(11) NULL DEFAULT 0,
-  PRIMARY KEY (`id`),
+  `price` DECIMAL(20,3) NULL,
+  PRIMARY KEY (`id`, `BILL_id`, `MODEL_id`),
   INDEX `BILL_id` (`BILL_id` ASC),
   INDEX `fk_BILL_PRODUCT_MODEL1_idx` (`MODEL_id` ASC),
   CONSTRAINT `BILL_PRODUCT_ibfk_1`
@@ -182,27 +181,24 @@ DEFAULT CHARACTER SET = utf8mb4;
 
 
 -- -----------------------------------------------------
--- Table `junodb`.`PRODUCT_DISCOUNT`
+-- Table `junodb`.`DISCOUNT_MODEL`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `junodb`.`PRODUCT_DISCOUNT` (
+CREATE TABLE IF NOT EXISTS `junodb`.`DISCOUNT_MODEL` (
   `id` INT(11) NOT NULL,
-  `PRODUCT_id` VARCHAR(6) NULL DEFAULT NULL,
   `DISCOUNT_id` INT(11) NULL DEFAULT NULL,
-  `quantity` VARCHAR(45) NULL,
-  `start_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `end_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `is_disable` TINYINT(1) NULL DEFAULT 0,
+  `MODEL_id` INT NOT NULL,
+  `quantity` INT(11) NULL,
   PRIMARY KEY (`id`),
-  INDEX `PRODUCT_id` (`PRODUCT_id` ASC),
   INDEX `DISCOUNT_id` (`DISCOUNT_id` ASC),
-  CONSTRAINT `PRODUCT_DISCOUNT_ibfk_1`
-    FOREIGN KEY (`PRODUCT_id`)
-    REFERENCES `junodb`.`PRODUCT` (`id`)
-    ON DELETE RESTRICT
-    ON UPDATE RESTRICT,
+  INDEX `fk_PRODUCT_DISCOUNT_MODEL1_idx` (`MODEL_id` ASC),
   CONSTRAINT `PRODUCT_DISCOUNT_ibfk_2`
     FOREIGN KEY (`DISCOUNT_id`)
-    REFERENCES `junodb`.`DISCOUNT` (`id`))
+    REFERENCES `junodb`.`DISCOUNT` (`id`),
+  CONSTRAINT `fk_PRODUCT_DISCOUNT_MODEL1`
+    FOREIGN KEY (`MODEL_id`)
+    REFERENCES `junodb`.`MODEL` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4;
 

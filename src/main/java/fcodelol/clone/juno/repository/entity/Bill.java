@@ -52,9 +52,12 @@ public class Bill implements Serializable {
     @org.hibernate.annotations.Type(type = "org.hibernate.type.NumericBooleanType")
     private Boolean isDisable;
     @OneToMany(fetch = FetchType.LAZY)
-    @Cascade(value = org.hibernate.annotations.CascadeType.ALL)
     private List<BillProduct> billProductList;
     @ManyToOne
     @JoinColumn(name = "USER_id")
     private User user;
+
+    public Bill(Integer id) {
+        this.id = id;
+    }
 }

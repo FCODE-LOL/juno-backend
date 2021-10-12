@@ -41,4 +41,8 @@ public class Model {
     private List<BillProduct> billProductList;
     @OneToMany
     private  List<DiscountModel> discountModelList;
+
+    public Model(Integer id) {
+        this.id = id;
+    }
 }

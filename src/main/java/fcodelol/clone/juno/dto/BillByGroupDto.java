@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -24,4 +25,8 @@ public class BillByGroupDto {
     private Timestamp receiveTimestamp;
     private int status;
     private String info;
+
+    public BillByGroupDto(int id) {
+        this.id = id;
+    }
 }
