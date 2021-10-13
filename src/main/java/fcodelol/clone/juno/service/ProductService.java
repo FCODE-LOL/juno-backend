@@ -1,9 +1,6 @@
 package fcodelol.clone.juno.service;
 
-import fcodelol.clone.juno.dto.AddedTypeDto;
-import fcodelol.clone.juno.dto.ProductByGroupDto;
-import fcodelol.clone.juno.dto.ProductDto;
-import fcodelol.clone.juno.dto.TypeDto;
+import fcodelol.clone.juno.dto.*;
 import fcodelol.clone.juno.repository.ProductRepository;
 import fcodelol.clone.juno.repository.TypeRepository;
 import fcodelol.clone.juno.repository.entity.Product;
@@ -77,6 +74,9 @@ public class ProductService {
         try {
             List<ProductByGroupDto> productByGroupDtoList = new ArrayList<>();
             List<Type> types = typeRepository.findByParentId(typeId);
+            Type currentType = typeRepository.findOneById(typeId);
+            if (currentType.getParentId() != currentType.getId())
+                types.add(currentType);
             for (Type type : types) {
                 List<ProductByGroupDto> productByGroupDtos =
                         type.getProducts().stream().map(product -> modelMapper.map(product, ProductByGroupDto.class)).collect(Collectors.toList());
@@ -117,9 +117,12 @@ public class ProductService {
 
     public ProductDto getProductId(String id) {
         try {
-            return modelMapper.map(productRepository.findOneById(id), ProductDto.class);
+            Product product = productRepository.findOneById(id);
+            ProductDto productDto = modelMapper.map(product, ProductDto.class);
+            productDto.setModelDtoList(product.getModelList().stream().map(model -> modelMapper.map(model, ModelDto.class)).collect(Collectors.toList()));
+            return productDto;
         } catch (Exception e) {
-            logger.error("Get product by id error: ");
+            logger.error("Get product by id error: " + e.getMessage());
             return null;
         }
     }

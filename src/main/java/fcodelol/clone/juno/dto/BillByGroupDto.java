@@ -14,6 +14,7 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 public class BillByGroupDto {
     private int id;
+    private UserByGroupDto user;
     private String customerName;
     private String phone;
     private int areaId;

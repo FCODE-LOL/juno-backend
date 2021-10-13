@@ -12,7 +12,7 @@ import java.util.Date;
 @Getter
 @Setter
 @NoArgsConstructor
-public class UserByGroupExtendDto {
+public class UserByGroupExtendDto  {
     private int id;
     private String name;
     private Integer point;

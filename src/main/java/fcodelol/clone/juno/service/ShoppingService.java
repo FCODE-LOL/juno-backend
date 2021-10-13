@@ -8,9 +8,11 @@ import fcodelol.clone.juno.dto.BillProductDto;
 import fcodelol.clone.juno.repository.BillProductRepository;
 import fcodelol.clone.juno.repository.BillRepository;
 import fcodelol.clone.juno.repository.ModelRepository;
+import fcodelol.clone.juno.repository.UserRepository;
 import fcodelol.clone.juno.repository.entity.Bill;
 import fcodelol.clone.juno.repository.entity.BillProduct;
 import fcodelol.clone.juno.repository.entity.Model;
+import fcodelol.clone.juno.repository.entity.User;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.modelmapper.ModelMapper;
@@ -30,6 +32,8 @@ public class ShoppingService {
     BillProductRepository billProductRepository;
     @Autowired
     ModelRepository modelRepository;
+    @Autowired
+    UserRepository userRepository;
     @Autowired
     ModelMapper modelMapper;
     private static final Logger logger = LogManager.getLogger(ShoppingService.class);
@@ -123,9 +127,9 @@ public class ShoppingService {
     }
 
     @Transactional
-    public String removeBillProduct(int billId, int modelId) {
+    public String removeBillProduct(int billProductId) {
         try {
-            BillProduct billProduct = billProductRepository.findOneByBillAndModel(new Bill(billId), new Model(modelId));
+            BillProduct billProduct = billProductRepository.findOneById(billProductId);
             if (billProduct == null) return "This bill product is not exists";
             Bill bill = billProduct.getBill();
             if (bill.getStatus() > 0)
@@ -145,10 +149,22 @@ public class ShoppingService {
     public String updateBillStatus(UpdateBillStatusRequest updateBillStatusRequest) {
         try {
             Bill bill = billRepository.findOneById(updateBillStatusRequest.getBillId());
-            if (bill.getStatus() == 0) // change bill to unconfirmed status
+            if (updateBillStatusRequest.getStatus() == 0) // change bill to unconfirmed status
                 throw new Exception("Cannot change bill to pre-status");
-            if (bill.getStatus() == 6) //cancel
+            if (updateBillStatusRequest.getStatus() == 6) //cancel
                 returnProduct(bill);
+            if (updateBillStatusRequest.getStatus() == 5 && bill.getStatus() != 5) // complete shopping
+            {
+                User user = bill.getUser();
+                user.setPoint(user.getPoint() + (Integer) bill.getPayment().intValue());//increase point
+                userRepository.save(user);
+            }
+            if (updateBillStatusRequest.getStatus() != 5 && bill.getStatus() == 5) // complete shopping
+            {
+                User user = bill.getUser();
+                user.setPoint(user.getPoint() - (Integer) bill.getPayment().intValue());//decrease point
+                userRepository.save(user);
+            }
             bill.setStatus(updateBillStatusRequest.getStatus());
             bill.setInfo(updateBillStatusRequest.getInfo());
             bill.setReceiveTimestamp(updateBillStatusRequest.getReceiveTimestamp());
@@ -168,4 +184,20 @@ public class ShoppingService {
         }
     }
 
+    public Integer getUserId(int billId) {
+        try {
+            return billRepository.getUserIdFromBill(billId);
+        } catch (Exception e) {
+            logger.error("Get user id by bill id:" + e.getMessage());
+            return null;
+        }
+    }
+    public Integer getUserIdByBillProductId(int id) {
+        try {
+            return billRepository.getUserIdFromBill(billProductRepository.findBillId(id));
+        } catch (Exception e) {
+            logger.error("Get user id by bill id:" + e.getMessage());
+            return null;
+        }
+    }
 }

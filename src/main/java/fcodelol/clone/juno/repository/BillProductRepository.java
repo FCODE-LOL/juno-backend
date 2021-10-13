@@ -4,7 +4,10 @@ import fcodelol.clone.juno.repository.entity.Bill;
 import fcodelol.clone.juno.repository.entity.BillProduct;
 import fcodelol.clone.juno.repository.entity.Model;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 public interface BillProductRepository extends JpaRepository<BillProduct, Integer> {
-    BillProduct findOneByBillAndModel(Bill bill, Model model);
+    BillProduct findOneById(Integer id);
+    @Query(nativeQuery = true,value = "SELECT `BILL_id` FROM `BILL_PRODUCT` WHERE `id` = ?1;")
+    Integer findBillId(Integer id);
 }

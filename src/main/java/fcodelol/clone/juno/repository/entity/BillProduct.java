@@ -16,6 +16,7 @@ import java.math.BigDecimal;
 public class BillProduct implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Access(AccessType.PROPERTY)
     @Column(name = "id", nullable = false)
     private Integer id;
     @ManyToOne(fetch = FetchType.LAZY)
@@ -28,7 +29,7 @@ public class BillProduct implements Serializable {
     private Integer quantity;
     @Column
     private BigDecimal price;
-    @Column
-    private String note;
+
+
 
 }

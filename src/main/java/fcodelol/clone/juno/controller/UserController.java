@@ -24,7 +24,7 @@ public class UserController {
     @GetMapping(value = "/{id}")
     @Transactional
     public UserDto getUserById(@RequestHeader("Authorization") String token,@PathVariable int id) {
-        if(authorizationService.getIdByToken(token)!=id && !authorizationService.getRoleByToken(token).equals("ADMIN"))
+        if(authorizationService.getUserIdByToken(token)!=id && !authorizationService.getRoleByToken(token).equals("ADMIN"))
             return null;
         return userService.getUserById(id);
     }

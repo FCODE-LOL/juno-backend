@@ -58,7 +58,7 @@ public class Product implements Serializable {
         price = productDto.getPrice();
         discountPrice = productDto.getDiscountPrice();
         type = modelMapper.map(productDto.getTypeDto(),Type.class);
-        modelList = productDto.getModelList().stream().map(modelDto -> modelMapper.map(modelDto,Model.class)).collect(Collectors.toList());
+        modelList = productDto.getModelDtoList().stream().map(modelDto -> modelMapper.map(modelDto,Model.class)).collect(Collectors.toList());
     }
 
 }

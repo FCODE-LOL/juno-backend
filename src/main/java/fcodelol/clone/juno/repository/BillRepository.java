@@ -13,7 +13,10 @@ public interface BillRepository extends JpaRepository<Bill, Integer> {
     @Query(nativeQuery = true, value = "SELECT SUM(`payment`) FROM BILL WHERE `update_timestamp` BETWEEN ?1 AND ?2 AND `is_disable` = 0")
     BigDecimal getIncome(Timestamp startTime, Timestamp endTime);
 
-    Bill findByIdAndIsDisable(int id, boolean isDisable);
+    @Query(nativeQuery = true, value = "SELECT `USER_id` FROM `BILL`;")
+    Integer getUserIdFromBill(int billId);
+
+    Bill findOneByIdAndIsDisable(int id, boolean isDisable);
 
     List<Bill> findAll(Sort sort);
 

@@ -24,5 +24,5 @@ public class ProductDto {
     private TypeDto typeDto;
     private BigDecimal price;
     private BigDecimal discountPrice;
-    List<ModelDto> modelList;
+    List<ModelDto> modelDtoList;
 }

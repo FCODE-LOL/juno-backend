@@ -30,7 +30,7 @@ public class StatisticTest {
     @Test
     public void getIncome(){
         List<PeriodTime> periodTimes = new LinkedList<>();
-        periodTimes.add(new PeriodTime(Timestamp.valueOf("2021-08-25 08:56:12"),Timestamp.valueOf("2021-08-29 08:56:13")));
+        periodTimes.add(new PeriodTime(Timestamp.valueOf("2020-08-25 08:56:12"),Timestamp.valueOf("2021-12-29 08:56:13")));
         System.out.println(statisticService.getIncomePerTime(periodTimes));
     }
 }

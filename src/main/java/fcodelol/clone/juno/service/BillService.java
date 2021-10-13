@@ -28,7 +28,7 @@ public class BillService {
 
     public BillByGroupDto setBillStatus(int id, StatusRequest statusRequest) {
         try {
-            Bill bill = billRepository.findByIdAndIsDisable(id, false);
+            Bill bill = billRepository.findOneByIdAndIsDisable(id, false);
             bill.setStatus(statusRequest.getStatus());
             bill.setInfo(statusRequest.getInfo());
             return modelMapper.map(billRepository.save(bill), BillByGroupDto.class);
@@ -40,7 +40,7 @@ public class BillService {
 
     public String deleteBill(int id) {
         try {
-            Bill bill = billRepository.findByIdAndIsDisable(id, false);
+            Bill bill = billRepository.findOneByIdAndIsDisable(id, false);
             if (bill == null)
                 return "Id is not exist";
             bill.setIsDisable(true);
@@ -54,7 +54,7 @@ public class BillService {
 
     public List<BillByGroupDto> getAllBill() {
         try {
-            List<BillByGroupDto> billByGroupDtoList = billRepository.findAll(Sort.by(Sort.Direction.DESC, "update_timestamp"))
+            List<BillByGroupDto> billByGroupDtoList = billRepository.findAll(Sort.by(Sort.Direction.DESC, "updateTimestamp"))
                     .stream().map(bill -> modelMapper.map(bill, BillByGroupDto.class)).collect(Collectors.toList());
             return billByGroupDtoList;
         } catch (Exception e) {
@@ -65,8 +65,8 @@ public class BillService {
 
     public BillResponseDto getBillById(int id) {
         try {
-            System.out.println(billRepository.findByIdAndIsDisable(id, false));
-            Bill bill = billRepository.findByIdAndIsDisable(id, false);
+
+            Bill bill = billRepository.findOneByIdAndIsDisable(id, false);
             BillResponseDto billResponseDto = modelMapper.map(bill, BillResponseDto.class);
             billResponseDto.setProductOfBill(bill.getBillProductList().stream()
                     .map(billProduct -> modelMapper.map(billProduct, BillProductResponse.class)).collect(Collectors.toList()));
@@ -76,6 +76,7 @@ public class BillService {
             return null;
         }
     }
+
 
 
 }

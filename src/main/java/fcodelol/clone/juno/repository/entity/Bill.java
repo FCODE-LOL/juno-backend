@@ -22,27 +22,30 @@ public class Bill implements Serializable {
     @Column(name = "id", nullable = false)
     @Access(AccessType.PROPERTY)
     private Integer id;
-    @Column(name = "customer_name")
+    @ManyToOne
+    @JoinColumn(name = "`USER_id`")
+    private User user;
+    @Column(name = "`customer_name`")
     private String customerName;
     @Column
     private String phone;
-    @Column(name = "area_id")
+    @Column(name = "`area_id`")
     private int areaId;
     @Column
     private String address;
-    @Column(name = "payment_method")
+    @Column(name = "`payment_method`")
     private String paymentMethod;
-    @Column(name = "discount_code")
+    @Column(name = "`discount_code`")
     private String discountCode;
     @Column
     private BigDecimal payment;
-    @Column(name = "transport_fee")
+    @Column(name = "`transport_fee`")
     private String transportFee;
-    @Column(name = "created_timestamp", updatable = false, insertable = false)
+    @Column(name = "`created_timestamp`", updatable = false, insertable = false)
     private Timestamp createTimestamp;
-    @Column(name = "receive_timestamp")
+    @Column(name = "`receive_timestamp`")
     private Timestamp receiveTimestamp;
-    @Column(name = "update_timestamp", updatable = false, insertable = false)
+    @Column(name = "`update_timestamp`", updatable = false, insertable = false)
     private Timestamp updateTimestamp;
     @Column
     private Integer status;
@@ -51,11 +54,9 @@ public class Bill implements Serializable {
     @Column(name = "is_disable", insertable = false)
     @org.hibernate.annotations.Type(type = "org.hibernate.type.NumericBooleanType")
     private Boolean isDisable;
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY,mappedBy = "bill")
     private List<BillProduct> billProductList;
-    @ManyToOne
-    @JoinColumn(name = "USER_id")
-    private User user;
+
 
     public Bill(Integer id) {
         this.id = id;

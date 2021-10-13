@@ -9,7 +9,7 @@ import java.util.List;
 @Repository
 public interface TypeRepository extends JpaRepository<Type, Integer> {
     List<Type> findByParentId(int typeId);
-
+    Type findOneById(int typeId);
     boolean existsByName(String name);
 
 }
