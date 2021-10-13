@@ -2,6 +2,8 @@ package fcodelol.clone.juno.service;
 
 
 import fcodelol.clone.juno.controller.request.UpdateBillStatusRequest;
+import fcodelol.clone.juno.controller.response.BillProductResponse;
+import fcodelol.clone.juno.controller.response.BillResponseDto;
 import fcodelol.clone.juno.dto.BillByGroupDto;
 import fcodelol.clone.juno.dto.BillDto;
 import fcodelol.clone.juno.dto.BillProductDto;
@@ -17,6 +19,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -192,6 +195,7 @@ public class ShoppingService {
             return null;
         }
     }
+
     public Integer getUserIdByBillProductId(int id) {
         try {
             return billRepository.getUserIdFromBill(billProductRepository.findBillId(id));
@@ -200,4 +204,42 @@ public class ShoppingService {
             return null;
         }
     }
+
+    public List<BillByGroupDto> getAllBill() {
+        try {
+            List<BillByGroupDto> billByGroupDtoList = billRepository.findAll(Sort.by(Sort.Direction.DESC, "updateTimestamp"))
+                    .stream().map(bill -> modelMapper.map(bill, BillByGroupDto.class)).collect(Collectors.toList());
+            return billByGroupDtoList;
+        } catch (Exception e) {
+            logger.error("Get all bill:" + e.getMessage());
+            return null;
+        }
+    }
+
+    public List<BillByGroupDto> getBillOfUser(int userId) {
+        try {
+            List<BillByGroupDto> billByGroupDtoList = billRepository.findByUser(new User(userId))
+                    .stream().map(bill -> modelMapper.map(bill, BillByGroupDto.class)).collect(Collectors.toList());
+            return billByGroupDtoList;
+        } catch (Exception e) {
+            logger.error("Get all bill of user:" + e.getMessage());
+            return null;
+        }
+    }
+
+    public BillResponseDto getBillById(int id) {
+        try {
+
+            Bill bill = billRepository.findOneByIdAndIsDisable(id, false);
+            BillResponseDto billResponseDto = modelMapper.map(bill, BillResponseDto.class);
+            billResponseDto.setProductOfBill(bill.getBillProductList().stream()
+                    .map(billProduct -> modelMapper.map(billProduct, BillProductResponse.class)).collect(Collectors.toList()));
+            return billResponseDto;
+        } catch (Exception e) {
+            logger.error("Get bill by id error: " + e.getMessage());
+            return null;
+        }
+    }
+
+
 }

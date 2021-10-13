@@ -20,4 +20,9 @@ public class ImportDBController {
     public String clearDB() {
         return importDBService.clearDBData();
     }
+
+    @PostMapping(value = "/init")
+    public String initDB() {
+        return importDBService.initDB();
+    }
 }

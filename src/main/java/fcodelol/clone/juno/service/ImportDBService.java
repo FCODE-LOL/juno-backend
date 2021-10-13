@@ -16,12 +16,23 @@ public class ImportDBService {
     DataSource dataSource;
     private static final String dataScript = "sql/data.sql";
     private static final String clearDataScript = "sql/clear.sql";
+    private static final String initDBScript = "sql/juno.sql";
     private static final Logger logger = LogManager.getLogger(ProductService.class);
 
+    @Transactional
+    public void runScriptFile(String filename) {
+        try {
+            ResourceDatabasePopulator resourceDatabasePopulator = new ResourceDatabasePopulator(false, false, "UTF-8", new ClassPathResource(filename));
+            resourceDatabasePopulator.execute(dataSource);
+        } catch (Exception e) {
+            logger.error("Run file " + filename + "exception: " + e.getMessage());
+        }
+    }
+
+    @Transactional
     public String loadDBData() {
         try {
-            ResourceDatabasePopulator resourceDatabasePopulator = new ResourceDatabasePopulator(false, false, "UTF-8", new ClassPathResource(dataScript));
-            resourceDatabasePopulator.execute(dataSource);
+            runScriptFile(dataScript);
             return "Load DB data success";
         } catch (Exception e) {
             logger.error("Load data in DB: " + e.getMessage());
@@ -33,12 +44,21 @@ public class ImportDBService {
     @Transactional
     public String clearDBData() {
         try {
-            ResourceDatabasePopulator resourceDatabasePopulator = new ResourceDatabasePopulator(false, false, "UTF-8", new ClassPathResource(clearDataScript));
-            resourceDatabasePopulator.execute(dataSource);
+            runScriptFile(clearDataScript);
             return "Clear data in DB";
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             logger.error("Clear data in DB: " + e.getMessage());
+            return e.getMessage();
+        }
+    }
+
+    @Transactional
+    public String initDB() {
+        try {
+            runScriptFile(initDBScript);
+            return "Init DB success";
+        } catch (Exception e) {
+            logger.error("Init DB: " + e.getMessage());
             return e.getMessage();
         }
     }

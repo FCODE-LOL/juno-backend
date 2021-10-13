@@ -1,5 +1,6 @@
 package fcodelol.clone.juno.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,10 +20,11 @@ public class BillByGroupDto {
     private String phone;
     private int areaId;
     private String address;
-    private String paymentMethod;
+    private Integer paymentMethod;
     private String discountCode;
     private BigDecimal payment;
-    private String transportFee;
+    private BigDecimal transportFee;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss.SSS", timezone = "Asia/Ho_Chi_Minh")
     private Timestamp receiveTimestamp;
     private int status;
     private String info;

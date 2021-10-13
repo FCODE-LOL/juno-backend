@@ -52,6 +52,11 @@ public class User implements Serializable {
     private Boolean isDisable;
     @OneToMany(mappedBy = "user")
     private List<Bill> billList;
+
+    public User(Integer id) {
+        this.id = id;
+    }
+
     public User(String name, String socialMediaId) {
         this.name = name;
         this.socialMediaId = socialMediaId;
