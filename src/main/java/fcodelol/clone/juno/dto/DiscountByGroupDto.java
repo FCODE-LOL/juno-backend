@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 @Getter
@@ -14,8 +15,8 @@ import java.sql.Timestamp;
 public class DiscountByGroupDto {
     private Integer id;
     private String code;
-    private String price;
-    private String percent;
+    private BigDecimal price;
+    private int percent;
     private Timestamp startTime;
     private Timestamp endTime;
 

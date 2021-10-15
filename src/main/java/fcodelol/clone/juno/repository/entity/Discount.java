@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -21,9 +22,9 @@ public class Discount {
     @Column
     private String code;
     @Column
-    private String price;
+    private BigDecimal price;
     @Column
-    private String percent;
+    private Integer percent;
     @Column(name = "start_time")
     private Timestamp startTime;
     @Column(name = "end_time")

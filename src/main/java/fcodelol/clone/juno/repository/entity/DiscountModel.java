@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 
 @Entity
 @Table(name = "DISCOUNT_MODEL")
@@ -21,9 +22,11 @@ public class DiscountModel {
     private Discount discount;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "MODEL_id")
-    private Discount model;
+    private Model model;
     @Column
     private Integer quantity;
+    @Column
+    private BigDecimal price;
 
 
 }
