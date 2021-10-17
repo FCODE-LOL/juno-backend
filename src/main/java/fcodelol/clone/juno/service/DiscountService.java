@@ -70,6 +70,7 @@ public class DiscountService {
             List<Discount> discountList = discountRepository.findByIsDisable(false);
             if (discountList == null) return;
             for (Discount discount : discountList) {
+
                 futureMap.put(discount.getId() * 2, taskScheduler.schedule(runStartEvent(discount.getStartTime(), discount.getId())
                         , new CronTrigger(covertTimestampToCronExpression(discount.getStartTime()))));
                 futureMap.put(discount.getId() * 2 + 1, taskScheduler.schedule(runFinishEvent(discount.getStartTime(), discount.getId())
@@ -139,7 +140,7 @@ public class DiscountService {
             futureMap.get(discountId * 2 + 1).cancel(false);
             futureMap.remove(discountId * 2);
             futureMap.remove(discountId * 2 + 1);
-            discount.setIsDisable(false);
+            discount.setIsDisable(true);
             discountRepository.save(discount);
             return "Remove discount success";
         } catch (Exception e) {
@@ -162,6 +163,7 @@ public class DiscountService {
             return "Remove discount error:" + e.getMessage();
         }
     }
+
     @Transactional
     public Runnable runStartEvent(Timestamp startTime, int discountId) throws Exception {
         return () -> {
@@ -184,6 +186,7 @@ public class DiscountService {
             }
         };
     }
+
     @Transactional
     public Runnable runFinishEvent(Timestamp finishTime, int discountId) throws Exception {
         return () -> {
@@ -197,14 +200,13 @@ public class DiscountService {
                 modelRepository.save(model);
             }
             futureMap.get(discountId * 2 + 1).cancel(false);
-            discount.setIsDisable(true);
-
+            futureMap.remove(discountId * 2 + 1);
         };
     }
 
     public List<DiscountByGroupDto> getAllDiscount() {
         try {
-            List<DiscountByGroupDto> discountByGroupDtoList = discountRepository.findAll(Sort.by(Sort.Direction.DESC, "updateTimestamp"))
+            List<DiscountByGroupDto> discountByGroupDtoList = discountRepository.findByIsDisable(false, Sort.by(Sort.Direction.DESC, "startTime"))
                     .stream().map(discount -> modelMapper.map(discount, DiscountByGroupDto.class)).collect(Collectors.toList());
             return discountByGroupDtoList;
         } catch (Exception e) {
