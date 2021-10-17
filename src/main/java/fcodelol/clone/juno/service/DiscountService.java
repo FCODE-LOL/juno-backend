@@ -49,36 +49,38 @@ public class DiscountService {
         taskScheduler.setPoolSize(50);
         taskScheduler.setThreadNamePrefix("ThreadPoolTaskScheduler");
         futureMap = new HashMap<>();
+        restartAllDiscountEvent();
     }
 
-    //    @Transactional
-//    public void clearScheduler() {
-//        try{
-//        for (Future future : futureMap.values())
-//            future.cancel(false);
-//        futureMap.clear();}
-//        catch (Exception e){
-//            logger.error("CLEAR SCHEDULER FAIL: " + e.getMessage());
-//            return;
-//        }
-//    }
-//    @Transactional
-//    public void restartAllDiscountEvent(){
-//        try{
-//            List<Discount> discountList = discountRepository.findByIsDisable(false);
-//            for(Discount discount : discountList)
-//            {
-//                futureMap.put(discount.getId() * 2, taskScheduler.schedule(runStartEvent(discount.getStartTime(), discount.getId())
-//                        , new CronTrigger(covertTimestampToCronExpression(discount.getStartTime()))));
-//                futureMap.put(discount.getId() * 2 +1, taskScheduler.schedule(runFinishEvent(discount.getStartTime(), discount.getId())
-//                        , new CronTrigger(covertTimestampToCronExpression(discount.getStartTime()))));
-//            }
-//        }
-//        catch (Exception e){
-//            logger.error("RESTART FAIL: " + e.getMessage());
-//            return;
-//        }
-//    }
+    @Transactional
+    public void clearScheduler() {
+        try {
+            for (Future future : futureMap.values())
+                future.cancel(false);
+            futureMap.clear();
+        } catch (Exception e) {
+            logger.error("CLEAR SCHEDULER FAIL: " + e.getMessage());
+            return;
+        }
+    }
+
+    @Transactional
+    public void restartAllDiscountEvent() {
+        try {
+            List<Discount> discountList = discountRepository.findByIsDisable(false);
+            if (discountList == null) return;
+            for (Discount discount : discountList) {
+                futureMap.put(discount.getId() * 2, taskScheduler.schedule(runStartEvent(discount.getStartTime(), discount.getId())
+                        , new CronTrigger(covertTimestampToCronExpression(discount.getStartTime()))));
+                futureMap.put(discount.getId() * 2 + 1, taskScheduler.schedule(runFinishEvent(discount.getStartTime(), discount.getId())
+                        , new CronTrigger(covertTimestampToCronExpression(discount.getStartTime()))));
+            }
+        } catch (Exception e) {
+            logger.error("RESTART FAIL: " + e.getMessage());
+            return;
+        }
+    }
+
     @Transactional
     public String addDiscountEvent(DiscountDto discountDto) {
         try {
@@ -160,7 +162,7 @@ public class DiscountService {
             return "Remove discount error:" + e.getMessage();
         }
     }
-
+    @Transactional
     public Runnable runStartEvent(Timestamp startTime, int discountId) throws Exception {
         return () -> {
             Discount discount = discountRepository.findOneByIdAndIsDisable(discountId, false);
@@ -182,7 +184,7 @@ public class DiscountService {
             }
         };
     }
-
+    @Transactional
     public Runnable runFinishEvent(Timestamp finishTime, int discountId) throws Exception {
         return () -> {
             Discount discount = discountRepository.findOneByIdAndIsDisable(discountId, false);
@@ -195,6 +197,8 @@ public class DiscountService {
                 modelRepository.save(model);
             }
             futureMap.get(discountId * 2 + 1).cancel(false);
+            discount.setIsDisable(true);
+
         };
     }
 
@@ -209,7 +213,7 @@ public class DiscountService {
         }
     }
 
-    
+
     public DiscountResponseDto getDiscountById(int id) {
         try {
 
