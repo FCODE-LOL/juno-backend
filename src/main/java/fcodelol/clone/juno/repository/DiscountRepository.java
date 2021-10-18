@@ -8,9 +8,11 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface DiscountRepository extends JpaRepository<Discount,Integer> {
-    Discount findOneByIdAndIsDisable(int id,Boolean isDisable);
+public interface DiscountRepository extends JpaRepository<Discount, Integer> {
+    Discount findOneByIdAndIsDisable(int id, Boolean isDisable);
+
     List<Discount> findByIsDisable(Boolean isDisable);
+
     List<Discount> findByIsDisable(Boolean isDisable, Sort sort);
 
 }

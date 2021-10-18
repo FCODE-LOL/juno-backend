@@ -4,6 +4,7 @@ import fcodelol.clone.juno.dto.ProductDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Cascade;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -46,7 +47,7 @@ public class Product implements Serializable {
     @Column(name = "is_disable", insertable = false)
     @org.hibernate.annotations.Type(type = "org.hibernate.type.NumericBooleanType")
     private Boolean isDisable;
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL,mappedBy = "product")
     private List<Model> modelList;
     public void setProductProperty(ProductDto productDto){
         ModelMapper modelMapper = new ModelMapper();
@@ -57,8 +58,11 @@ public class Product implements Serializable {
         material = productDto.getMaterial();
         price = productDto.getPrice();
         discountPrice = productDto.getDiscountPrice();
-        type = modelMapper.map(productDto.getTypeDto(),Type.class);
+        type = modelMapper.map(productDto.getType(),Type.class);
         modelList = productDto.getModelDtoList().stream().map(modelDto -> modelMapper.map(modelDto,Model.class)).collect(Collectors.toList());
     }
 
+    public Product(String id) {
+        this.id = id;
+    }
 }

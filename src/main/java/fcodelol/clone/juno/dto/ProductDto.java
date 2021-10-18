@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.util.LinkedList;
 import java.util.List;
 
 @Getter
@@ -17,12 +18,16 @@ public class ProductDto {
     private String id;
     private String name;
     private String linkImages;
-    private String colorsId;
     private String description;
     private String origin;
     private String material;
-    private TypeDto typeDto;
+    private TypeDto type;
     private BigDecimal price;
     private BigDecimal discountPrice;
     List<ModelDto> modelDtoList;
+
+    public void setProductIdOfModel() {
+        modelDtoList.forEach(modelDto -> modelDto.setProduct(new ProductByGroupDto(id)));
+    }
+
 }

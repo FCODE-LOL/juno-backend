@@ -9,6 +9,6 @@ import java.util.List;
 @Setter
 @Getter
 @NoArgsConstructor
-public class DiscountResponseDto extends DiscountByGroupDto {
+public class DiscountResponse extends DiscountByGroupDto {
     List<DiscountModelResponse> discountModelDtoList;
 }

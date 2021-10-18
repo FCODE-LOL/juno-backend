@@ -1,6 +1,6 @@
 package fcodelol.clone.juno.controller;
 
-import fcodelol.clone.juno.controller.response.DiscountResponseDto;
+import fcodelol.clone.juno.controller.response.DiscountResponse;
 import fcodelol.clone.juno.dto.DiscountByGroupDto;
 import fcodelol.clone.juno.dto.DiscountDto;
 import fcodelol.clone.juno.service.AuthorizationService;
@@ -19,7 +19,7 @@ public class DiscountEventController {
     AuthorizationService authorizationService;
 
     @PostMapping(value = "/add")
-    public String addDiscount(@RequestHeader String token, @RequestBody DiscountDto discountDto) {
+    public String addDiscount(@RequestHeader("Authorization")  String token, @RequestBody DiscountDto discountDto) {
         return discountService.addDiscountEvent(discountDto);
     }
 
@@ -35,7 +35,7 @@ public class DiscountEventController {
     }
 
     @DeleteMapping(value = "/delete/Model/{id}")
-    public String removeDiscountModel(@RequestHeader String token, @PathVariable int discountModelId) {
+    public String removeDiscountModel(@RequestHeader("Authorization")  String token, @PathVariable int discountModelId) {
         return discountService.removeDiscountModel(discountModelId);
     }
 
@@ -45,7 +45,7 @@ public class DiscountEventController {
     }
 
     @GetMapping(value = "/{id}")
-    public DiscountResponseDto getDiscountById(@RequestHeader String token, @PathVariable int id) {
+    public DiscountResponse getDiscountById(@RequestHeader("Authorization")  String token, @PathVariable int id) {
         return discountService.getDiscountById(id);
     }
 

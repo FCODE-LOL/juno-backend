@@ -3,7 +3,7 @@ package fcodelol.clone.juno.service;
 
 import fcodelol.clone.juno.controller.request.UpdateBillStatusRequest;
 import fcodelol.clone.juno.controller.response.BillProductResponse;
-import fcodelol.clone.juno.controller.response.BillResponseDto;
+import fcodelol.clone.juno.controller.response.BillResponse;
 import fcodelol.clone.juno.dto.BillByGroupDto;
 import fcodelol.clone.juno.dto.BillDto;
 import fcodelol.clone.juno.dto.BillProductDto;
@@ -227,20 +227,18 @@ public class ShoppingService {
         }
     }
 
-    public BillResponseDto getBillById(int id) {
+    public BillResponse getBillById(int id) {
         try {
 
             Bill bill = billRepository.findOneByIdAndIsDisable(id, false);
-            BillResponseDto billResponseDto = modelMapper.map(bill, BillResponseDto.class);
-            billResponseDto.setProductOfBill(bill.getBillProductList().stream()
+            BillResponse billResponse = modelMapper.map(bill, BillResponse.class);
+            billResponse.setProductOfBill(bill.getBillProductList().stream()
                     .map(billProduct -> modelMapper.map(billProduct, BillProductResponse.class)).collect(Collectors.toList()));
-            return billResponseDto;
+            return billResponse;
         } catch (Exception e) {
             logger.error("Get bill by id error: " + e.getMessage());
             return null;
         }
     }
-
-
 
 }

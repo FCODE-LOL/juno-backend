@@ -11,6 +11,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 public class ModelDto {
     private Integer id;
+    private ProductByGroupDto product;
     private String linkImages;
     private String colorId;
     private Integer size;

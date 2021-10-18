@@ -2,7 +2,7 @@ package fcodelol.clone.juno.service;
 
 
 import fcodelol.clone.juno.controller.response.DiscountModelResponse;
-import fcodelol.clone.juno.controller.response.DiscountResponseDto;
+import fcodelol.clone.juno.controller.response.DiscountResponse;
 import fcodelol.clone.juno.dto.*;
 import fcodelol.clone.juno.repository.DiscountModelRepository;
 import fcodelol.clone.juno.repository.DiscountRepository;
@@ -69,13 +69,14 @@ public class DiscountService {
         try {
             List<Discount> discountList = discountRepository.findByIsDisable(false);
             if (discountList == null) return;
-            for (Discount discount : discountList) {
-
-                futureMap.put(discount.getId() * 2, taskScheduler.schedule(runStartEvent(discount.getStartTime(), discount.getId())
-                        , new CronTrigger(covertTimestampToCronExpression(discount.getStartTime()))));
-                futureMap.put(discount.getId() * 2 + 1, taskScheduler.schedule(runFinishEvent(discount.getStartTime(), discount.getId())
-                        , new CronTrigger(covertTimestampToCronExpression(discount.getStartTime()))));
-            }
+            for (Discount discount : discountList)
+                if (discount.getCode() == null) //discount without code
+                {
+                    futureMap.put(discount.getId() * 2, taskScheduler.schedule(runStartEvent(discount.getStartTime(), discount.getId())
+                            , new CronTrigger(covertTimestampToCronExpression(discount.getStartTime()))));
+                    futureMap.put(discount.getId() * 2 + 1, taskScheduler.schedule(runFinishEvent(discount.getStartTime(), discount.getId())
+                            , new CronTrigger(covertTimestampToCronExpression(discount.getStartTime()))));
+                }
         } catch (Exception e) {
             logger.error("RESTART FAIL: " + e.getMessage());
             return;
@@ -85,16 +86,20 @@ public class DiscountService {
     @Transactional
     public String addDiscountEvent(DiscountDto discountDto) {
         try {
+            discountDto.setDiscountIdOfDiscountModel();
             Discount discount = discountRepository.save(modelMapper.map(discountDto, fcodelol.clone.juno.repository.entity.Discount.class));
             List<DiscountModelDto> discountModelDtoList = discountDto.getDiscountModelDtoList();
             for (DiscountModelDto discountModelDto : discountModelDtoList) {
                 discountModelDto.setDiscount(new DiscountByGroupDto(discount.getId()));
                 discountModelRepository.save(modelMapper.map(discountModelDto, DiscountModel.class));
             }
-            futureMap.put(discount.getId() * 2, taskScheduler.schedule(runStartEvent(discount.getStartTime(), discount.getId())
-                    , new CronTrigger(covertTimestampToCronExpression(discount.getStartTime()))));
-            futureMap.put(discount.getId() * 2 + 1, taskScheduler.schedule(runFinishEvent(discount.getStartTime(), discount.getId())
-                    , new CronTrigger(covertTimestampToCronExpression(discount.getStartTime()))));
+            if (discount.getCode() == null) //discount without code
+            {
+                futureMap.put(discount.getId() * 2, taskScheduler.schedule(runStartEvent(discount.getStartTime(), discount.getId())
+                        , new CronTrigger(covertTimestampToCronExpression(discount.getStartTime()))));
+                futureMap.put(discount.getId() * 2 + 1, taskScheduler.schedule(runFinishEvent(discount.getStartTime(), discount.getId())
+                        , new CronTrigger(covertTimestampToCronExpression(discount.getStartTime()))));
+            }
             return "Add discount success";
         } catch (Exception e) {
             logger.error("Add discount exception:" + e.getMessage());
@@ -105,6 +110,7 @@ public class DiscountService {
     @Transactional
     public String updateDiscount(DiscountDto discountDto) {
         try {
+            discountDto.setDiscountIdOfDiscountModel();
             Discount discount = discountRepository.findOneByIdAndIsDisable(discountDto.getId(), false);
             Timestamp startTime = discount.getStartTime();
             Timestamp finishTime = discount.getEndTime();
@@ -113,12 +119,15 @@ public class DiscountService {
             discount = modelMapper.map(discountDto, fcodelol.clone.juno.repository.entity.Discount.class);
             discount.setIsDisable(false);
             discount = discountRepository.save(discount);
-            if (discount.getStartTime() != startTime)
-                futureMap.put(discount.getId() * 2, taskScheduler.schedule(runStartEvent(discount.getStartTime(), discount.getId())
-                        , new CronTrigger(covertTimestampToCronExpression(discount.getStartTime()))));
-            if (discount.getEndTime() != finishTime)
-                futureMap.put(discount.getId(), taskScheduler.schedule(runFinishEvent(discount.getStartTime(), discount.getId())
-                        , new CronTrigger(covertTimestampToCronExpression(discount.getStartTime()))));
+            if (discount.getCode() == null) //discount without code
+            {
+                if (discount.getStartTime() != startTime)
+                    futureMap.put(discount.getId() * 2, taskScheduler.schedule(runStartEvent(discount.getStartTime(), discount.getId())
+                            , new CronTrigger(covertTimestampToCronExpression(discount.getStartTime()))));
+                if (discount.getEndTime() != finishTime)
+                    futureMap.put(discount.getId(), taskScheduler.schedule(runFinishEvent(discount.getStartTime(), discount.getId())
+                            , new CronTrigger(covertTimestampToCronExpression(discount.getStartTime()))));
+            }
             List<DiscountModelDto> discountModelDtoList = discountDto.getDiscountModelDtoList();
             if (discountModelDtoList != null) {
                 for (DiscountModelDto discountModelDto : discountModelDtoList) {
@@ -136,10 +145,13 @@ public class DiscountService {
     public String removeDiscountById(int discountId) {
         try {
             Discount discount = discountRepository.getById(discountId);
-            futureMap.get(discountId * 2).cancel(false);
-            futureMap.get(discountId * 2 + 1).cancel(false);
-            futureMap.remove(discountId * 2);
-            futureMap.remove(discountId * 2 + 1);
+            if (discount.getCode() == null) //discount without code
+            {
+                futureMap.get(discountId * 2).cancel(false);
+                futureMap.get(discountId * 2 + 1).cancel(false);
+                futureMap.remove(discountId * 2);
+                futureMap.remove(discountId * 2 + 1);
+            }
             discount.setIsDisable(true);
             discountRepository.save(discount);
             return "Remove discount success";
@@ -216,14 +228,14 @@ public class DiscountService {
     }
 
 
-    public DiscountResponseDto getDiscountById(int id) {
+    public DiscountResponse getDiscountById(int id) {
         try {
 
             Discount discount = discountRepository.findOneByIdAndIsDisable(id, false);
-            DiscountResponseDto discountResponseDto = modelMapper.map(discount, DiscountResponseDto.class);
-            discountResponseDto.setDiscountModelDtoList(discount.getDiscountModelList().stream()
+            DiscountResponse discountResponse = modelMapper.map(discount, DiscountResponse.class);
+            discountResponse.setDiscountModelDtoList(discount.getDiscountModelList().stream()
                     .map(discountModel -> modelMapper.map(discountModel, DiscountModelResponse.class)).collect(Collectors.toList()));
-            return discountResponseDto;
+            return discountResponse;
         } catch (Exception e) {
             logger.error("Get discount by id error: " + e.getMessage());
             return null;

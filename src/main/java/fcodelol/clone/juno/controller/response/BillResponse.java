@@ -10,7 +10,7 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-public class BillResponseDto extends BillByGroupDto {
+public class BillResponse extends BillByGroupDto {
 
     private List<BillProductResponse> productOfBill;
 }

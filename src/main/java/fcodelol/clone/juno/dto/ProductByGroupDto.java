@@ -25,4 +25,8 @@ public class ProductByGroupDto {
         this.name = (String)property[1];
         this.createdTimestamp = (Timestamp)property[6];
     }
+
+    public ProductByGroupDto(String id) {
+        this.id = id;
+    }
 }

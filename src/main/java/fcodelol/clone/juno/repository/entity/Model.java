@@ -37,9 +37,9 @@ public class Model {
     @Column(name = "is_disable", insertable = false)
     @org.hibernate.annotations.Type(type = "org.hibernate.type.NumericBooleanType")
     private Boolean isDisable;
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "model")
     private List<BillProduct> billProductList;
-    @OneToMany
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "model")
     private  List<DiscountModel> discountModelList;
 
     public Model(Integer id) {

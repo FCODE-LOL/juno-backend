@@ -1,6 +1,7 @@
 package fcodelol.clone.juno.service;
 
 import fcodelol.clone.juno.dto.*;
+import fcodelol.clone.juno.repository.ModelRepository;
 import fcodelol.clone.juno.repository.ProductRepository;
 import fcodelol.clone.juno.repository.TypeRepository;
 import fcodelol.clone.juno.repository.entity.Product;
@@ -21,20 +22,38 @@ public class ProductService {
     @Autowired
     ProductRepository productRepository;
     @Autowired
+    ModelRepository modelRepository;
+    @Autowired
     TypeRepository typeRepository;
     @Autowired
     ModelMapper modelMapper;
     private static final Logger logger = LogManager.getLogger(ProductService.class);
 
+    @Transactional
     public ProductDto addProduct(ProductDto productDto) {
         try {
             if (productRepository.existsByIdAndIsDisable(productDto.getId(), false))
                 return null;
+            productDto.setProductIdOfModel();
+            removeModelOfProductIfExist(productDto.getId());
             Product product = modelMapper.map(productDto, Product.class);
+            product.setIsDisable(false);
             return modelMapper.map(productRepository.save(product), ProductDto.class);
         } catch (Exception e) {
             logger.error("Add product error: " + e.getMessage());
             return null;
+        }
+    }
+
+
+    private void removeModelOfProductIfExist(String productId) {
+        try {
+            if (productRepository.existsById(productId)) {
+                modelRepository.deleteByProduct(new Product(productId));
+            }
+        } catch (Exception e) {
+            logger.error("Remove model of product:" + e.getMessage());
+            return;
         }
     }
 
@@ -44,6 +63,7 @@ public class ProductService {
             if (product == null) {
                 return null;
             }
+            productDto.setProductIdOfModel();
             product.setProductProperty(productDto);
             return modelMapper.map(productRepository.save(product), ProductDto.class);
         } catch (Exception e) {
@@ -51,6 +71,7 @@ public class ProductService {
             return null;
         }
     }
+
 
     public String deleteProduct(String id) {
         try {
@@ -78,11 +99,14 @@ public class ProductService {
             if (currentType.getParentId() != currentType.getId())
                 types.add(currentType);
             for (Type type : types) {
+                List<Product> productList = type.getProducts();
+                productList.removeIf(product -> product.getIsDisable());
                 List<ProductByGroupDto> productByGroupDtos =
-                        type.getProducts().stream().map(product -> modelMapper.map(product, ProductByGroupDto.class)).collect(Collectors.toList());
+                        productList.stream().map(product -> modelMapper.map(product, ProductByGroupDto.class)).collect(Collectors.toList());
                 Optional.ofNullable(productByGroupDtos).ifPresent(productByGroupDtoList::addAll);
             }
             Collections.sort(productByGroupDtoList, comparator);
+
             return productByGroupDtoList;
         } catch (Exception e) {
             logger.error("Get product by type: " + e.getMessage());
@@ -95,7 +119,7 @@ public class ProductService {
         try {
             List<ProductByGroupDto> productByGroupDtoList = new LinkedList<>();
             List<ProductByGroupDto> productByGroupDtos =
-                    productRepository.findAll().stream().map(product -> modelMapper.map(product, ProductByGroupDto.class)).collect(Collectors.toList());
+                    productRepository.findByIsDisable(false).stream().map(product -> modelMapper.map(product, ProductByGroupDto.class)).collect(Collectors.toList());
             Optional.ofNullable(productByGroupDtos).ifPresent(productByGroupDtoList::addAll);
             return productByGroupDtoList;
         } catch (Exception e) {
@@ -115,11 +139,15 @@ public class ProductService {
         }
     }
 
-    public ProductDto getProductId(String id) {
+    public ProductDto getProductById(String id) {
         try {
             Product product = productRepository.findOneById(id);
             ProductDto productDto = modelMapper.map(product, ProductDto.class);
-            productDto.setModelDtoList(product.getModelList().stream().map(model -> modelMapper.map(model, ModelDto.class)).collect(Collectors.toList()));
+            productDto.setModelDtoList(product.getModelList().stream().map(model ->
+            {
+                model.setProduct(null);
+                return modelMapper.map(model, ModelDto.class);
+            }).collect(Collectors.toList()));
             return productDto;
         } catch (Exception e) {
             logger.error("Get product by id error: " + e.getMessage());
