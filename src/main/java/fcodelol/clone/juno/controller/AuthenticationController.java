@@ -26,4 +26,8 @@ public class AuthenticationController {
     public String loginWithSocialMedia(@RequestBody SocialMediaLoginRequest socialMediaLoginRequest) {
         return authenticationService.loginBySocialMedia(socialMediaLoginRequest);
     }
+    @PostMapping("/send-token/{email}")
+    public String sendTokenToVerify(@PathVariable String email){
+        return authenticationService.sendTokenToEmail(email);
+    }
 }

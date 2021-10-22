@@ -69,7 +69,7 @@ public class AuthenticationService {
             User temporaryUser = userRepository.findByEmail(registerUser.getEmail());
             if (temporaryUser == null)
                 return "Please click sent token button";
-            if(temporaryUser.getIsDisable())
+            if (temporaryUser.getIsDisable())
                 return "This account is banned";
             if (temporaryUser.getPassword() != null)
                 return "Email has already registered";
@@ -99,11 +99,12 @@ public class AuthenticationService {
     public String sendTokenToEmail(String email) {
         try {
             User temporaryUser = userRepository.findByEmail(email);
-            if(temporaryUser.getIsDisable())
-                return "This account is banned";
             if (temporaryUser == null) {
                 temporaryUser = new User();
                 temporaryUser.setEmail(email);
+            } else {
+                if (temporaryUser.getIsDisable())
+                    return "This account is banned";
             }
             String token = generateRandomString(6);
             temporaryUser.setToken(token);

@@ -1,6 +1,6 @@
 package fcodelol.clone.juno.service;
 
-import fcodelol.clone.juno.dto.PeriodTime;
+import fcodelol.clone.juno.controller.request.PeriodTime;
 import fcodelol.clone.juno.dto.ProductByGroupDto;
 import fcodelol.clone.juno.dto.UserByGroupDto;
 import fcodelol.clone.juno.repository.BillRepository;
@@ -45,7 +45,8 @@ public class StatisticService {
 
     public List<UserByGroupDto> getTopCustomer(int numberOfCustomer) {
         try {
-            return userRepository.getTopCustomer(PageRequest.of(0,numberOfCustomer)).stream().map(customer -> modelMapper.map(customer,UserByGroupDto.class)).collect(Collectors.toList());
+            numberOfCustomer = Math.min(numberOfCustomer, (int) userRepository.count());
+            return userRepository.getTopCustomer(PageRequest.of(0, numberOfCustomer));
         } catch (Exception e) {
             logger.error("Error get top customer:" + e.getMessage());
             return null;
@@ -54,7 +55,8 @@ public class StatisticService {
 
     public List<ProductByGroupDto> getTopSaleProduct(int numberOfProduct) {
         try {
-            return  productRepository.getTopSaleProduct(numberOfProduct).stream().map(product -> new ProductByGroupDto((Object[]) product)).collect(Collectors.toList());
+            numberOfProduct = Math.min(numberOfProduct, (int) productRepository.count());
+            return productRepository.getTopSaleProduct(numberOfProduct).stream().map(product -> new ProductByGroupDto((Object[]) product)).collect(Collectors.toList());
         } catch (Exception e) {
             logger.error("Get top sale product:" + e.getMessage());
             return null;
@@ -63,7 +65,8 @@ public class StatisticService {
 
     public List<ProductByGroupDto> getTopIncomeProduct(int numberOfProduct) {
         try {
-            return  productRepository.getTopIncomeProduct(numberOfProduct).stream().map(product -> new ProductByGroupDto((Object[]) product)).collect(Collectors.toList());
+            numberOfProduct = Math.min(numberOfProduct, (int) productRepository.count());
+            return productRepository.getTopIncomeProduct(numberOfProduct).stream().map(product -> new ProductByGroupDto((Object[]) product)).collect(Collectors.toList());
         } catch (Exception e) {
             logger.error("Get top income product:" + e.getMessage());
             return null;

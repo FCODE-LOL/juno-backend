@@ -130,9 +130,7 @@ public class ProductService {
 
     public List<ProductByGroupDto> getProductByName(String name, Sort sort) {
         try {
-            List<ProductByGroupDto> productByGroupDtos =
-                    productRepository.findByNameContainingIgnoreCase(name, sort).stream().map(product -> modelMapper.map(product, ProductByGroupDto.class)).collect(Collectors.toList());
-            return productByGroupDtos;
+            return productRepository.findByNameContainingIgnoreCaseAndIsDisable(name,false, sort).stream().map(product -> modelMapper.map(product, ProductByGroupDto.class)).collect(Collectors.toList());
         } catch (Exception e) {
             logger.error("Get product by name error: " + e.getMessage());
             return null;
@@ -166,14 +164,14 @@ public class ProductService {
     }
 
     @Transactional
-    public String addTypeList(List<AddedTypeDto> addList) {
+    public String addTypeList(List<TypeDto> addList) {
         try {
             long index = typeRepository.count();
-            for (AddedTypeDto addedTypeDto : addList)
+            for (TypeDto addedTypeDto : addList)
                 if (!typeRepository.existsByName(addedTypeDto.getName())) {
                     Type type = modelMapper.map(addedTypeDto, Type.class);
+                    index++;
                     if (type.getParentId() == 0) {
-                        type.setId((int) ++index);
                         type.setParentId((int) index);
                     }
                     typeRepository.save(type);

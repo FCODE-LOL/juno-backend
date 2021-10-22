@@ -29,11 +29,11 @@ public class UserController {
         return userService.getUserById(id);
     }
     @PutMapping(value = "/ban/{id}")
-    public String banUser(int id){
+    public String banUser(@PathVariable int id){
         return userService.banUser(id);
     }
     @PutMapping(value = "/unban/{id}")
-    public String unbanUser(int id){
+    public String unbanUser(@PathVariable int id){
         return userService.unbanUser(id);
     }
 }

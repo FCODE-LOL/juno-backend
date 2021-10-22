@@ -1,10 +1,7 @@
 package fcodelol.clone.juno;
 
-import fcodelol.clone.juno.dto.AddedTypeDto;
 import fcodelol.clone.juno.dto.ProductByGroupDto;
-import fcodelol.clone.juno.dto.ProductDto;
 import fcodelol.clone.juno.dto.TypeDto;
-import fcodelol.clone.juno.repository.entity.Type;
 import fcodelol.clone.juno.service.ProductService;
 import org.junit.Assert;
 import org.junit.Test;
@@ -15,7 +12,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Sort;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.math.BigDecimal;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
@@ -58,9 +54,8 @@ public class ProductTest {
     }
     @Test
     public void addType(){
-        List<AddedTypeDto> typeDtoList = new LinkedList<>();
-        typeDtoList.add(new AddedTypeDto("a"));
-        typeDtoList.add(new AddedTypeDto("b",1));
+        List<TypeDto> typeDtoList = new LinkedList<>();
+        typeDtoList.add(new TypeDto("b",1));
         System.out.println(productService.addTypeList(typeDtoList));
     }
     @Test

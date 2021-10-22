@@ -1,6 +1,6 @@
 package fcodelol.clone.juno;
 
-import fcodelol.clone.juno.dto.PeriodTime;
+import fcodelol.clone.juno.controller.request.PeriodTime;
 import fcodelol.clone.juno.service.StatisticService;
 import org.junit.Test;
 import org.junit.runner.RunWith;

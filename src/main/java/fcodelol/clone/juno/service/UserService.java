@@ -58,13 +58,13 @@ public class UserService {
             User user = userRepository.findOneById(id);
             if(user == null)
                 return "User is not exist";
-            user.setIsDisable(true);
+            user.setIsDisable(false);
             userRepository.save(user);
-            return "Ban user success";
+            return "Unban user success";
         }
         catch (Exception e){
             logger.error("Ban user error:" + e.getMessage());
-            return "Ban user failed";
+            return "Unban user failed";
         }
     }
 }

@@ -1,6 +1,5 @@
 package fcodelol.clone.juno.controller;
 
-import fcodelol.clone.juno.dto.AddedTypeDto;
 import fcodelol.clone.juno.dto.ProductByGroupDto;
 import fcodelol.clone.juno.dto.ProductDto;
 import fcodelol.clone.juno.dto.TypeDto;
@@ -53,7 +52,7 @@ public class ProductController {
         });
     }
 
-    @GetMapping(value = "/id/{name}")
+    @GetMapping(value = "/name/{name}")
     public List<ProductByGroupDto> getProductByName(@PathVariable String name) {
         return productService.getProductByName(name, Sort.by(Sort.Direction.DESC, "createdTimestamp"));
     }
@@ -64,7 +63,7 @@ public class ProductController {
     }
 
     @PostMapping(value = "/type")
-    public String addTypes(@RequestBody List<AddedTypeDto> types) {
+    public String addTypes(@RequestBody List<TypeDto> types) {
         return productService.addTypeList(types);
     }
 

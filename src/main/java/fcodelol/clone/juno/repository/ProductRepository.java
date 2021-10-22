@@ -11,7 +11,7 @@ import java.util.List;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product, String> {
-    List<Product> findByNameContainingIgnoreCase(String name, Sort sort);
+    List<Product> findByNameContainingIgnoreCaseAndIsDisable(String name,Boolean isDisable, Sort sort);
 
     Product findOneById(String id);
 
@@ -22,11 +22,11 @@ public interface ProductRepository extends JpaRepository<Product, String> {
     Product findByIdAndIsDisable(String id, boolean isDisable);
 
     @Query(nativeQuery = true, value = "SELECT P.id, P.name,P.created_timestamp FROM `MODEL` AS `M` JOIN `BILL_PRODUCT` AS `B` ON  M.id = B.MODEL_id " +
-            "JOIN `PRODUCT` AS P ON M.PRODUCT_id = P.id WHERE B.is_disable = 0 GROUP BY `PRODUCT_id` ORDER BY SUM(B.quantity) DESC; ")
+            "JOIN `PRODUCT` AS P ON M.PRODUCT_id = P.id WHERE P.is_disable = 0 GROUP BY `PRODUCT_id` ORDER BY SUM(B.quantity) DESC; ")
     List<?> getTopSaleProduct(int numberOfProduct);
 
     @Query(nativeQuery = true, value = "SELECT P.id, P.name,P.created_timestamp FROM `MODEL` AS `M` JOIN `BILL_PRODUCT` AS `B` ON  M.id = B.MODEL_id " +
-            "JOIN `PRODUCT` AS P ON M.PRODUCT_id = P.id WHERE B.is_disable = 0 GROUP BY `PRODUCT_id` ORDER BY SUM(B.price) DESC ")
+            "JOIN `PRODUCT` AS P ON M.PRODUCT_id = P.id WHERE P.is_disable = 0 GROUP BY `PRODUCT_id` ORDER BY SUM(B.price) DESC ")
     List<?> getTopIncomeProduct(int numberOfProduct);
 
 }

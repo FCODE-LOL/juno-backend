@@ -23,8 +23,9 @@ public class ShoppingController {
 
     @PostMapping(value = "/add")
     public String addBill(@RequestHeader String token, @RequestBody BillDto billDto) {
-        if (authorizationService.getUserIdByToken(token) != billDto.getUser().getId())
-            return "This is not your bill";
+        billDto.setUser(new UserByGroupDto(authorizationService.getUserIdByToken(token)));
+        if(billDto.getUser().getId() == null)
+            billDto.setUser(null);
         return shoppingService.addBill(billDto);
     }
 
@@ -43,7 +44,7 @@ public class ShoppingController {
 //    }
 
     @DeleteMapping(value = "/delete/product/{id}")
-    public String removeBillProduct(@RequestHeader("Authorization")  String token, @PathVariable int billProductId) {
+    public String removeBillProduct(@RequestHeader("Authorization") String token, @PathVariable int billProductId) {
         if (authorizationService.getUserIdByToken(token) != shoppingService.getUserIdByBillProductId(billProductId))
             return "This is not your bill";
         return shoppingService.removeBillProduct(billProductId);
@@ -60,14 +61,14 @@ public class ShoppingController {
     }
 
     @GetMapping(value = "/{id}")
-    public BillResponse getBillById(@RequestHeader("Authorization")  String token, @PathVariable int id) {
-        if (authorizationService.getUserIdByToken(token) != shoppingService.getUserId(id))
+    public BillResponse getBillById(@RequestHeader("Authorization") String token, @PathVariable int id) {
+        if (authorizationService.getUserIdByToken(token) != shoppingService.getUserId(id) && !authorizationService.getRoleByToken(token).equals("ADMIN"))
             return null;
         return shoppingService.getBillById(id);
     }
 
     @GetMapping(value = "/user/{id}")
-    public List<BillByGroupDto> getAllBillOfUser(@RequestHeader("Authorization")  String token,@PathVariable int id){
+    public List<BillByGroupDto> getAllBillOfUser(@RequestHeader("Authorization") String token, @PathVariable int id) {
         if (authorizationService.getUserIdByToken(token) != id && !authorizationService.getRoleByToken(token).equals("ADMIN"))
             return null;
         return shoppingService.getBillOfUser(id);

@@ -34,7 +34,7 @@ public class DiscountEventController {
         return discountService.removeDiscountById(discountId);
     }
 
-    @DeleteMapping(value = "/delete/Model/{id}")
+    @DeleteMapping(value = "/delete/model/{id}")
     public String removeDiscountModel(@RequestHeader("Authorization")  String token, @PathVariable int discountModelId) {
         return discountService.removeDiscountModel(discountModelId);
     }

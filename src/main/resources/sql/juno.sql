@@ -81,7 +81,6 @@ CREATE TABLE IF NOT EXISTS `junodb`.`TYPE` (
   `parent_id` INT NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_TYPE_TYPE1_idx` (`parent_id` ASC),
-  UNIQUE INDEX `name_UNIQUE` (`name` ASC),
   CONSTRAINT `fk_TYPE_TYPE1`
     FOREIGN KEY (`parent_id`)
     REFERENCES `junodb`.`TYPE` (`id`)

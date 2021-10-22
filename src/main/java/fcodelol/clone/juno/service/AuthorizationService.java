@@ -31,7 +31,7 @@ public class AuthorizationService {
             return null;
         }
     }
-    public int getUserIdByToken(String token)
+    public Integer getUserIdByToken(String token)
     {
         try {
             return userRepository.getIdByToken(token);

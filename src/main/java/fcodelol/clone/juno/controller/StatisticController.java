@@ -1,6 +1,6 @@
 package fcodelol.clone.juno.controller;
 
-import fcodelol.clone.juno.dto.PeriodTime;
+import fcodelol.clone.juno.controller.request.PeriodTime;
 import fcodelol.clone.juno.dto.ProductByGroupDto;
 import fcodelol.clone.juno.dto.UserByGroupDto;
 import fcodelol.clone.juno.service.StatisticService;
@@ -23,7 +23,7 @@ public class StatisticController {
 
     @GetMapping(value = "/top/product/income/{number}")
     public List<ProductByGroupDto> getTopIncomeProducts(@PathVariable int number) {
-        return statisticService.getTopSaleProduct(number);
+        return statisticService.getTopIncomeProduct(number);
     }
 
     @GetMapping(value = "/top/customer/{number}")

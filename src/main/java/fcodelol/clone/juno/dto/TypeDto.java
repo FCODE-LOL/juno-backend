@@ -22,4 +22,7 @@ public class TypeDto {
     public TypeDto(int id) {
         this.id = id;
     }
+
+
+
 }
