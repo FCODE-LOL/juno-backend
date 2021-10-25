@@ -8,7 +8,6 @@ import fcodelol.clone.juno.repository.ProductRepository;
 import fcodelol.clone.juno.repository.UserRepository;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -28,8 +27,7 @@ public class StatisticService {
     @Autowired
     ProductRepository productRepository;
     private static final Logger logger = LogManager.getLogger(StatisticService.class);
-    @Autowired
-    ModelMapper modelMapper;
+
 
     @Transactional
     public List<BigDecimal> getIncomePerTime(List<PeriodTime> periodTimes) {

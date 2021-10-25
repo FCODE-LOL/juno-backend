@@ -22,7 +22,7 @@ public class ShoppingController {
     AuthorizationService authorizationService;
 
     @PostMapping(value = "/add")
-    public String addBill(@RequestHeader String token, @RequestBody BillDto billDto) {
+    public String addBill(@RequestHeader("Authorization") String token, @RequestBody BillDto billDto) {
         billDto.setUser(new UserByGroupDto(authorizationService.getUserIdByToken(token)));
         if(billDto.getUser().getId() == null)
             billDto.setUser(null);
@@ -30,7 +30,7 @@ public class ShoppingController {
     }
 
     @PutMapping(value = "/update")
-    public String updateBill(@RequestHeader String token, @RequestBody BillDto billDto) {
+    public String updateBill(@RequestHeader("Authorization") String token, @RequestBody BillDto billDto) {
         Integer userId = shoppingService.getUserId(billDto.getId());
         if (authorizationService.getUserIdByToken(token) != userId)
             return "This is not your bill";
@@ -43,7 +43,7 @@ public class ShoppingController {
 //        return shoppingService.removeBillById(billId);
 //    }
 
-    @DeleteMapping(value = "/delete/product/{id}")
+    @DeleteMapping(value = "/delete/product/{billProductId}")
     public String removeBillProduct(@RequestHeader("Authorization") String token, @PathVariable int billProductId) {
         if (authorizationService.getUserIdByToken(token) != shoppingService.getUserIdByBillProductId(billProductId))
             return "This is not your bill";

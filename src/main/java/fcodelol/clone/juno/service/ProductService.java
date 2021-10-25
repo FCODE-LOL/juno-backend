@@ -34,7 +34,6 @@ public class ProductService {
         try {
             if (productRepository.existsByIdAndIsDisable(productDto.getId(), false))
                 return null;
-            productDto.setProductIdOfModel();
             removeModelOfProductIfExist(productDto.getId());
             Product product = modelMapper.map(productDto, Product.class);
             product.setIsDisable(false);
@@ -63,8 +62,8 @@ public class ProductService {
             if (product == null) {
                 return null;
             }
-            productDto.setProductIdOfModel();
             product.setProductProperty(productDto);
+            product.setProductOfModel();
             return modelMapper.map(productRepository.save(product), ProductDto.class);
         } catch (Exception e) {
             logger.error("Update product error: " + e.getMessage());
@@ -141,7 +140,7 @@ public class ProductService {
         try {
             Product product = productRepository.findOneById(id);
             ProductDto productDto = modelMapper.map(product, ProductDto.class);
-            productDto.setModelDtoList(product.getModelList().stream().map(model ->
+            productDto.setModelList(product.getModelList().stream().map(model ->
             {
                 model.setProduct(null);
                 return modelMapper.map(model, ModelDto.class);

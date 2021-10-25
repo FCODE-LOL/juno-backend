@@ -1,6 +1,7 @@
 package fcodelol.clone.juno.dto;
 
 
+import fcodelol.clone.juno.repository.entity.Product;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,10 +25,10 @@ public class ProductDto {
     private TypeDto type;
     private BigDecimal price;
     private BigDecimal discountPrice;
-    List<ModelDto> modelDtoList;
+    List<ModelDto> modelList;
 
-    public void setProductIdOfModel() {
-        modelDtoList.forEach(modelDto -> modelDto.setProduct(new ProductByGroupDto(id)));
+    public void setProductIdOfModel(Product product) {
+        modelList.forEach(model -> model.setProduct(new ProductByGroupDto(id)));
     }
 
 }

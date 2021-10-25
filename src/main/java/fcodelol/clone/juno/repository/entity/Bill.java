@@ -54,11 +54,14 @@ public class Bill implements Serializable {
     @Column(name = "is_disable", insertable = false)
     @org.hibernate.annotations.Type(type = "org.hibernate.type.NumericBooleanType")
     private Boolean isDisable;
-    @OneToMany(fetch = FetchType.LAZY,mappedBy = "bill")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "bill", cascade = {CascadeType.ALL})
     private List<BillProduct> billProductList;
-
 
     public Bill(Integer id) {
         this.id = id;
+    }
+
+    public void setBillOfBillProductList(){
+        billProductList.forEach(billProduct -> billProduct.setBill(this));
     }
 }

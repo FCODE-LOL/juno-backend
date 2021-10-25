@@ -38,7 +38,7 @@ public class AuthenticationService {
             }
             return "Wrong password";
         } catch (Exception e) {
-            logger.error("Error in login with " + loginRequest.getEmail() + " password: " + loginRequest.getPassword() + "/n");
+            logger.error("Error in login with " + loginRequest.getEmail() + " password: " + loginRequest.getPassword() + "\n");
             return "Login failed";
         }
     }

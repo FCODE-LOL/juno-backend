@@ -47,9 +47,10 @@ public class Product implements Serializable {
     @Column(name = "is_disable", insertable = false)
     @org.hibernate.annotations.Type(type = "org.hibernate.type.NumericBooleanType")
     private Boolean isDisable;
-    @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL,mappedBy = "product")
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "product")
     private List<Model> modelList;
-    public void setProductProperty(ProductDto productDto){
+
+    public void setProductProperty(ProductDto productDto) {
         ModelMapper modelMapper = new ModelMapper();
         name = productDto.getName();
         linkImages = productDto.getLinkImages();
@@ -58,11 +59,14 @@ public class Product implements Serializable {
         material = productDto.getMaterial();
         price = productDto.getPrice();
         discountPrice = productDto.getDiscountPrice();
-        type = modelMapper.map(productDto.getType(),Type.class);
-        modelList = productDto.getModelDtoList().stream().map(modelDto -> modelMapper.map(modelDto,Model.class)).collect(Collectors.toList());
+        type = modelMapper.map(productDto.getType(), Type.class);
+        modelList = productDto.getModelList().stream().map(model -> modelMapper.map(model, Model.class)).collect(Collectors.toList());
     }
 
     public Product(String id) {
         this.id = id;
+    }
+    public void setProductOfModel(){
+        modelList.forEach(model -> model.setProduct(this));
     }
 }

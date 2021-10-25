@@ -1,6 +1,6 @@
 package fcodelol.clone.juno;
 
-import fcodelol.clone.juno.service.ImportDBService;
+import fcodelol.clone.juno.service.ExecuteDBService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,13 +13,13 @@ import org.springframework.test.context.junit4.SpringRunner;
 @AutoConfigureMockMvc
 public class ImportDBTest {
     @Autowired
-    ImportDBService importDBService;
+    ExecuteDBService executeDBService;
     @Test
     public void loadData(){
-        importDBService.loadDBData();
+        executeDBService.loadDBData();
     }
     @Test
     public void clearData(){
-        importDBService.clearDBData();
+        executeDBService.clearDBData();
     }
 }

@@ -23,8 +23,8 @@ public class BillProduct implements Serializable {
     @JoinColumn(name = "MODEL_id")
     private Model model;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "BILL_id")
-    private Bill bill;
+    @JoinColumn(name = "BILL_id",columnDefinition = "INT")
+    public Bill bill;
     @Column
     private Integer quantity;
     @Column

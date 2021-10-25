@@ -11,12 +11,14 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.sql.DataSource;
 
 @Service
-public class ImportDBService {
+public class ExecuteDBService {
     @Autowired
     DataSource dataSource;
     private static final String dataScript = "sql/data.sql";
     private static final String clearDataScript = "sql/clear.sql";
     private static final String initDBScript = "sql/juno.sql";
+    private static final String turnOffSecurityScript = "sql/turnOnSecurity.sql";
+    private static final String turnOnSecurityScript = "sql/turnOffSecurity.sql";
     private static final Logger logger = LogManager.getLogger(ProductService.class);
 
     @Transactional
@@ -61,5 +63,13 @@ public class ImportDBService {
             logger.error("Init DB: " + e.getMessage());
             return e.getMessage();
         }
+    }
+
+    void turnOffDBSecurity(){
+        runScriptFile(turnOffSecurityScript);
+    }
+
+    void turnOnSecurityScript(){
+        runScriptFile(turnOnSecurityScript);
     }
 }

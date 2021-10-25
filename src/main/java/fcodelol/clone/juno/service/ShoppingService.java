@@ -38,28 +38,30 @@ public class ShoppingService {
     @Autowired
     UserRepository userRepository;
     @Autowired
+    ExecuteDBService executeDBService;
+    @Autowired
     ModelMapper modelMapper;
     private static final Logger logger = LogManager.getLogger(ShoppingService.class);
 
     @Transactional
     public String addBill(BillDto billDto) {
         try {
+
             billDto.setBillProductDtoList(setBillProductPrice(billDto.getBillProductDtoList()));
             billDto.setPayment(calculateBillPrice(billDto.getBillProductDtoList()));
-            Bill bill = billRepository.save(modelMapper.map(billDto, fcodelol.clone.juno.repository.entity.Bill.class));
-            List<BillProductDto> billProductDtoList = billDto.getBillProductDtoList();
-            for (BillProductDto billProductDto : billProductDtoList) {
+            billDto.getBillProductDtoList().forEach(billProductDto -> {
                 Model model = modelRepository.findOneById(billProductDto.getModel().getId());
                 if (model.getQuantity() < billProductDto.getQuantity())
-                    throw new Exception("Not enough quantity of " + billProductDto.getModel());
-                if (bill.getStatus() == 1) // customer bought products
+                    throw new IllegalArgumentException("Not enough quantity of " + billProductDto.getModel());
+                if (billDto.getStatus() == 1) // customer bought products
                 {
                     model.setQuantity(model.getQuantity() - billProductDto.getQuantity());
                     modelRepository.save(model);
                 }
-                billProductDto.setBill(new BillByGroupDto(bill.getId()));
-                billProductRepository.save(modelMapper.map(billProductDto, BillProduct.class));
-            }
+            });
+            Bill bill = modelMapper.map(billDto, fcodelol.clone.juno.repository.entity.Bill.class);
+            bill.setBillOfBillProductList();
+            billRepository.save(bill);
             return "Add bill success";
         } catch (Exception e) {
             logger.error("Add bill exception:" + e.getMessage());
@@ -78,9 +80,6 @@ public class ShoppingService {
                 return "This bill had been confirmed";
             billDto.setBillProductDtoList(setBillProductPrice(billDto.getBillProductDtoList()));
             billDto.setPayment(calculateBillPrice(billDto.getBillProductDtoList()));
-            bill = modelMapper.map(billDto, fcodelol.clone.juno.repository.entity.Bill.class);
-            bill.setIsDisable(false);
-            bill = billRepository.save(bill);
             List<BillProductDto> billProductDtoList = billDto.getBillProductDtoList();
             if (billProductDtoList != null) {
                 for (BillProductDto billProductDto : billProductDtoList) {
@@ -93,9 +92,11 @@ public class ShoppingService {
                         modelRepository.save(model);
                     }
                     billProductDto.setBill(new BillByGroupDto(bill.getId()));
-                    billProductRepository.save(modelMapper.map(billProductDto, BillProduct.class));
                 }
             }
+            bill = modelMapper.map(billDto, fcodelol.clone.juno.repository.entity.Bill.class);
+            bill.setIsDisable(false);
+             billRepository.save(bill);
             return "Update bill success";
         } catch (Exception e) {
             return "Update bill exception:" + e.getMessage();
@@ -129,12 +130,13 @@ public class ShoppingService {
         }
     }
 
-    @Transactional
+
     public String removeBillProduct(int billProductId) {
         try {
+
             BillProduct billProduct = billProductRepository.findOneById(billProductId);
             if (billProduct == null) return "This bill product is not exists";
-            Bill bill = billProduct.getBill();
+            Bill bill = billRepository.findOneById(billProduct.getBill().getId());
             if (bill.getStatus() > 0)
                 return "This bill had been confirm, can not change";
             billProductRepository.deleteById(billProduct.getId());

@@ -19,8 +19,6 @@ public class AuthorizationService {
     public String getRoleByToken(String token)
     {
         try{
-            System.out.println(System.currentTimeMillis() + "/n" +
-            (System.currentTimeMillis() + GatewayConstant.validAuthenticationTime));
             Boolean isAdmin =userRepository.findRoleByToken(token,new Timestamp(System.currentTimeMillis() + GatewayConstant.validAuthenticationTime));
             if(isAdmin == null)
                 return "GUESS";
