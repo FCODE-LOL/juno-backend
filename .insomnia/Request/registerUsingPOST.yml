@@ -1,0 +1,32 @@
+_id: registerUsingPOST
+type: Request
+parentId: fld_wrk_4081f3afa9a443858f94361ba779257f47a67f57
+modified: 1634682087837
+created: 1631839014426
+url: "{{ base_url }}/register"
+name: register
+description: Send token to verify email before register
+method: POST
+body:
+  mimeType: application/json
+  text: |-
+    {
+      "email": "string",
+      "password": "string",
+      "token": "string"
+    }
+parameters: []
+headers:
+  - name: Content-Type
+    disabled: false
+    value: application/json
+    id: pair_ce783e6fe001438db44aab356d6da38c
+authentication: {}
+metaSortKey: -1631839014426
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

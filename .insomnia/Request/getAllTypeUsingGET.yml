@@ -1,0 +1,21 @@
+_id: getAllTypeUsingGET
+type: Request
+parentId: fld_wrk_4081f3afa9a443858f94361ba779257fb66ba8a5
+modified: 1634358995685
+created: 1631839014433
+url: "{{ base_url }}/product/type"
+name: getAllType
+description: ""
+method: GET
+body: {}
+parameters: []
+headers: []
+authentication: {}
+metaSortKey: -1631839014433
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

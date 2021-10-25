@@ -1,0 +1,42 @@
+_id: getIncomesUsingGET
+type: Request
+parentId: fld_wrk_4081f3afa9a443858f94361ba779257fb847d6b0
+modified: 1634754056916
+created: 1631839014424
+url: "{{ base_url }}/statistic/income"
+name: getIncomes
+description: |-
+  Get income in periods of time (ADMIN only)
+  Format for timestamp: "yyyy-MM-dd HH:mm:ss.SSS"
+method: GET
+body:
+  mimeType: application/json
+  text: |-
+    [
+      {
+        "endTime": "2021-12-01 12:29:00.123",
+        "startTime": "2021-01-01 12:29:00.123"
+      },
+    	{
+        "endTime": "2021-12-01 12:29:00.123",
+        "startTime": "2021-01-01 12:29:00.123"
+      }
+    ]
+parameters: []
+headers:
+  - name: Content-Type
+    value: application/json
+    id: pair_c8b9070dad9044248ca6c2b1010a04a8
+  - id: pair_8e3a02ea3b0b4f989c00ef0ea033864e
+    name: Authorization
+    value: "1"
+    description: ""
+authentication: {}
+metaSortKey: -1631839014424
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

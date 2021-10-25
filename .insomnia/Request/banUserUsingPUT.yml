@@ -1,0 +1,29 @@
+_id: banUserUsingPUT
+type: Request
+parentId: fld_wrk_4081f3afa9a443858f94361ba779257f0ca8c3a4
+modified: 1634679892623
+created: 1631839014419
+url: "{{ base_url }}/user/ban/{% request 'parameter', 'id', 0 %}"
+name: banUser
+description: ""
+method: PUT
+body: {}
+parameters:
+  - name: id
+    disabled: true
+    value: "1"
+    id: pair_a2d0d98902984e7a89872e0b5e774977
+headers:
+  - id: pair_d41dba12e3834178880b499775995247
+    name: Authorization
+    value: "1"
+    description: ""
+authentication: {}
+metaSortKey: -1631839014419
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

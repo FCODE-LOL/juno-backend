@@ -1,0 +1,55 @@
+_id: updateBillUsingPUT
+type: Request
+parentId: fld_wrk_4081f3afa9a443858f94361ba779257f3270fda2
+modified: 1635087916452
+created: 1634358995708
+url: "{{ base_url }}/bill/update"
+name: updateBill
+description: ""
+method: PUT
+body:
+  mimeType: application/json
+  text: |-
+    {
+    	"id": 3,
+    	"user": {
+        "id": 1
+      },
+      "address": "Sky8",
+      "areaId": 1,
+      "billProductDtoList": [
+        {
+          "model": {
+            "id": 2
+          },
+          "quantity": 17
+        }
+      ],
+      "customerName": "Hoangg",
+      "info": "string",
+      "paymentMethod": 1,
+      "phone": "string",
+      "receiveTimestamp": "2021-12-01 12:29:00.123",
+      "status": 1,
+      "transportFee": 20000
+      
+    }
+parameters: []
+headers:
+  - name: Content-Type
+    disabled: false
+    value: application/json
+    id: pair_5890d2ecfa3846d08e749114a351cb9f
+  - name: Authorization
+    disabled: false
+    value: "1"
+    id: pair_1e3e727328504248983e698049f1aef1
+authentication: {}
+metaSortKey: -1634358995708
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

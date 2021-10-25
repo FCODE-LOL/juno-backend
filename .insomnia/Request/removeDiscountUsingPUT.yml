@@ -1,0 +1,21 @@
+_id: removeDiscountUsingPUT
+type: Request
+parentId: fld_wrk_4081f3afa9a443858f94361ba779257f9897c42d
+modified: 1634358995698
+created: 1634358995698
+url: "{{ base_url }}/discount/delete/{{ id }}"
+name: removeDiscount
+description: ""
+method: PUT
+body: {}
+parameters: []
+headers: []
+authentication: {}
+metaSortKey: -1634358995698
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

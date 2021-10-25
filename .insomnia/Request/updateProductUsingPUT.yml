@@ -1,0 +1,67 @@
+_id: updateProductUsingPUT
+type: Request
+parentId: fld_wrk_4081f3afa9a443858f94361ba779257fb66ba8a5
+modified: 1634511712065
+created: 1631839014436
+url: "{{ base_url }}/product"
+name: updateProduct
+description: Update property of product (ADMIN only)
+method: PUT
+body:
+  mimeType: application/json
+  text: |-
+    {
+    	"id": "A2E3RT",
+      "name": "Mắt kính đen",
+      "linkImages": "linkimage1",
+      "description": "description",
+      "origin": "TQ",
+      "material": "Bạc",
+      "type": {
+        "id": 3,
+        "name": "Mắt kính",
+        "parentId": 1
+      },
+      "price": 13.000,
+      "discountPrice": 210000.000,
+      "modelDtoList": [
+        {
+          "id": 2,
+          "linkImages": "link2",
+          "colorId": "yellow",
+          "size": 2,
+          "quantity": 20,
+          "price": 300000.000,
+          "discountPrice": 220000.000
+        },
+    		{
+     
+          "linkImages": "link2",
+          "colorId": "yellow",
+          "size": 2,
+          "quantity": 20,
+          "price": 300000.000,
+          "discountPrice": 220000.000
+        }
+      ]
+     
+    }
+parameters: []
+headers:
+  - name: Content-Type
+    disabled: false
+    value: application/json
+    id: pair_416698e321174d259930f116c5b18baa
+  - id: pair_fdb3316716db49909763e649af150618
+    name: Authorization
+    value: "1"
+    description: ""
+authentication: {}
+metaSortKey: -1631839014436
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

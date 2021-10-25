@@ -1,0 +1,30 @@
+_id: getUserByIdUsingGET
+type: Request
+parentId: fld_wrk_4081f3afa9a443858f94361ba779257f0ca8c3a4
+modified: 1634682620484
+created: 1631839014411
+url: "{{ base_url }}/user/{% request 'parameter', 'id', 0 %}"
+name: getUserById
+description: ""
+method: GET
+body: {}
+parameters:
+  - id: pair_717dd707cdf949dbb82a6269f434b36c
+    name: id
+    value: "1"
+    description: ""
+    disabled: true
+headers:
+  - name: Authorization
+    disabled: false
+    value: "1"
+    id: pair_2e280805696e435fb2e447ed0efd0e9b
+authentication: {}
+metaSortKey: -1631839014411
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

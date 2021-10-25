@@ -1,0 +1,2410 @@
+_id: spc_c66ca76a4e844816bb8f6555ed67a60a
+type: ApiSpec
+parentId: wrk_4081f3afa9a443858f94361ba779257f
+modified: 1634359005033
+created: 1631838988555
+fileName: juno-api.yaml
+contents: |-
+  {
+  "swagger": "2.0",
+  "info": {
+  "version": "0.1",
+  "title": "Juno-clone API"
+  },
+  "host": "3168-20-58-167-28.ngrok.io",
+  "basePath": "/",
+  "tags": [
+  {
+  "name": "authentication-controller",
+  "description": "Authentication Controller"
+  },
+  {
+  "name": "discount-event-controller",
+  "description": "Discount Event Controller"
+  },
+  {
+  "name": "import-db-controller",
+  "description": "Import DB Controller"
+  },
+  {
+  "name": "product-controller",
+  "description": "Product Controller"
+  },
+  {
+  "name": "shopping-controller",
+  "description": "Shopping Controller"
+  },
+  {
+  "name": "statistic-controller",
+  "description": "Statistic Controller"
+  },
+  {
+  "name": "user-controller",
+  "description": "User Controller"
+  }
+  ],
+  "paths": {
+  "/bill": {
+  "get": {
+  "tags": [
+  "shopping-controller"
+  ],
+  "summary": "getAllBill",
+  "operationId": "getAllBillUsingGET",
+  "produces": [
+  "*/*"
+  ],
+  "responses": {
+  "200": {
+  "description": "OK",
+  "schema": {
+  "type": "array",
+  "items": {
+  "$ref": "#/definitions/BillByGroupDto"
+  }
+  }
+  },
+  "401": {
+  "description": "Unauthorized"
+  },
+  "403": {
+  "description": "Forbidden"
+  },
+  "404": {
+  "description": "Not Found"
+  }
+  },
+  "deprecated": false
+  }
+  },
+  "/bill/add": {
+  "post": {
+  "tags": [
+  "shopping-controller"
+  ],
+  "summary": "addBill",
+  "operationId": "addBillUsingPOST",
+  "consumes": [
+  "application/json"
+  ],
+  "produces": [
+  "*/*"
+  ],
+  "parameters": [
+  {
+  "in": "body",
+  "name": "billDto",
+  "description": "billDto",
+  "required": true,
+  "schema": {
+  "$ref": "#/definitions/BillDto"
+  }
+  },
+  {
+  "name": "token",
+  "in": "header",
+  "description": "token",
+  "required": true,
+  "type": "string"
+  }
+  ],
+  "responses": {
+  "200": {
+  "description": "OK",
+  "schema": {
+  "type": "string"
+  }
+  },
+  "201": {
+  "description": "Created"
+  },
+  "401": {
+  "description": "Unauthorized"
+  },
+  "403": {
+  "description": "Forbidden"
+  },
+  "404": {
+  "description": "Not Found"
+  }
+  },
+  "deprecated": false
+  }
+  },
+  "/bill/delete/product/{id}": {
+  "delete": {
+  "tags": [
+  "shopping-controller"
+  ],
+  "summary": "removeBillProduct",
+  "operationId": "removeBillProductUsingDELETE",
+  "produces": [
+  "*/*"
+  ],
+  "parameters": [
+  {
+  "name": "billProductId",
+  "in": "path",
+  "description": "billProductId",
+  "required": true,
+  "type": "integer",
+  "format": "int32"
+  },
+  {
+  "name": "token",
+  "in": "header",
+  "description": "token",
+  "required": true,
+  "type": "string"
+  }
+  ],
+  "responses": {
+  "200": {
+  "description": "OK",
+  "schema": {
+  "type": "string"
+  }
+  },
+  "204": {
+  "description": "No Content"
+  },
+  "401": {
+  "description": "Unauthorized"
+  },
+  "403": {
+  "description": "Forbidden"
+  }
+  },
+  "deprecated": false
+  }
+  },
+  "/bill/update": {
+  "put": {
+  "tags": [
+  "shopping-controller"
+  ],
+  "summary": "updateBill",
+  "operationId": "updateBillUsingPUT",
+  "consumes": [
+  "application/json"
+  ],
+  "produces": [
+  "*/*"
+  ],
+  "parameters": [
+  {
+  "in": "body",
+  "name": "billDto",
+  "description": "billDto",
+  "required": true,
+  "schema": {
+  "$ref": "#/definitions/BillDto"
+  }
+  },
+  {
+  "name": "token",
+  "in": "header",
+  "description": "token",
+  "required": true,
+  "type": "string"
+  }
+  ],
+  "responses": {
+  "200": {
+  "description": "OK",
+  "schema": {
+  "type": "string"
+  }
+  },
+  "201": {
+  "description": "Created"
+  },
+  "401": {
+  "description": "Unauthorized"
+  },
+  "403": {
+  "description": "Forbidden"
+  },
+  "404": {
+  "description": "Not Found"
+  }
+  },
+  "deprecated": false
+  }
+  },
+  "/bill/update/status": {
+  "put": {
+  "tags": [
+  "shopping-controller"
+  ],
+  "summary": "updateStatus",
+  "operationId": "updateStatusUsingPUT",
+  "consumes": [
+  "application/json"
+  ],
+  "produces": [
+  "*/*"
+  ],
+  "parameters": [
+  {
+  "in": "body",
+  "name": "updateBillStatusRequest",
+  "description": "updateBillStatusRequest",
+  "required": true,
+  "schema": {
+  "$ref": "#/definitions/UpdateBillStatusRequest"
+  }
+  }
+  ],
+  "responses": {
+  "200": {
+  "description": "OK",
+  "schema": {
+  "type": "string"
+  }
+  },
+  "201": {
+  "description": "Created"
+  },
+  "401": {
+  "description": "Unauthorized"
+  },
+  "403": {
+  "description": "Forbidden"
+  },
+  "404": {
+  "description": "Not Found"
+  }
+  },
+  "deprecated": false
+  }
+  },
+  "/bill/user/{id}": {
+  "get": {
+  "tags": [
+  "shopping-controller"
+  ],
+  "summary": "getAllBillOfUser",
+  "operationId": "getAllBillOfUserUsingGET",
+  "produces": [
+  "*/*"
+  ],
+  "parameters": [
+  {
+  "name": "id",
+  "in": "path",
+  "description": "id",
+  "required": true,
+  "type": "integer",
+  "format": "int32"
+  },
+  {
+  "name": "token",
+  "in": "header",
+  "description": "token",
+  "required": true,
+  "type": "string"
+  }
+  ],
+  "responses": {
+  "200": {
+  "description": "OK",
+  "schema": {
+  "type": "array",
+  "items": {
+  "$ref": "#/definitions/BillByGroupDto"
+  }
+  }
+  },
+  "401": {
+  "description": "Unauthorized"
+  },
+  "403": {
+  "description": "Forbidden"
+  },
+  "404": {
+  "description": "Not Found"
+  }
+  },
+  "deprecated": false
+  }
+  },
+  "/bill/{id}": {
+  "get": {
+  "tags": [
+  "shopping-controller"
+  ],
+  "summary": "getBillById",
+  "operationId": "getBillByIdUsingGET",
+  "produces": [
+  "*/*"
+  ],
+  "parameters": [
+  {
+  "name": "id",
+  "in": "path",
+  "description": "id",
+  "required": true,
+  "type": "integer",
+  "format": "int32"
+  },
+  {
+  "name": "token",
+  "in": "header",
+  "description": "token",
+  "required": true,
+  "type": "string"
+  }
+  ],
+  "responses": {
+  "200": {
+  "description": "OK",
+  "schema": {
+  "$ref": "#/definitions/BillResponseDto"
+  }
+  },
+  "401": {
+  "description": "Unauthorized"
+  },
+  "403": {
+  "description": "Forbidden"
+  },
+  "404": {
+  "description": "Not Found"
+  }
+  },
+  "deprecated": false
+  }
+  },
+  "/clear": {
+  "delete": {
+  "tags": [
+  "import-db-controller"
+  ],
+  "summary": "clearDB",
+  "operationId": "clearDBUsingDELETE",
+  "produces": [
+  "*/*"
+  ],
+  "responses": {
+  "200": {
+  "description": "OK",
+  "schema": {
+  "type": "string"
+  }
+  },
+  "204": {
+  "description": "No Content"
+  },
+  "401": {
+  "description": "Unauthorized"
+  },
+  "403": {
+  "description": "Forbidden"
+  }
+  },
+  "deprecated": false
+  }
+  },
+  "/discount": {
+  "get": {
+  "tags": [
+  "discount-event-controller"
+  ],
+  "summary": "getAllDiscount",
+  "operationId": "getAllDiscountUsingGET",
+  "produces": [
+  "*/*"
+  ],
+  "responses": {
+  "200": {
+  "description": "OK",
+  "schema": {
+  "type": "array",
+  "items": {
+  "$ref": "#/definitions/DiscountByGroupDto"
+  }
+  }
+  },
+  "401": {
+  "description": "Unauthorized"
+  },
+  "403": {
+  "description": "Forbidden"
+  },
+  "404": {
+  "description": "Not Found"
+  }
+  },
+  "deprecated": false
+  }
+  },
+  "/discount/add": {
+  "post": {
+  "tags": [
+  "discount-event-controller"
+  ],
+  "summary": "addDiscount",
+  "operationId": "addDiscountUsingPOST",
+  "consumes": [
+  "application/json"
+  ],
+  "produces": [
+  "*/*"
+  ],
+  "parameters": [
+  {
+  "in": "body",
+  "name": "discountDto",
+  "description": "discountDto",
+  "required": true,
+  "schema": {
+  "$ref": "#/definitions/DiscountDto"
+  }
+  },
+  {
+  "name": "token",
+  "in": "header",
+  "description": "token",
+  "required": true,
+  "type": "string"
+  }
+  ],
+  "responses": {
+  "200": {
+  "description": "OK",
+  "schema": {
+  "type": "string"
+  }
+  },
+  "201": {
+  "description": "Created"
+  },
+  "401": {
+  "description": "Unauthorized"
+  },
+  "403": {
+  "description": "Forbidden"
+  },
+  "404": {
+  "description": "Not Found"
+  }
+  },
+  "deprecated": false
+  }
+  },
+  "/discount/delete/Model/{id}": {
+  "delete": {
+  "tags": [
+  "discount-event-controller"
+  ],
+  "summary": "removeDiscountModel",
+  "operationId": "removeDiscountModelUsingDELETE",
+  "produces": [
+  "*/*"
+  ],
+  "parameters": [
+  {
+  "name": "discountModelId",
+  "in": "path",
+  "description": "discountModelId",
+  "required": true,
+  "type": "integer",
+  "format": "int32"
+  },
+  {
+  "name": "token",
+  "in": "header",
+  "description": "token",
+  "required": true,
+  "type": "string"
+  }
+  ],
+  "responses": {
+  "200": {
+  "description": "OK",
+  "schema": {
+  "type": "string"
+  }
+  },
+  "204": {
+  "description": "No Content"
+  },
+  "401": {
+  "description": "Unauthorized"
+  },
+  "403": {
+  "description": "Forbidden"
+  }
+  },
+  "deprecated": false
+  }
+  },
+  "/discount/delete/{id}": {
+  "put": {
+  "tags": [
+  "discount-event-controller"
+  ],
+  "summary": "removeDiscount",
+  "operationId": "removeDiscountUsingPUT",
+  "consumes": [
+  "application/json"
+  ],
+  "produces": [
+  "*/*"
+  ],
+  "parameters": [
+  {
+  "name": "discountId",
+  "in": "path",
+  "description": "discountId",
+  "required": true,
+  "type": "integer",
+  "format": "int32"
+  }
+  ],
+  "responses": {
+  "200": {
+  "description": "OK",
+  "schema": {
+  "type": "string"
+  }
+  },
+  "201": {
+  "description": "Created"
+  },
+  "401": {
+  "description": "Unauthorized"
+  },
+  "403": {
+  "description": "Forbidden"
+  },
+  "404": {
+  "description": "Not Found"
+  }
+  },
+  "deprecated": false
+  }
+  },
+  "/discount/update": {
+  "put": {
+  "tags": [
+  "discount-event-controller"
+  ],
+  "summary": "updateDiscount",
+  "operationId": "updateDiscountUsingPUT",
+  "consumes": [
+  "application/json"
+  ],
+  "produces": [
+  "*/*"
+  ],
+  "parameters": [
+  {
+  "in": "body",
+  "name": "discountDto",
+  "description": "discountDto",
+  "required": true,
+  "schema": {
+  "$ref": "#/definitions/DiscountDto"
+  }
+  }
+  ],
+  "responses": {
+  "200": {
+  "description": "OK",
+  "schema": {
+  "type": "string"
+  }
+  },
+  "201": {
+  "description": "Created"
+  },
+  "401": {
+  "description": "Unauthorized"
+  },
+  "403": {
+  "description": "Forbidden"
+  },
+  "404": {
+  "description": "Not Found"
+  }
+  },
+  "deprecated": false
+  }
+  },
+  "/discount/{id}": {
+  "get": {
+  "tags": [
+  "discount-event-controller"
+  ],
+  "summary": "getDiscountById",
+  "operationId": "getDiscountByIdUsingGET",
+  "produces": [
+  "*/*"
+  ],
+  "parameters": [
+  {
+  "name": "id",
+  "in": "path",
+  "description": "id",
+  "required": true,
+  "type": "integer",
+  "format": "int32"
+  },
+  {
+  "name": "token",
+  "in": "header",
+  "description": "token",
+  "required": true,
+  "type": "string"
+  }
+  ],
+  "responses": {
+  "200": {
+  "description": "OK",
+  "schema": {
+  "$ref": "#/definitions/DiscountResponseDto"
+  }
+  },
+  "401": {
+  "description": "Unauthorized"
+  },
+  "403": {
+  "description": "Forbidden"
+  },
+  "404": {
+  "description": "Not Found"
+  }
+  },
+  "deprecated": false
+  }
+  },
+  "/import": {
+  "post": {
+  "tags": [
+  "import-db-controller"
+  ],
+  "summary": "importDB",
+  "operationId": "importDBUsingPOST",
+  "consumes": [
+  "application/json"
+  ],
+  "produces": [
+  "*/*"
+  ],
+  "responses": {
+  "200": {
+  "description": "OK",
+  "schema": {
+  "type": "string"
+  }
+  },
+  "201": {
+  "description": "Created"
+  },
+  "401": {
+  "description": "Unauthorized"
+  },
+  "403": {
+  "description": "Forbidden"
+  },
+  "404": {
+  "description": "Not Found"
+  }
+  },
+  "deprecated": false
+  }
+  },
+  "/init": {
+  "post": {
+  "tags": [
+  "import-db-controller"
+  ],
+  "summary": "initDB",
+  "operationId": "initDBUsingPOST",
+  "consumes": [
+  "application/json"
+  ],
+  "produces": [
+  "*/*"
+  ],
+  "responses": {
+  "200": {
+  "description": "OK",
+  "schema": {
+  "type": "string"
+  }
+  },
+  "201": {
+  "description": "Created"
+  },
+  "401": {
+  "description": "Unauthorized"
+  },
+  "403": {
+  "description": "Forbidden"
+  },
+  "404": {
+  "description": "Not Found"
+  }
+  },
+  "deprecated": false
+  }
+  },
+  "/login": {
+  "put": {
+  "tags": [
+  "authentication-controller"
+  ],
+  "summary": "login",
+  "operationId": "loginUsingPUT",
+  "consumes": [
+  "application/json"
+  ],
+  "produces": [
+  "*/*"
+  ],
+  "parameters": [
+  {
+  "in": "body",
+  "name": "loginRequest",
+  "description": "loginRequest",
+  "required": true,
+  "schema": {
+  "$ref": "#/definitions/LoginRequest"
+  }
+  }
+  ],
+  "responses": {
+  "200": {
+  "description": "OK",
+  "schema": {
+  "type": "string"
+  }
+  },
+  "201": {
+  "description": "Created"
+  },
+  "401": {
+  "description": "Unauthorized"
+  },
+  "403": {
+  "description": "Forbidden"
+  },
+  "404": {
+  "description": "Not Found"
+  }
+  },
+  "deprecated": false
+  }
+  },
+  "/product": {
+  "get": {
+  "tags": [
+  "product-controller"
+  ],
+  "summary": "getAllProduct",
+  "operationId": "getAllProductUsingGET",
+  "produces": [
+  "*/*"
+  ],
+  "responses": {
+  "200": {
+  "description": "OK",
+  "schema": {
+  "type": "array",
+  "items": {
+  "$ref": "#/definitions/ProductByGroupDto"
+  }
+  }
+  },
+  "401": {
+  "description": "Unauthorized"
+  },
+  "403": {
+  "description": "Forbidden"
+  },
+  "404": {
+  "description": "Not Found"
+  }
+  },
+  "deprecated": false
+  },
+  "post": {
+  "tags": [
+  "product-controller"
+  ],
+  "summary": "addProduct",
+  "operationId": "addProductUsingPOST",
+  "consumes": [
+  "application/json"
+  ],
+  "produces": [
+  "*/*"
+  ],
+  "parameters": [
+  {
+  "in": "body",
+  "name": "productDto",
+  "description": "productDto",
+  "required": true,
+  "schema": {
+  "$ref": "#/definitions/ProductDto"
+  }
+  }
+  ],
+  "responses": {
+  "200": {
+  "description": "OK",
+  "schema": {
+  "$ref": "#/definitions/ProductDto"
+  }
+  },
+  "201": {
+  "description": "Created"
+  },
+  "401": {
+  "description": "Unauthorized"
+  },
+  "403": {
+  "description": "Forbidden"
+  },
+  "404": {
+  "description": "Not Found"
+  }
+  },
+  "deprecated": false
+  },
+  "put": {
+  "tags": [
+  "product-controller"
+  ],
+  "summary": "updateProduct",
+  "operationId": "updateProductUsingPUT",
+  "consumes": [
+  "application/json"
+  ],
+  "produces": [
+  "*/*"
+  ],
+  "parameters": [
+  {
+  "in": "body",
+  "name": "productDto",
+  "description": "productDto",
+  "required": true,
+  "schema": {
+  "$ref": "#/definitions/ProductDto"
+  }
+  }
+  ],
+  "responses": {
+  "200": {
+  "description": "OK",
+  "schema": {
+  "$ref": "#/definitions/ProductDto"
+  }
+  },
+  "201": {
+  "description": "Created"
+  },
+  "401": {
+  "description": "Unauthorized"
+  },
+  "403": {
+  "description": "Forbidden"
+  },
+  "404": {
+  "description": "Not Found"
+  }
+  },
+  "deprecated": false
+  }
+  },
+  "/product/delete/{id}": {
+  "put": {
+  "tags": [
+  "product-controller"
+  ],
+  "summary": "deleteProduct",
+  "operationId": "deleteProductUsingPUT",
+  "consumes": [
+  "application/json"
+  ],
+  "produces": [
+  "*/*"
+  ],
+  "parameters": [
+  {
+  "name": "id",
+  "in": "path",
+  "description": "id",
+  "required": true,
+  "type": "string"
+  }
+  ],
+  "responses": {
+  "200": {
+  "description": "OK",
+  "schema": {
+  "type": "string"
+  }
+  },
+  "201": {
+  "description": "Created"
+  },
+  "401": {
+  "description": "Unauthorized"
+  },
+  "403": {
+  "description": "Forbidden"
+  },
+  "404": {
+  "description": "Not Found"
+  }
+  },
+  "deprecated": false
+  }
+  },
+  "/product/id/{name}": {
+  "get": {
+  "tags": [
+  "product-controller"
+  ],
+  "summary": "getProductByName",
+  "operationId": "getProductByNameUsingGET",
+  "produces": [
+  "*/*"
+  ],
+  "parameters": [
+  {
+  "name": "name",
+  "in": "path",
+  "description": "name",
+  "required": true,
+  "type": "string"
+  }
+  ],
+  "responses": {
+  "200": {
+  "description": "OK",
+  "schema": {
+  "type": "array",
+  "items": {
+  "$ref": "#/definitions/ProductByGroupDto"
+  }
+  }
+  },
+  "401": {
+  "description": "Unauthorized"
+  },
+  "403": {
+  "description": "Forbidden"
+  },
+  "404": {
+  "description": "Not Found"
+  }
+  },
+  "deprecated": false
+  }
+  },
+  "/product/type": {
+  "get": {
+  "tags": [
+  "product-controller"
+  ],
+  "summary": "getAllType",
+  "operationId": "getAllTypeUsingGET",
+  "produces": [
+  "*/*"
+  ],
+  "responses": {
+  "200": {
+  "description": "OK",
+  "schema": {
+  "type": "array",
+  "items": {
+  "$ref": "#/definitions/TypeDto"
+  }
+  }
+  },
+  "401": {
+  "description": "Unauthorized"
+  },
+  "403": {
+  "description": "Forbidden"
+  },
+  "404": {
+  "description": "Not Found"
+  }
+  },
+  "deprecated": false
+  },
+  "post": {
+  "tags": [
+  "product-controller"
+  ],
+  "summary": "addTypes",
+  "operationId": "addTypesUsingPOST",
+  "consumes": [
+  "application/json"
+  ],
+  "produces": [
+  "*/*"
+  ],
+  "parameters": [
+  {
+  "in": "body",
+  "name": "types",
+  "description": "types",
+  "required": true,
+  "schema": {
+  "type": "array",
+  "items": {
+  "$ref": "#/definitions/AddedTypeDto"
+  }
+  }
+  }
+  ],
+  "responses": {
+  "200": {
+  "description": "OK",
+  "schema": {
+  "type": "string"
+  }
+  },
+  "201": {
+  "description": "Created"
+  },
+  "401": {
+  "description": "Unauthorized"
+  },
+  "403": {
+  "description": "Forbidden"
+  },
+  "404": {
+  "description": "Not Found"
+  }
+  },
+  "deprecated": false
+  },
+  "put": {
+  "tags": [
+  "product-controller"
+  ],
+  "summary": "updateTypes",
+  "operationId": "updateTypesUsingPUT",
+  "consumes": [
+  "application/json"
+  ],
+  "produces": [
+  "*/*"
+  ],
+  "parameters": [
+  {
+  "in": "body",
+  "name": "types",
+  "description": "types",
+  "required": true,
+  "schema": {
+  "type": "array",
+  "items": {
+  "$ref": "#/definitions/TypeDto"
+  }
+  }
+  }
+  ],
+  "responses": {
+  "200": {
+  "description": "OK",
+  "schema": {
+  "type": "string"
+  }
+  },
+  "201": {
+  "description": "Created"
+  },
+  "401": {
+  "description": "Unauthorized"
+  },
+  "403": {
+  "description": "Forbidden"
+  },
+  "404": {
+  "description": "Not Found"
+  }
+  },
+  "deprecated": false
+  }
+  },
+  "/product/type/{id}": {
+  "get": {
+  "tags": [
+  "product-controller"
+  ],
+  "summary": "getProductByTypeId",
+  "operationId": "getProductByTypeIdUsingGET",
+  "produces": [
+  "*/*"
+  ],
+  "parameters": [
+  {
+  "name": "id",
+  "in": "path",
+  "description": "id",
+  "required": true,
+  "type": "integer",
+  "format": "int32"
+  }
+  ],
+  "responses": {
+  "200": {
+  "description": "OK",
+  "schema": {
+  "type": "array",
+  "items": {
+  "$ref": "#/definitions/ProductByGroupDto"
+  }
+  }
+  },
+  "401": {
+  "description": "Unauthorized"
+  },
+  "403": {
+  "description": "Forbidden"
+  },
+  "404": {
+  "description": "Not Found"
+  }
+  },
+  "deprecated": false
+  },
+  "delete": {
+  "tags": [
+  "product-controller"
+  ],
+  "summary": "deleteType",
+  "operationId": "deleteTypeUsingDELETE",
+  "produces": [
+  "*/*"
+  ],
+  "parameters": [
+  {
+  "name": "id",
+  "in": "path",
+  "description": "id",
+  "required": true,
+  "type": "integer",
+  "format": "int32"
+  }
+  ],
+  "responses": {
+  "200": {
+  "description": "OK",
+  "schema": {
+  "type": "string"
+  }
+  },
+  "204": {
+  "description": "No Content"
+  },
+  "401": {
+  "description": "Unauthorized"
+  },
+  "403": {
+  "description": "Forbidden"
+  }
+  },
+  "deprecated": false
+  }
+  },
+  "/product/{id}": {
+  "get": {
+  "tags": [
+  "product-controller"
+  ],
+  "summary": "getProductById",
+  "operationId": "getProductByIdUsingGET",
+  "produces": [
+  "*/*"
+  ],
+  "parameters": [
+  {
+  "name": "id",
+  "in": "path",
+  "description": "id",
+  "required": true,
+  "type": "string"
+  }
+  ],
+  "responses": {
+  "200": {
+  "description": "OK",
+  "schema": {
+  "$ref": "#/definitions/ProductDto"
+  }
+  },
+  "401": {
+  "description": "Unauthorized"
+  },
+  "403": {
+  "description": "Forbidden"
+  },
+  "404": {
+  "description": "Not Found"
+  }
+  },
+  "deprecated": false
+  }
+  },
+  "/register": {
+  "post": {
+  "tags": [
+  "authentication-controller"
+  ],
+  "summary": "register",
+  "operationId": "registerUsingPOST",
+  "consumes": [
+  "application/json"
+  ],
+  "produces": [
+  "*/*"
+  ],
+  "parameters": [
+  {
+  "in": "body",
+  "name": "registerUser",
+  "description": "registerUser",
+  "required": true,
+  "schema": {
+  "$ref": "#/definitions/RegisterRequest"
+  }
+  }
+  ],
+  "responses": {
+  "200": {
+  "description": "OK",
+  "schema": {
+  "type": "string"
+  }
+  },
+  "201": {
+  "description": "Created"
+  },
+  "401": {
+  "description": "Unauthorized"
+  },
+  "403": {
+  "description": "Forbidden"
+  },
+  "404": {
+  "description": "Not Found"
+  }
+  },
+  "deprecated": false
+  }
+  },
+  "/social-media": {
+  "post": {
+  "tags": [
+  "authentication-controller"
+  ],
+  "summary": "loginWithSocialMedia",
+  "operationId": "loginWithSocialMediaUsingPOST",
+  "consumes": [
+  "application/json"
+  ],
+  "produces": [
+  "*/*"
+  ],
+  "parameters": [
+  {
+  "in": "body",
+  "name": "socialMediaLoginRequest",
+  "description": "socialMediaLoginRequest",
+  "required": true,
+  "schema": {
+  "$ref": "#/definitions/SocialMediaLoginRequest"
+  }
+  }
+  ],
+  "responses": {
+  "200": {
+  "description": "OK",
+  "schema": {
+  "type": "string"
+  }
+  },
+  "201": {
+  "description": "Created"
+  },
+  "401": {
+  "description": "Unauthorized"
+  },
+  "403": {
+  "description": "Forbidden"
+  },
+  "404": {
+  "description": "Not Found"
+  }
+  },
+  "deprecated": false
+  }
+  },
+  "/statistic/income": {
+  "get": {
+  "tags": [
+  "statistic-controller"
+  ],
+  "summary": "getIncomes",
+  "operationId": "getIncomesUsingGET",
+  "produces": [
+  "*/*"
+  ],
+  "parameters": [
+  {
+  "in": "body",
+  "name": "periodTimes",
+  "description": "periodTimes",
+  "required": true,
+  "schema": {
+  "type": "array",
+  "items": {
+  "$ref": "#/definitions/PeriodTime"
+  }
+  }
+  }
+  ],
+  "responses": {
+  "200": {
+  "description": "OK",
+  "schema": {
+  "type": "array",
+  "items": {
+  "type": "number"
+  }
+  }
+  },
+  "401": {
+  "description": "Unauthorized"
+  },
+  "403": {
+  "description": "Forbidden"
+  },
+  "404": {
+  "description": "Not Found"
+  }
+  },
+  "deprecated": false
+  }
+  },
+  "/statistic/top/customer/{number}": {
+  "get": {
+  "tags": [
+  "statistic-controller"
+  ],
+  "summary": "getTopCustomers",
+  "operationId": "getTopCustomersUsingGET",
+  "produces": [
+  "*/*"
+  ],
+  "parameters": [
+  {
+  "name": "number",
+  "in": "path",
+  "description": "number",
+  "required": true,
+  "type": "integer",
+  "format": "int32"
+  }
+  ],
+  "responses": {
+  "200": {
+  "description": "OK",
+  "schema": {
+  "type": "array",
+  "items": {
+  "$ref": "#/definitions/UserByGroupDto"
+  }
+  }
+  },
+  "401": {
+  "description": "Unauthorized"
+  },
+  "403": {
+  "description": "Forbidden"
+  },
+  "404": {
+  "description": "Not Found"
+  }
+  },
+  "deprecated": false
+  }
+  },
+  "/statistic/top/product/income/{number}": {
+  "get": {
+  "tags": [
+  "statistic-controller"
+  ],
+  "summary": "getTopIncomeProducts",
+  "operationId": "getTopIncomeProductsUsingGET",
+  "produces": [
+  "*/*"
+  ],
+  "parameters": [
+  {
+  "name": "number",
+  "in": "path",
+  "description": "number",
+  "required": true,
+  "type": "integer",
+  "format": "int32"
+  }
+  ],
+  "responses": {
+  "200": {
+  "description": "OK",
+  "schema": {
+  "type": "array",
+  "items": {
+  "$ref": "#/definitions/ProductByGroupDto"
+  }
+  }
+  },
+  "401": {
+  "description": "Unauthorized"
+  },
+  "403": {
+  "description": "Forbidden"
+  },
+  "404": {
+  "description": "Not Found"
+  }
+  },
+  "deprecated": false
+  }
+  },
+  "/statistic/top/product/sale/{number}": {
+  "get": {
+  "tags": [
+  "statistic-controller"
+  ],
+  "summary": "getTopSaleProducts",
+  "operationId": "getTopSaleProductsUsingGET",
+  "produces": [
+  "*/*"
+  ],
+  "parameters": [
+  {
+  "name": "number",
+  "in": "path",
+  "description": "number",
+  "required": true,
+  "type": "integer",
+  "format": "int32"
+  }
+  ],
+  "responses": {
+  "200": {
+  "description": "OK",
+  "schema": {
+  "type": "array",
+  "items": {
+  "$ref": "#/definitions/ProductByGroupDto"
+  }
+  }
+  },
+  "401": {
+  "description": "Unauthorized"
+  },
+  "403": {
+  "description": "Forbidden"
+  },
+  "404": {
+  "description": "Not Found"
+  }
+  },
+  "deprecated": false
+  }
+  },
+  "/user": {
+  "get": {
+  "tags": [
+  "user-controller"
+  ],
+  "summary": "getAllUsers",
+  "operationId": "getAllUsersUsingGET",
+  "produces": [
+  "*/*"
+  ],
+  "responses": {
+  "200": {
+  "description": "OK",
+  "schema": {
+  "type": "array",
+  "items": {
+  "$ref": "#/definitions/UserByGroupExtendDto"
+  }
+  }
+  },
+  "401": {
+  "description": "Unauthorized"
+  },
+  "403": {
+  "description": "Forbidden"
+  },
+  "404": {
+  "description": "Not Found"
+  }
+  },
+  "deprecated": false
+  }
+  },
+  "/user/ban/{id}": {
+  "put": {
+  "tags": [
+  "user-controller"
+  ],
+  "summary": "banUser",
+  "operationId": "banUserUsingPUT",
+  "consumes": [
+  "application/json"
+  ],
+  "produces": [
+  "*/*"
+  ],
+  "parameters": [
+  {
+  "name": "id",
+  "in": "query",
+  "description": "id",
+  "required": false,
+  "type": "integer",
+  "format": "int32"
+  }
+  ],
+  "responses": {
+  "200": {
+  "description": "OK",
+  "schema": {
+  "type": "string"
+  }
+  },
+  "201": {
+  "description": "Created"
+  },
+  "401": {
+  "description": "Unauthorized"
+  },
+  "403": {
+  "description": "Forbidden"
+  },
+  "404": {
+  "description": "Not Found"
+  }
+  },
+  "deprecated": false
+  }
+  },
+  "/user/unban/{id}": {
+  "put": {
+  "tags": [
+  "user-controller"
+  ],
+  "summary": "unbanUser",
+  "operationId": "unbanUserUsingPUT",
+  "consumes": [
+  "application/json"
+  ],
+  "produces": [
+  "*/*"
+  ],
+  "parameters": [
+  {
+  "name": "id",
+  "in": "query",
+  "description": "id",
+  "required": false,
+  "type": "integer",
+  "format": "int32"
+  }
+  ],
+  "responses": {
+  "200": {
+  "description": "OK",
+  "schema": {
+  "type": "string"
+  }
+  },
+  "201": {
+  "description": "Created"
+  },
+  "401": {
+  "description": "Unauthorized"
+  },
+  "403": {
+  "description": "Forbidden"
+  },
+  "404": {
+  "description": "Not Found"
+  }
+  },
+  "deprecated": false
+  }
+  },
+  "/user/{id}": {
+  "get": {
+  "tags": [
+  "user-controller"
+  ],
+  "summary": "getUserById",
+  "operationId": "getUserByIdUsingGET",
+  "produces": [
+  "*/*"
+  ],
+  "parameters": [
+  {
+  "name": "Authorization",
+  "in": "header",
+  "description": "Authorization",
+  "required": true,
+  "type": "string"
+  },
+  {
+  "name": "id",
+  "in": "path",
+  "description": "id",
+  "required": true,
+  "type": "integer",
+  "format": "int32"
+  }
+  ],
+  "responses": {
+  "200": {
+  "description": "OK",
+  "schema": {
+  "$ref": "#/definitions/UserDto"
+  }
+  },
+  "401": {
+  "description": "Unauthorized"
+  },
+  "403": {
+  "description": "Forbidden"
+  },
+  "404": {
+  "description": "Not Found"
+  }
+  },
+  "deprecated": false
+  }
+  }
+  },
+  "definitions": {
+  "AddedTypeDto": {
+  "type": "object",
+  "properties": {
+  "name": {
+  "type": "string"
+  },
+  "parentId": {
+  "type": "integer",
+  "format": "int32"
+  }
+  },
+  "title": "AddedTypeDto"
+  },
+  "BillByGroupDto": {
+  "type": "object",
+  "properties": {
+  "address": {
+  "type": "string"
+  },
+  "areaId": {
+  "type": "integer",
+  "format": "int32"
+  },
+  "customerName": {
+  "type": "string"
+  },
+  "discountCode": {
+  "type": "string"
+  },
+  "id": {
+  "type": "integer",
+  "format": "int32"
+  },
+  "info": {
+  "type": "string"
+  },
+  "payment": {
+  "type": "number"
+  },
+  "paymentMethod": {
+  "type": "integer",
+  "format": "int32"
+  },
+  "phone": {
+  "type": "string"
+  },
+  "receiveTimestamp": {
+  "type": "string",
+  "example": "yyyy-MM-dd HH:mm:ss.SSS"
+  },
+  "status": {
+  "type": "integer",
+  "format": "int32"
+  },
+  "transportFee": {
+  "type": "number"
+  },
+  "user": {
+  "$ref": "#/definitions/UserByGroupDto"
+  }
+  },
+  "title": "BillByGroupDto"
+  },
+  "BillDto": {
+  "type": "object",
+  "properties": {
+  "address": {
+  "type": "string"
+  },
+  "areaId": {
+  "type": "integer",
+  "format": "int32"
+  },
+  "billProductDtoList": {
+  "type": "array",
+  "items": {
+  "$ref": "#/definitions/BillProductDto"
+  }
+  },
+  "customerName": {
+  "type": "string"
+  },
+  "discountCode": {
+  "type": "string"
+  },
+  "id": {
+  "type": "integer",
+  "format": "int32"
+  },
+  "info": {
+  "type": "string"
+  },
+  "payment": {
+  "type": "number"
+  },
+  "paymentMethod": {
+  "type": "integer",
+  "format": "int32"
+  },
+  "phone": {
+  "type": "string"
+  },
+  "receiveTimestamp": {
+  "type": "string",
+  "example": "yyyy-MM-dd HH:mm:ss.SSS"
+  },
+  "status": {
+  "type": "integer",
+  "format": "int32"
+  },
+  "transportFee": {
+  "type": "number"
+  },
+  "user": {
+  "$ref": "#/definitions/UserByGroupDto"
+  }
+  },
+  "title": "BillDto"
+  },
+  "BillProductDto": {
+  "type": "object",
+  "properties": {
+  "bill": {
+  "$ref": "#/definitions/BillByGroupDto"
+  },
+  "id": {
+  "type": "integer",
+  "format": "int32"
+  },
+  "model": {
+  "$ref": "#/definitions/ModelDto"
+  },
+  "price": {
+  "type": "number"
+  },
+  "quantity": {
+  "type": "integer",
+  "format": "int32"
+  }
+  },
+  "title": "BillProductDto"
+  },
+  "BillProductResponse": {
+  "type": "object",
+  "properties": {
+  "id": {
+  "type": "integer",
+  "format": "int32"
+  },
+  "model": {
+  "$ref": "#/definitions/ModelExtendDto"
+  },
+  "price": {
+  "type": "number"
+  },
+  "quantity": {
+  "type": "integer",
+  "format": "int32"
+  }
+  },
+  "title": "BillProductResponse"
+  },
+  "BillResponseDto": {
+  "type": "object",
+  "properties": {
+  "address": {
+  "type": "string"
+  },
+  "areaId": {
+  "type": "integer",
+  "format": "int32"
+  },
+  "customerName": {
+  "type": "string"
+  },
+  "discountCode": {
+  "type": "string"
+  },
+  "id": {
+  "type": "integer",
+  "format": "int32"
+  },
+  "info": {
+  "type": "string"
+  },
+  "payment": {
+  "type": "number"
+  },
+  "paymentMethod": {
+  "type": "integer",
+  "format": "int32"
+  },
+  "phone": {
+  "type": "string"
+  },
+  "productOfBill": {
+  "type": "array",
+  "items": {
+  "$ref": "#/definitions/BillProductResponse"
+  }
+  },
+  "receiveTimestamp": {
+  "type": "string",
+  "example": "yyyy-MM-dd HH:mm:ss.SSS"
+  },
+  "status": {
+  "type": "integer",
+  "format": "int32"
+  },
+  "transportFee": {
+  "type": "number"
+  },
+  "user": {
+  "$ref": "#/definitions/UserByGroupDto"
+  }
+  },
+  "title": "BillResponseDto"
+  },
+  "DiscountByGroupDto": {
+  "type": "object",
+  "properties": {
+  "code": {
+  "type": "string"
+  },
+  "endTime": {
+  "$ref": "#/definitions/Timestamp"
+  },
+  "id": {
+  "type": "integer",
+  "format": "int32"
+  },
+  "percent": {
+  "type": "integer",
+  "format": "int32"
+  },
+  "price": {
+  "type": "number"
+  },
+  "startTime": {
+  "$ref": "#/definitions/Timestamp"
+  }
+  },
+  "title": "DiscountByGroupDto"
+  },
+  "DiscountDto": {
+  "type": "object",
+  "properties": {
+  "code": {
+  "type": "string"
+  },
+  "discountModelDtoList": {
+  "type": "array",
+  "items": {
+  "$ref": "#/definitions/DiscountModelDto"
+  }
+  },
+  "endTime": {
+  "$ref": "#/definitions/Timestamp"
+  },
+  "id": {
+  "type": "integer",
+  "format": "int32"
+  },
+  "percent": {
+  "type": "integer",
+  "format": "int32"
+  },
+  "price": {
+  "type": "number"
+  },
+  "startTime": {
+  "$ref": "#/definitions/Timestamp"
+  }
+  },
+  "title": "DiscountDto"
+  },
+  "DiscountModelDto": {
+  "type": "object",
+  "properties": {
+  "discount": {
+  "$ref": "#/definitions/DiscountByGroupDto"
+  },
+  "id": {
+  "type": "integer",
+  "format": "int32"
+  },
+  "model": {
+  "$ref": "#/definitions/ModelDto"
+  },
+  "price": {
+  "type": "number"
+  },
+  "quantity": {
+  "type": "integer",
+  "format": "int32"
+  }
+  },
+  "title": "DiscountModelDto"
+  },
+  "DiscountModelResponse": {
+  "type": "object",
+  "properties": {
+  "id": {
+  "type": "integer",
+  "format": "int32"
+  },
+  "model": {
+  "$ref": "#/definitions/ModelExtendDto"
+  },
+  "price": {
+  "type": "number"
+  }
+  },
+  "title": "DiscountModelResponse"
+  },
+  "DiscountResponseDto": {
+  "type": "object",
+  "properties": {
+  "code": {
+  "type": "string"
+  },
+  "discountModelDtoList": {
+  "type": "array",
+  "items": {
+  "$ref": "#/definitions/DiscountModelResponse"
+  }
+  },
+  "endTime": {
+  "$ref": "#/definitions/Timestamp"
+  },
+  "id": {
+  "type": "integer",
+  "format": "int32"
+  },
+  "percent": {
+  "type": "integer",
+  "format": "int32"
+  },
+  "price": {
+  "type": "number"
+  },
+  "startTime": {
+  "$ref": "#/definitions/Timestamp"
+  }
+  },
+  "title": "DiscountResponseDto"
+  },
+  "LoginRequest": {
+  "type": "object",
+  "properties": {
+  "email": {
+  "type": "string"
+  },
+  "password": {
+  "type": "string"
+  }
+  },
+  "title": "LoginRequest"
+  },
+  "ModelDto": {
+  "type": "object",
+  "properties": {
+  "colorId": {
+  "type": "string"
+  },
+  "discountPrice": {
+  "type": "number"
+  },
+  "id": {
+  "type": "integer",
+  "format": "int32"
+  },
+  "linkImages": {
+  "type": "string"
+  },
+  "price": {
+  "type": "number"
+  },
+  "quantity": {
+  "type": "integer",
+  "format": "int32"
+  },
+  "size": {
+  "type": "integer",
+  "format": "int32"
+  }
+  },
+  "title": "ModelDto"
+  },
+  "ModelExtendDto": {
+  "type": "object",
+  "properties": {
+  "colorId": {
+  "type": "string"
+  },
+  "discountPrice": {
+  "type": "number"
+  },
+  "id": {
+  "type": "integer",
+  "format": "int32"
+  },
+  "linkImages": {
+  "type": "string"
+  },
+  "price": {
+  "type": "number"
+  },
+  "product": {
+  "$ref": "#/definitions/ProductByGroupDto"
+  },
+  "quantity": {
+  "type": "integer",
+  "format": "int32"
+  },
+  "size": {
+  "type": "integer",
+  "format": "int32"
+  }
+  },
+  "title": "ModelExtendDto"
+  },
+  "PeriodTime": {
+  "type": "object",
+  "properties": {
+  "endTime": {
+  "$ref": "#/definitions/Timestamp"
+  },
+  "startTime": {
+  "$ref": "#/definitions/Timestamp"
+  }
+  },
+  "title": "PeriodTime"
+  },
+  "ProductByGroupDto": {
+  "type": "object",
+  "properties": {
+  "createdTimestamp": {
+  "$ref": "#/definitions/Timestamp"
+  },
+  "discountPrice": {
+  "type": "number"
+  },
+  "id": {
+  "type": "string"
+  },
+  "linkImages": {
+  "type": "string"
+  },
+  "name": {
+  "type": "string"
+  },
+  "price": {
+  "type": "number"
+  }
+  },
+  "title": "ProductByGroupDto"
+  },
+  "ProductDto": {
+  "type": "object",
+  "properties": {
+  "colorsId": {
+  "type": "string"
+  },
+  "description": {
+  "type": "string"
+  },
+  "discountPrice": {
+  "type": "number"
+  },
+  "id": {
+  "type": "string"
+  },
+  "linkImages": {
+  "type": "string"
+  },
+  "material": {
+  "type": "string"
+  },
+  "modelDtoList": {
+  "type": "array",
+  "items": {
+  "$ref": "#/definitions/ModelDto"
+  }
+  },
+  "name": {
+  "type": "string"
+  },
+  "origin": {
+  "type": "string"
+  },
+  "price": {
+  "type": "number"
+  },
+  "typeDto": {
+  "$ref": "#/definitions/TypeDto"
+  }
+  },
+  "title": "ProductDto"
+  },
+  "RegisterRequest": {
+  "type": "object",
+  "properties": {
+  "email": {
+  "type": "string"
+  },
+  "password": {
+  "type": "string"
+  },
+  "token": {
+  "type": "string"
+  }
+  },
+  "title": "RegisterRequest"
+  },
+  "SocialMediaLoginRequest": {
+  "type": "object",
+  "properties": {
+  "name": {
+  "type": "string"
+  },
+  "socialMediaId": {
+  "type": "string"
+  }
+  },
+  "title": "SocialMediaLoginRequest"
+  },
+  "Timestamp": {
+  "type": "object",
+  "properties": {
+  "date": {
+  "type": "integer",
+  "format": "int32"
+  },
+  "day": {
+  "type": "integer",
+  "format": "int32"
+  },
+  "hours": {
+  "type": "integer",
+  "format": "int32"
+  },
+  "minutes": {
+  "type": "integer",
+  "format": "int32"
+  },
+  "month": {
+  "type": "integer",
+  "format": "int32"
+  },
+  "nanos": {
+  "type": "integer",
+  "format": "int32"
+  },
+  "seconds": {
+  "type": "integer",
+  "format": "int32"
+  },
+  "time": {
+  "type": "integer",
+  "format": "int64"
+  },
+  "timezoneOffset": {
+  "type": "integer",
+  "format": "int32"
+  },
+  "year": {
+  "type": "integer",
+  "format": "int32"
+  }
+  },
+  "title": "Timestamp"
+  },
+  "TypeDto": {
+  "type": "object",
+  "properties": {
+  "id": {
+  "type": "integer",
+  "format": "int32"
+  },
+  "name": {
+  "type": "string"
+  },
+  "parentId": {
+  "type": "integer",
+  "format": "int32"
+  }
+  },
+  "title": "TypeDto"
+  },
+  "UpdateBillStatusRequest": {
+  "type": "object",
+  "properties": {
+  "billId": {
+  "type": "integer",
+  "format": "int32"
+  },
+  "info": {
+  "type": "string"
+  },
+  "receiveTimestamp": {
+  "$ref": "#/definitions/Timestamp"
+  },
+  "status": {
+  "type": "integer",
+  "format": "int32"
+  }
+  },
+  "title": "UpdateBillStatusRequest"
+  },
+  "UserByGroupDto": {
+  "type": "object",
+  "properties": {
+  "id": {
+  "type": "integer",
+  "format": "int32"
+  },
+  "name": {
+  "type": "string"
+  }
+  },
+  "title": "UserByGroupDto"
+  },
+  "UserByGroupExtendDto": {
+  "type": "object",
+  "properties": {
+  "address": {
+  "type": "string"
+  },
+  "id": {
+  "type": "integer",
+  "format": "int32"
+  },
+  "isDisable": {
+  "type": "boolean"
+  },
+  "name": {
+  "type": "string"
+  },
+  "phone": {
+  "type": "string"
+  },
+  "point": {
+  "type": "integer",
+  "format": "int32"
+  },
+  "registerTimestamp": {
+  "type": "string",
+  "format": "date-time"
+  }
+  },
+  "title": "UserByGroupExtendDto"
+  },
+  "UserDto": {
+  "type": "object",
+  "properties": {
+  "address": {
+  "type": "string"
+  },
+  "admin": {
+  "type": "boolean"
+  },
+  "areaId": {
+  "type": "string"
+  },
+  "dateOfBirth": {
+  "type": "string"
+  },
+  "disable": {
+  "type": "boolean"
+  },
+  "email": {
+  "type": "string"
+  },
+  "id": {
+  "type": "integer",
+  "format": "int32"
+  },
+  "name": {
+  "type": "string"
+  },
+  "phone": {
+  "type": "string"
+  },
+  "point": {
+  "type": "integer",
+  "format": "int32"
+  },
+  "registerTimestamp": {
+  "$ref": "#/definitions/Timestamp"
+  },
+  "socialMediaId": {
+  "type": "string"
+  },
+  "token": {
+  "type": "string"
+  },
+  "tokenTimestamp": {
+  "$ref": "#/definitions/Timestamp"
+  }
+  },
+  "title": "UserDto"
+  }
+  }
+  }
+contentType: yaml

@@ -1,0 +1,29 @@
+_id: unbanUserUsingPUT
+type: Request
+parentId: fld_wrk_4081f3afa9a443858f94361ba779257f0ca8c3a4
+modified: 1634682181355
+created: 1631839014417
+url: "{{ base_url }}/user/unban/{% request 'parameter', 'id', 0 %}"
+name: unbanUser
+description: ""
+method: PUT
+body: {}
+parameters:
+  - name: id
+    disabled: true
+    value: "1"
+    id: pair_baee3c8a7310424a967d9c532f998f30
+headers:
+  - id: pair_f6663075fa684c2cb02cd5ce5a762541
+    name: Authorization
+    value: "1"
+    description: ""
+authentication: {}
+metaSortKey: -1631839014417
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

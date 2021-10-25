@@ -1,0 +1,27 @@
+_id: getTopIncomeProductsUsingGET
+type: Request
+parentId: fld_wrk_4081f3afa9a443858f94361ba779257fb847d6b0
+modified: 1634720222175
+created: 1634358995672
+url: "{{ base_url }}/statistic/top/product/income/{% request 'parameter',
+  'number', 0 %}"
+name: getTopIncomeProducts
+description: ""
+method: GET
+body: {}
+parameters:
+  - id: pair_bec9f57558654e5e97bae4491727b4c8
+    name: number
+    value: "10"
+    description: ""
+    disabled: true
+headers: []
+authentication: {}
+metaSortKey: -1634358995672
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

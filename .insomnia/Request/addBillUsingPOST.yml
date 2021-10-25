@@ -1,0 +1,55 @@
+_id: addBillUsingPOST
+type: Request
+parentId: fld_wrk_4081f3afa9a443858f94361ba779257f3270fda2
+modified: 1635099850214
+created: 1634358995710
+url: "{{ base_url }}/bill/add"
+name: addBill
+description: |
+  Add bill with status
+method: POST
+body:
+  mimeType: application/json
+  text: |-
+    {
+    	"user": {
+        "id": 1
+      },
+      "address": "Sky9",
+      "areaId": 1,
+      "billProductDtoList": [
+        {
+          "model": {
+            "id": 1
+          },
+          "quantity": 12
+        }
+      ],
+      "customerName": "Hoangg",
+      "info": "string",
+      "paymentMethod": 1,
+      "phone": "string",
+      "receiveTimestamp": "2021-12-01 12:29:00.123",
+      "status": 0,
+      "transportFee": 20000
+      
+    }
+parameters: []
+headers:
+  - name: Content-Type
+    disabled: false
+    value: application/json
+    id: pair_7c59523569884664be40d83155ddeff8
+  - name: Authorization
+    disabled: false
+    value: "1"
+    id: pair_f25a710249b041d694ae05698b3d1130
+authentication: {}
+metaSortKey: -1634358995710
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

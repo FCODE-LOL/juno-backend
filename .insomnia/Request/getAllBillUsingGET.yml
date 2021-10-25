@@ -1,0 +1,25 @@
+_id: getAllBillUsingGET
+type: Request
+parentId: fld_wrk_4081f3afa9a443858f94361ba779257f3270fda2
+modified: 1635099895693
+created: 1631839014446
+url: "{{ base_url }}/bill"
+name: getAllBill
+description: ADMIN only
+method: GET
+body: {}
+parameters: []
+headers:
+  - id: pair_524967dd637b438588a57d3dabbea486
+    name: Authorization
+    value: "2"
+    description: ""
+authentication: {}
+metaSortKey: -1631839014446
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

@@ -1,0 +1,41 @@
+_id: addTypesUsingPOST
+type: Request
+parentId: fld_wrk_4081f3afa9a443858f94361ba779257fb66ba8a5
+modified: 1634679476750
+created: 1631839014432
+url: "{{ base_url }}/product/type"
+name: addTypes
+description: Add types of product (ADMIN only)
+method: POST
+body:
+  mimeType: application/json
+  text: |-
+    [
+      {
+        "name": "Test01",
+        "parentId": 2
+      },
+      {
+        "name": "Test02",
+        "parentId": 3
+      }
+    ]
+parameters: []
+headers:
+  - name: Content-Type
+    disabled: false
+    value: application/json
+    id: pair_5cd0ed7a2d9e467daa39922ae2ecce56
+  - id: pair_01b433c122754787bf36caa4a2c4bc11
+    name: Authorization
+    value: "1"
+    description: ""
+authentication: {}
+metaSortKey: -1631839014432
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

@@ -1,0 +1,37 @@
+_id: updateStatusUsingPUT
+type: Request
+parentId: fld_wrk_4081f3afa9a443858f94361ba779257f3270fda2
+modified: 1635093664806
+created: 1634358995707
+url: "{{ base_url }}/bill/update/status"
+name: updateStatus
+description: ""
+method: PUT
+body:
+  mimeType: application/json
+  text: |-
+    {
+      "billId": 1,
+      "info": "String",
+      "receiveTimestamp": "2021-12-01 12:29:00.000",
+      "status": 4
+    }
+parameters: []
+headers:
+  - name: Content-Type
+    disabled: false
+    value: application/json
+    id: pair_ee9e88a880c34868a07330647fb3eda9
+  - id: pair_68348af5a30d4403976170815959a59f
+    name: Authorization
+    value: "1"
+    description: ""
+authentication: {}
+metaSortKey: -1634358995707
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

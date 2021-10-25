@@ -1,0 +1,29 @@
+_id: removeBillProductUsingDELETE
+type: Request
+parentId: fld_wrk_4081f3afa9a443858f94361ba779257f3270fda2
+modified: 1634973621732
+created: 1634358995709
+url: "{{ base_url }}/bill/delete/product/{% request 'parameter', 'id', 0 %}"
+name: removeBillProduct
+description: ""
+method: DELETE
+body: {}
+parameters:
+  - id: pair_8f983a733c2147979f6671b8779472b0
+    name: id
+    value: "4"
+    description: ""
+headers:
+  - name: Authorization
+    disabled: false
+    value: "1"
+    id: pair_e739abc4332642d98b60f04dbcba000c
+authentication: {}
+metaSortKey: -1634358995709
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global
