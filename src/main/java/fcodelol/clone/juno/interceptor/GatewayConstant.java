@@ -10,7 +10,7 @@ import java.util.List;
 public class GatewayConstant {
     public static  List<ApiEntity> apiEntities = new ArrayList<>();
     public static final String AUTHORIZATION_HEADER = "Authorization";
-    public static final long validAuthenticationTime = 1800000;
+    public static final long VALID_AUTHENTICATION_TIME = 1800000;
     public static void addApiEntities(){
         apiEntities.add(new ApiEntity("getAllBill","/bill","GET","ADMIN"));
         apiEntities.add(new ApiEntity("setBillStatus","/bill/update/status","PUT","ADMIN"));

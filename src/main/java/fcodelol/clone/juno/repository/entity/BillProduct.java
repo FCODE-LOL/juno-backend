@@ -8,6 +8,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
+
 @Entity
 @Table(name = "`BILL_PRODUCT`")
 @Getter

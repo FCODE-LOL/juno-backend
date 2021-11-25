@@ -16,25 +16,23 @@ public class AuthorizationService {
     private static final Logger logger = LogManager.getLogger(AuthorizationService.class);
     @Autowired
     UserRepository userRepository;
-    public String getRoleByToken(String token)
-    {
-        try{
-            Boolean isAdmin =userRepository.findRoleByToken(token,new Timestamp(System.currentTimeMillis() + GatewayConstant.validAuthenticationTime));
-            if(isAdmin == null)
+
+    public String getRoleByToken(String token) {
+        try {
+            Boolean isAdmin = userRepository.findRoleByToken(token, new Timestamp(System.currentTimeMillis() + GatewayConstant.VALID_AUTHENTICATION_TIME));
+            if (isAdmin == null)
                 return "GUESS";
             return isAdmin.booleanValue() ? "ADMIN" : "MEMBER";
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             logger.error(e.getMessage());
             return null;
         }
     }
-    public Integer getUserIdByToken(String token)
-    {
+
+    public Integer getUserIdByToken(String token) {
         try {
             return userRepository.getIdByToken(token);
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             logger.error("Get id by token" + e.getMessage());
             return 0;
         }

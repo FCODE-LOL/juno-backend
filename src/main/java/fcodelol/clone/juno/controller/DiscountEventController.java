@@ -3,7 +3,6 @@ package fcodelol.clone.juno.controller;
 import fcodelol.clone.juno.controller.response.DiscountResponse;
 import fcodelol.clone.juno.dto.DiscountByGroupDto;
 import fcodelol.clone.juno.dto.DiscountDto;
-import fcodelol.clone.juno.service.AuthorizationService;
 import fcodelol.clone.juno.service.DiscountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -15,11 +14,9 @@ public class DiscountEventController {
 
     @Autowired
     DiscountService discountService;
-    @Autowired
-    AuthorizationService authorizationService;
 
     @PostMapping(value = "/add")
-    public String addDiscount(@RequestHeader("Authorization")  String token, @RequestBody DiscountDto discountDto) {
+    public String addDiscount( @RequestBody DiscountDto discountDto) {
         return discountService.addDiscountEvent(discountDto);
     }
 
@@ -35,7 +32,7 @@ public class DiscountEventController {
     }
 
     @DeleteMapping(value = "/delete/model/{id}")
-    public String removeDiscountModel(@RequestHeader("Authorization")  String token, @PathVariable int discountModelId) {
+    public String removeDiscountModel(@PathVariable int discountModelId) {
         return discountService.removeDiscountModel(discountModelId);
     }
 

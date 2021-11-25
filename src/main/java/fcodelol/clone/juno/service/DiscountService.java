@@ -22,6 +22,7 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.Month;
 import java.util.HashMap;
 import java.util.List;
 import java.util.TimeZone;
@@ -48,6 +49,7 @@ public class DiscountService {
         taskScheduler = new ThreadPoolTaskScheduler();
         taskScheduler.setPoolSize(50);
         taskScheduler.setThreadNamePrefix("ThreadPoolTaskScheduler");
+        taskScheduler.initialize();
         futureMap = new HashMap<>();
         restartAllDiscountEvent();
     }
@@ -107,7 +109,6 @@ public class DiscountService {
         }
     }
 
-    @Transactional
     public String updateDiscount(DiscountDto discountDto) {
         try {
             discountDto.setDiscountIdOfDiscountModel();
@@ -199,7 +200,7 @@ public class DiscountService {
         };
     }
 
-    @Transactional
+
     public Runnable runFinishEvent(Timestamp finishTime, int discountId) throws Exception {
         return () -> {
             Discount discount = discountRepository.findOneByIdAndIsDisable(discountId, false);
@@ -246,8 +247,12 @@ public class DiscountService {
         LocalDateTime time =
                 LocalDateTime.ofInstant(Instant.ofEpochMilli(timestamp.getTime()),
                         TimeZone.getDefault().toZoneId());
-        return String.format("%s %s %s %s %s ?", time.getSecond(), time.getMinute(), time.getDayOfMonth(), time.getMonth());
+        logger.error(String.format("%s %s %s %s %s ?", time.getSecond(), time.getMinute(),time.getHour(), time.getDayOfMonth(), convertTimestampMonthToNumber(time.getMonth())));
+        return String.format("%s %s %s %s %s ?", time.getSecond(), time.getMinute(),time.getHour(), time.getDayOfMonth(), convertTimestampMonthToNumber(time.getMonth()));
     }
 
+    public String convertTimestampMonthToNumber(Month month){
+        return month.name().substring(0,3);
+    }
 
 }
