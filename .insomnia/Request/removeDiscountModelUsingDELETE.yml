@@ -1,18 +1,24 @@
 _id: removeDiscountModelUsingDELETE
 type: Request
 parentId: fld_wrk_4081f3afa9a443858f94361ba779257f9897c42d
-modified: 1634358995699
+modified: 1635150657815
 created: 1634358995699
-url: "{{ base_url }}/discount/delete/Model/{{ id }}"
+url: "{{ base_url }}/discount/delete/Model/{% request 'parameter', 'id', 0 %}"
 name: removeDiscountModel
 description: ""
 method: DELETE
 body: {}
-parameters: []
+parameters:
+  - id: pair_ef25545618524180af5290b1f25eaffc
+    name: id
+    value: "1"
+    description: ""
+    disabled: true
 headers:
   - name: token
     disabled: false
     value: string
+    id: pair_b92953cf6aa44e5b89a8528fdf02795b
 authentication: {}
 metaSortKey: -1634358995699
 isPrivate: false

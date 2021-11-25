@@ -1,7 +1,7 @@
 _id: addDiscountUsingPOST
 type: Request
 parentId: fld_wrk_4081f3afa9a443858f94361ba779257f9897c42d
-modified: 1634358995700
+modified: 1637847942842
 created: 1634358995700
 url: "{{ base_url }}/discount/add"
 name: addDiscount
@@ -11,89 +11,29 @@ body:
   mimeType: application/json
   text: |-
     {
-      "code": "string",
-      "discountModelDtoList": [
-        {
-          "discount": {
-            "code": "string",
-            "endTime": {
-              "date": 0,
-              "day": 0,
-              "hours": 0,
-              "minutes": 0,
-              "month": 0,
-              "nanos": 0,
-              "seconds": 0,
-              "time": 0,
-              "timezoneOffset": 0,
-              "year": 0
-            },
-            "id": 0,
-            "percent": 0,
-            "price": 0,
-            "startTime": {
-              "date": 0,
-              "day": 0,
-              "hours": 0,
-              "minutes": 0,
-              "month": 0,
-              "nanos": 0,
-              "seconds": 0,
-              "time": 0,
-              "timezoneOffset": 0,
-              "year": 0
-            }
-          },
-          "id": 0,
-          "model": {
-            "colorId": "string",
-            "discountPrice": 0,
-            "id": 0,
-            "linkImages": "string",
-            "price": 0,
-            "quantity": 0,
-            "size": 0
-          },
-          "price": 0,
-          "quantity": 0
-        }
-      ],
-      "endTime": {
-        "date": 0,
-        "day": 0,
-        "hours": 0,
-        "minutes": 0,
-        "month": 0,
-        "nanos": 0,
-        "seconds": 0,
-        "time": 0,
-        "timezoneOffset": 0,
-        "year": 0
-      },
-      "id": 0,
-      "percent": 0,
-      "price": 0,
-      "startTime": {
-        "date": 0,
-        "day": 0,
-        "hours": 0,
-        "minutes": 0,
-        "month": 0,
-        "nanos": 0,
-        "seconds": 0,
-        "time": 0,
-        "timezoneOffset": 0,
-        "year": 0
-      }
+    	
+    	"percent": 20,
+    	"startTime": "2021-12-03 12:29:00.123",
+    	"endTime": "2021-12-05 12:29:00.123",
+    	"discountModelDtoList": [
+    		{
+    			"model": {
+    				"id": 1
+    			},
+    			"quantity": 12
+    		}
+    	]
     }
 parameters: []
 headers:
   - name: Content-Type
     disabled: false
     value: application/json
-  - name: token
+    id: pair_cac8aefd8e074c45ab1ed37b9531e5fa
+  - name: Authorization
     disabled: false
-    value: string
+    value: "1"
+    id: pair_971e3c5eaa904f4b8f0339dfc88f78c4
 authentication: {}
 metaSortKey: -1634358995700
 isPrivate: false

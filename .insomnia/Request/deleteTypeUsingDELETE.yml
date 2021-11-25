@@ -1,7 +1,7 @@
 _id: deleteTypeUsingDELETE
 type: Request
 parentId: fld_wrk_4081f3afa9a443858f94361ba779257fb66ba8a5
-modified: 1634679568169
+modified: 1637364305109
 created: 1631839014428
 url: "{{ base_url }}/product/type/{% request 'parameter', 'id', 0 %}"
 name: deleteType
@@ -16,8 +16,8 @@ parameters:
     disabled: true
 headers:
   - id: pair_2c1908bbbeb54104bc4c8873f1d73979
-    name: ""
-    value: ""
+    name: Authorization
+    value: "1"
     description: ""
 authentication: {}
 metaSortKey: -1631839014428
