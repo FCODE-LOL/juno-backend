@@ -1,0 +1,45 @@
+_id: updateTypesUsingPUT
+type: Request
+parentId: fld_wrk_4081f3afa9a443858f94361ba779257fb66ba8a5
+modified: 1634679637881
+created: 1631839014431
+url: "{{ base_url }}/product/type"
+name: updateTypes
+description: |-
+  Update type (ADMIN only)
+  Type udated must have id
+method: PUT
+body:
+  mimeType: application/json
+  text: |-
+    [
+      {
+    		"id": 3,
+        "name": "Test03",
+        "parentId": 2
+      },
+      {
+    		"id": 4,
+        "name": "Test02",
+        "parentId": 3
+      }
+    ]
+parameters: []
+headers:
+  - name: Content-Type
+    disabled: false
+    value: application/json
+    id: pair_8e7afe754f70408d89af657af502c2e0
+  - id: pair_4cd5fd17c12c44f9a3112f1ef111e54f
+    name: Authorization
+    value: "2"
+    description: ""
+authentication: {}
+metaSortKey: -1631839014431
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

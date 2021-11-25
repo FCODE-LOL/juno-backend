@@ -1,0 +1,21 @@
+_id: initDBUsingPOST
+type: Request
+parentId: fld_wrk_4081f3afa9a443858f94361ba779257f7f4942c4
+modified: 1634358995694
+created: 1634358995694
+url: "{{ base_url }}/init"
+name: initDB
+description: ""
+method: POST
+body: {}
+parameters: []
+headers: []
+authentication: {}
+metaSortKey: -1634358995694
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

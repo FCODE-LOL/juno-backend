@@ -1,0 +1,30 @@
+_id: loginUsingPUT
+type: Request
+parentId: fld_wrk_4081f3afa9a443858f94361ba779257f47a67f57
+modified: 1634358995694
+created: 1631839014440
+url: "{{ base_url }}/login"
+name: login
+description: ""
+method: PUT
+body:
+  mimeType: application/json
+  text: |-
+    {
+      "email": "string",
+      "password": "string"
+    }
+parameters: []
+headers:
+  - name: Content-Type
+    disabled: false
+    value: application/json
+authentication: {}
+metaSortKey: -1631839014440
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

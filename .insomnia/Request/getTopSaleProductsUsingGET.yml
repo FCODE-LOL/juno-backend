@@ -1,0 +1,27 @@
+_id: getTopSaleProductsUsingGET
+type: Request
+parentId: fld_wrk_4081f3afa9a443858f94361ba779257fb847d6b0
+modified: 1634716320369
+created: 1634358995670
+url: "{{ base_url }}/statistic/top/product/sale/{% request 'parameter',
+  'number', 0 %}"
+name: getTopSaleProducts
+description: ""
+method: GET
+body: {}
+parameters:
+  - id: pair_741848c981c7462aa9d92aaa405e2f2d
+    name: number
+    value: "10"
+    description: ""
+    disabled: true
+headers: []
+authentication: {}
+metaSortKey: -1634358995670
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

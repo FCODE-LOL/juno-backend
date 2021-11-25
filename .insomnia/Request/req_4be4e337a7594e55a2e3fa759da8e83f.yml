@@ -1,0 +1,25 @@
+_id: req_4be4e337a7594e55a2e3fa759da8e83f
+type: Request
+parentId: fld_wrk_4081f3afa9a443858f94361ba779257f47a67f57
+modified: 1634681900965
+created: 1634681127204
+url: "{{ _.base_url }}/send-token/{% request 'parameter', 'email', 0 %}"
+name: sendTokenToEmail
+description: ""
+method: POST
+body: {}
+parameters:
+  - id: pair_9e902fbcfd0f4466a6574fd3696c7a2b
+    name: email
+    value: trannhathoang8678@gmail.com
+    description: ""
+headers: []
+authentication: {}
+metaSortKey: -1634681127205
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

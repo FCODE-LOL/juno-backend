@@ -1,0 +1,21 @@
+_id: getAllDiscountUsingGET
+type: Request
+parentId: fld_wrk_4081f3afa9a443858f94361ba779257f9897c42d
+modified: 1634358995702
+created: 1634358995702
+url: "{{ base_url }}/discount"
+name: getAllDiscount
+description: ""
+method: GET
+body: {}
+parameters: []
+headers: []
+authentication: {}
+metaSortKey: -1634358995702
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

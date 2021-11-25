@@ -1,0 +1,30 @@
+_id: getAllBillOfUserUsingGET
+type: Request
+parentId: fld_wrk_4081f3afa9a443858f94361ba779257f3270fda2
+modified: 1635141388667
+created: 1634358995706
+url: "{{ base_url }}/bill/user/{% request 'parameter', 'id', 0 %}"
+name: getAllBillOfUser
+description: ""
+method: GET
+body: {}
+parameters:
+  - id: pair_19af07e8eee247ddb30cf7bd599e7529
+    name: id
+    value: "3"
+    description: ""
+    disabled: true
+headers:
+  - name: Authorization
+    disabled: false
+    value: "1"
+    id: pair_d09a01c5f46742d7ae9ba2ffe3b2cb98
+authentication: {}
+metaSortKey: -1634358995706
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

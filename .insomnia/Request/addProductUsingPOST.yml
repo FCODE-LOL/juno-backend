@@ -1,0 +1,75 @@
+_id: addProductUsingPOST
+type: Request
+parentId: fld_wrk_4081f3afa9a443858f94361ba779257fb66ba8a5
+modified: 1634931279207
+created: 1631839014437
+url: "{{ base_url }}/product"
+name: addProduct
+description: Add product with all models of product (ADMIN only)
+method: POST
+body:
+  mimeType: application/json
+  text: |-
+    {
+    	"id": "TEST01",
+    	"name": "string",
+      "description": "string",
+      "linkImages": "linkImage1&linkImage2",
+      "material": "Bạc",
+      "modelList": [
+        {
+    		
+          "colorId": "BLUE",
+    			"price": 200000.000,
+          "discountPrice": 200000.000,
+          "linkImages": "linkImage3&linkImage4",
+          "quantity": 12,
+          "size": 9
+        },
+    		{
+          "colorId": "RED",
+    			"price": 210000.000,
+          "discountPrice": 205000.000,
+          "linkImages": "linkImage3&linkImage4",
+          "quantity": 12,
+          "size": 9
+        },
+    		{
+          "colorId": "RED",
+    			"price": 210000.000,
+          "discountPrice": 205000.000,
+          "linkImages": "linkImage3&linkImage4",
+          "quantity": 12,
+          "size": 8
+        }
+      ],
+      "origin": "TQ",
+      "price": 200000.000,
+    	"discountPrice": 200000,
+      "type": {
+        "id": 1
+      }
+    }
+parameters:
+  - id: pair_c11e2f3533c64d8b80e474d795950723
+    name: ""
+    value: ""
+    description: ""
+headers:
+  - name: Content-Type
+    disabled: false
+    value: application/json
+    id: pair_c65aaad4ec4945f38bc150c5284d3d26
+  - id: pair_c07dd8f6846f46edb7776dbe9907e897
+    name: Authorization
+    value: "2"
+    description: ""
+authentication: {}
+metaSortKey: -1631839014437
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

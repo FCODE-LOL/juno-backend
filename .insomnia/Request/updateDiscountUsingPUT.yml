@@ -1,0 +1,102 @@
+_id: updateDiscountUsingPUT
+type: Request
+parentId: fld_wrk_4081f3afa9a443858f94361ba779257f9897c42d
+modified: 1634358995697
+created: 1634358995697
+url: "{{ base_url }}/discount/update"
+name: updateDiscount
+description: ""
+method: PUT
+body:
+  mimeType: application/json
+  text: |-
+    {
+      "code": "string",
+      "discountModelDtoList": [
+        {
+          "discount": {
+            "code": "string",
+            "endTime": {
+              "date": 0,
+              "day": 0,
+              "hours": 0,
+              "minutes": 0,
+              "month": 0,
+              "nanos": 0,
+              "seconds": 0,
+              "time": 0,
+              "timezoneOffset": 0,
+              "year": 0
+            },
+            "id": 0,
+            "percent": 0,
+            "price": 0,
+            "startTime": {
+              "date": 0,
+              "day": 0,
+              "hours": 0,
+              "minutes": 0,
+              "month": 0,
+              "nanos": 0,
+              "seconds": 0,
+              "time": 0,
+              "timezoneOffset": 0,
+              "year": 0
+            }
+          },
+          "id": 0,
+          "model": {
+            "colorId": "string",
+            "discountPrice": 0,
+            "id": 0,
+            "linkImages": "string",
+            "price": 0,
+            "quantity": 0,
+            "size": 0
+          },
+          "price": 0,
+          "quantity": 0
+        }
+      ],
+      "endTime": {
+        "date": 0,
+        "day": 0,
+        "hours": 0,
+        "minutes": 0,
+        "month": 0,
+        "nanos": 0,
+        "seconds": 0,
+        "time": 0,
+        "timezoneOffset": 0,
+        "year": 0
+      },
+      "id": 0,
+      "percent": 0,
+      "price": 0,
+      "startTime": {
+        "date": 0,
+        "day": 0,
+        "hours": 0,
+        "minutes": 0,
+        "month": 0,
+        "nanos": 0,
+        "seconds": 0,
+        "time": 0,
+        "timezoneOffset": 0,
+        "year": 0
+      }
+    }
+parameters: []
+headers:
+  - name: Content-Type
+    disabled: false
+    value: application/json
+authentication: {}
+metaSortKey: -1634358995697
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

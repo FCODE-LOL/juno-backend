@@ -1,0 +1,30 @@
+_id: getProductByIdUsingGET
+type: Request
+parentId: fld_wrk_4081f3afa9a443858f94361ba779257fb66ba8a5
+modified: 1634929661249
+created: 1631839014427
+url: "{{ base_url }}/product/{% request 'parameter', 'id', 0 %}"
+name: getProductById
+description: ""
+method: GET
+body: {}
+parameters:
+  - id: pair_cd4ecb633eb547fa8e67c90ea6ff585e
+    name: id
+    value: TEST01
+    description: ""
+    disabled: true
+headers:
+  - id: pair_026c68622f6a4f5dafe7d320e4859cde
+    name: ""
+    value: ""
+    description: ""
+authentication: {}
+metaSortKey: -1631839014427
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

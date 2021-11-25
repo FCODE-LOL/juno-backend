@@ -1,0 +1,30 @@
+_id: deleteProductUsingPUT
+type: Request
+parentId: fld_wrk_4081f3afa9a443858f94361ba779257fb66ba8a5
+modified: 1634511972287
+created: 1631839014435
+url: "{{ base_url }}/product/delete/{% request 'parameter', 'id', 0 %}"
+name: deleteProduct
+description: Delete a product by its id (ADMIN only)
+method: PUT
+body: {}
+parameters:
+  - id: pair_d6eafe3f63b8413f9c9af29e79aa57c6
+    name: id
+    value: TEST01
+    description: ""
+    disabled: true
+headers:
+  - id: pair_4aa5b4ba9fc9412c8f0083f9939a1eb3
+    name: Authorization
+    value: "1"
+    description: ""
+authentication: {}
+metaSortKey: -1631839014435
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

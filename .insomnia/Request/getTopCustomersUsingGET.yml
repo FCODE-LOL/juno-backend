@@ -1,0 +1,30 @@
+_id: getTopCustomersUsingGET
+type: Request
+parentId: fld_wrk_4081f3afa9a443858f94361ba779257fb847d6b0
+modified: 1634718811878
+created: 1631839014423
+url: "{{ base_url }}/statistic/top/customer/{% request 'parameter', 'number', 0 %}"
+name: getTopCustomers
+description: For admin only
+method: GET
+body: {}
+parameters:
+  - id: pair_9da15c2bc9354452850d7fb4e66fd90c
+    name: number
+    value: "10"
+    description: ""
+    disabled: true
+headers:
+  - id: pair_937a9cf02d25416cb894dcb30ce867b3
+    name: Authorization
+    value: "1"
+    description: ""
+authentication: {}
+metaSortKey: -1631839014423
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

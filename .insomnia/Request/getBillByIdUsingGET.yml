@@ -1,0 +1,30 @@
+_id: getBillByIdUsingGET
+type: Request
+parentId: fld_wrk_4081f3afa9a443858f94361ba779257f3270fda2
+modified: 1634761591339
+created: 1631839014444
+url: "{{ base_url }}/bill/{% request 'parameter', 'id', 0 %}"
+name: getBillById
+description: ""
+method: GET
+body: {}
+parameters:
+  - id: pair_89ca26281dd7470aa788c1b9fae2db75
+    name: id
+    value: "1"
+    description: ""
+    disabled: true
+headers:
+  - name: Authorization
+    disabled: false
+    value: "1"
+    id: pair_1d7aa6dc73f7452a9d8fa04c8ec83a0b
+authentication: {}
+metaSortKey: -1631839014444
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global
