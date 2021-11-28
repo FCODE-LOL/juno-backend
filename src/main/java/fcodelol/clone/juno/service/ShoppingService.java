@@ -154,7 +154,7 @@ public class ShoppingService {
             if (updateBillStatusRequest.getStatus() == 0) // change bill to unconfirmed status
                 throw new Exception("Cannot change bill to pre-status");
             if (updateBillStatusRequest.getStatus() == 6) //cancel
-                returnProduct(bill);
+                getProduct(bill);
             if (updateBillStatusRequest.getStatus() == 5 && bill.getStatus() != 5) // complete shopping
             {
                 User user = bill.getUser();
@@ -178,7 +178,7 @@ public class ShoppingService {
     }
 
     @Transactional
-    public void returnProduct(Bill bill) throws Exception {
+    public void getProduct(Bill bill) throws Exception {
         for (BillProduct billProduct : bill.getBillProductList()) {
             Model model = billProduct.getModel();
             model.setQuantity(billProduct.getQuantity() + model.getQuantity());

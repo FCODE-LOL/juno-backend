@@ -70,4 +70,14 @@ public class StatisticService {
             return null;
         }
     }
+
+    public List<ProductByGroupDto> getTopRelatedProduct(int productId,int numberOfProduct) {
+        try {
+            numberOfProduct = Math.min(numberOfProduct, (int) productRepository.count());
+            return productRepository.getTopRelatedProduct(productId,numberOfProduct).stream().map(product -> new ProductByGroupDto((Object[]) product)).collect(Collectors.toList());
+        } catch (Exception e) {
+            logger.error("Get top income product:" + e.getMessage());
+            return null;
+        }
+    }
 }

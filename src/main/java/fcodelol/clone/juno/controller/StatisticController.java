@@ -16,19 +16,22 @@ public class StatisticController {
     @Autowired
     StatisticService statisticService;
 
-    @GetMapping(value = "/top/product/sale/{number}")
-    public List<ProductByGroupDto> getTopSaleProducts(@PathVariable int number) {
-        return statisticService.getTopSaleProduct(number);
+    @GetMapping(value = "/top/product/sale/{quantity}")
+    public List<ProductByGroupDto> getTopSaleProducts(@PathVariable int quantity) {
+        return statisticService.getTopSaleProduct(quantity);
     }
 
-    @GetMapping(value = "/top/product/income/{number}")
-    public List<ProductByGroupDto> getTopIncomeProducts(@PathVariable int number) {
-        return statisticService.getTopIncomeProduct(number);
+    @GetMapping(value = "/top/product/income/{quantity}")
+    public List<ProductByGroupDto> getTopIncomeProducts(@PathVariable int quantity) {
+        return statisticService.getTopIncomeProduct(quantity);
     }
-
-    @GetMapping(value = "/top/customer/{number}")
-    public List<UserByGroupDto> getTopCustomers(@PathVariable int number) {
-        return statisticService.getTopCustomer(number);
+    @GetMapping(value = "/top/product/relate/{productId}&{quantity}")
+    public List<ProductByGroupDto> getTopRelatedProducts(@PathVariable int productId,@PathVariable int quantity) {
+        return statisticService.getTopRelatedProduct(productId,quantity);
+    }
+    @GetMapping(value = "/top/customer/{quantity}")
+    public List<UserByGroupDto> getTopCustomers(@PathVariable int quantity) {
+        return statisticService.getTopCustomer(quantity);
     }
     @GetMapping(value = "/income")
     public List<BigDecimal> getIncomes(@RequestBody List<PeriodTime> periodTimes)

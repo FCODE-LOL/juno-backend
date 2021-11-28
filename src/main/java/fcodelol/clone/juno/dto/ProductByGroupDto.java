@@ -23,7 +23,8 @@ public class ProductByGroupDto {
     public ProductByGroupDto(Object[] property) {
         this.id = (String)property[0];
         this.name = (String)property[1];
-        this.createdTimestamp = (Timestamp)property[2];
+        this.linkImages = (String)property[2];
+        this.createdTimestamp = (Timestamp)property[3];
     }
 
     public ProductByGroupDto(String id) {

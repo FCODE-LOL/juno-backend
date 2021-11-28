@@ -44,7 +44,6 @@ public class ProductService {
         }
     }
 
-
     private void removeModelOfProductIfExist(String productId) {
         try {
             if (productRepository.existsById(productId)) {
