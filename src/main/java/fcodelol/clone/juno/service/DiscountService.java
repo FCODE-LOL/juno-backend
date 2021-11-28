@@ -51,7 +51,6 @@ public class DiscountService {
         taskScheduler.setThreadNamePrefix("ThreadPoolTaskScheduler");
         taskScheduler.initialize();
         futureMap = new HashMap<>();
-        restartAllDiscountEvent();
     }
 
     @Transactional
@@ -71,6 +70,7 @@ public class DiscountService {
         try {
             List<Discount> discountList = discountRepository.findByIsDisable(false);
             if (discountList == null) return;
+            futureMap.clear();
             for (Discount discount : discountList)
                 if (discount.getCode() == null) //discount without code
                 {
@@ -80,7 +80,7 @@ public class DiscountService {
                             , new CronTrigger(covertTimestampToCronExpression(discount.getStartTime()))));
                 }
         } catch (Exception e) {
-            logger.error("RESTART FAIL: " + e.getMessage());
+            logger.error("RESTART FAIL EXCEPTION: " + e.getMessage());
             return;
         }
     }
@@ -129,13 +129,6 @@ public class DiscountService {
                     futureMap.put(discount.getId(), taskScheduler.schedule(runFinishEvent(discount.getStartTime(), discount.getId())
                             , new CronTrigger(covertTimestampToCronExpression(discount.getStartTime()))));
             }
-            List<DiscountModelDto> discountModelDtoList = discountDto.getDiscountModelDtoList();
-            if (discountModelDtoList != null) {
-                for (DiscountModelDto discountModelDto : discountModelDtoList) {
-                    discountModelDto.setDiscount(new DiscountByGroupDto(discount.getId()));
-                    discountModelRepository.save(modelMapper.map(discountModelDto, DiscountModel.class));
-                }
-            }
             return "Update discount success";
         } catch (Exception e) {
             return "Update discount exception:" + e.getMessage();
@@ -157,7 +150,7 @@ public class DiscountService {
             discountRepository.save(discount);
             return "Remove discount success";
         } catch (Exception e) {
-            return "Remove discount" + e.getMessage();
+            return "Remove discount exception:" + e.getMessage();
         }
     }
 
@@ -167,8 +160,8 @@ public class DiscountService {
             DiscountModel discountModel = discountModelRepository.findOneById(discountModelId);
             if (discountModel == null) return "This discount model is not exists";
             Discount discount = discountModel.getDiscount();
-            if (discount.getStartTime().getTime() > System.currentTimeMillis())
-                return "This event started, cannot chang";
+            if (discount.getStartTime().getTime() <= System.currentTimeMillis())
+                return "This event started, cannot change";
             discountModelRepository.deleteById(discountModel.getId());
             return "Remove discount model success";
         } catch (Exception e) {
@@ -181,7 +174,6 @@ public class DiscountService {
     public Runnable runStartEvent(Timestamp startTime, int discountId) throws Exception {
         return () -> {
             Discount discount = discountRepository.findOneByIdAndIsDisable(discountId, false);
-            if (discount.getIsDisable()) return;
             if (discount.getStartTime().compareTo(startTime) != 0) return;
             for (DiscountModel discountModel : discount.getDiscountModelList()) {
                 Model model = discountModel.getModel();
@@ -205,7 +197,6 @@ public class DiscountService {
         return () -> {
             Discount discount = discountRepository.findOneByIdAndIsDisable(discountId, false);
             if (discount == null) return;
-            if (discount.getIsDisable()) return;
             if (discount.getEndTime().compareTo(finishTime) != 0) return;
             for (DiscountModel discountModel : discount.getDiscountModelList()) {
                 Model model = discountModel.getModel();
@@ -247,12 +238,16 @@ public class DiscountService {
         LocalDateTime time =
                 LocalDateTime.ofInstant(Instant.ofEpochMilli(timestamp.getTime()),
                         TimeZone.getDefault().toZoneId());
-        logger.error(String.format("%s %s %s %s %s ?", time.getSecond(), time.getMinute(),time.getHour(), time.getDayOfMonth(), convertTimestampMonthToNumber(time.getMonth())));
         return String.format("%s %s %s %s %s ?", time.getSecond(), time.getMinute(),time.getHour(), time.getDayOfMonth(), convertTimestampMonthToNumber(time.getMonth()));
     }
 
-    public String convertTimestampMonthToNumber(Month month){
+    private String convertTimestampMonthToNumber(Month month){
         return month.name().substring(0,3);
+    }
+    private boolean validDiscountTime(Timestamp startTime, Timestamp endTime){
+        if(startTime.getTime() < System.currentTimeMillis()) return false;
+        if(startTime.getTime() >= endTime.getTime()) return false;
+        return true;
     }
 
 }

@@ -18,7 +18,7 @@ public class DiscountModel {
     @Column(name = "id", nullable = false)
     private Integer id;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "DISCOUNT_id")
+    @JoinColumn(name = "DISCOUNT_id", columnDefinition = "INT")
     private Discount discount;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "MODEL_id")

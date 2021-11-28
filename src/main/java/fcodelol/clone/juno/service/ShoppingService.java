@@ -38,15 +38,12 @@ public class ShoppingService {
     @Autowired
     UserRepository userRepository;
     @Autowired
-    ExecuteDBService executeDBService;
-    @Autowired
     ModelMapper modelMapper;
     private static final Logger logger = LogManager.getLogger(ShoppingService.class);
 
     @Transactional
     public String addBill(BillDto billDto) {
         try {
-
             billDto.setBillProductDtoList(setBillProductPrice(billDto.getBillProductDtoList()));
             billDto.setPayment(calculateBillPrice(billDto.getBillProductDtoList()));
             billDto.getBillProductDtoList().forEach(billProductDto -> {
@@ -96,7 +93,7 @@ public class ShoppingService {
             }
             bill = modelMapper.map(billDto, fcodelol.clone.juno.repository.entity.Bill.class);
             bill.setIsDisable(false);
-             billRepository.save(bill);
+            billRepository.save(bill);
             return "Update bill success";
         } catch (Exception e) {
             return "Update bill exception:" + e.getMessage();

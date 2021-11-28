@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
 @RestController
 @RequestMapping(value = "/discount")
 public class DiscountEventController {
@@ -16,22 +17,22 @@ public class DiscountEventController {
     DiscountService discountService;
 
     @PostMapping(value = "/add")
-    public String addDiscount( @RequestBody DiscountDto discountDto) {
+    public String addDiscount(@RequestBody DiscountDto discountDto) {
         return discountService.addDiscountEvent(discountDto);
     }
 
     @PutMapping(value = "/update")
-    public String updateDiscount( @RequestBody DiscountDto discountDto) {
+    public String updateDiscount(@RequestBody DiscountDto discountDto) {
 
         return discountService.updateDiscount(discountDto);
     }
 
-    @PutMapping(value = "/delete/{id}")
+    @PutMapping(value = "/delete/{discountId}")
     public String removeDiscount(@PathVariable int discountId) {
         return discountService.removeDiscountById(discountId);
     }
 
-    @DeleteMapping(value = "/delete/model/{id}")
+    @DeleteMapping(value = "/delete/model/{discountModelId}")
     public String removeDiscountModel(@PathVariable int discountModelId) {
         return discountService.removeDiscountModel(discountModelId);
     }
@@ -42,10 +43,10 @@ public class DiscountEventController {
     }
 
     @GetMapping(value = "/{id}")
-    public DiscountResponse getDiscountById(@RequestHeader("Authorization")  String token, @PathVariable int id) {
+    public DiscountResponse getDiscountById(@PathVariable int id) {
         return discountService.getDiscountById(id);
     }
 
-    
+
 }
 
