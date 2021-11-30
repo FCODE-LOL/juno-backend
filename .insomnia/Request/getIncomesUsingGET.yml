@@ -1,7 +1,7 @@
 _id: getIncomesUsingGET
 type: Request
 parentId: fld_wrk_4081f3afa9a443858f94361ba779257fb847d6b0
-modified: 1634754056916
+modified: 1635317824203
 created: 1631839014424
 url: "{{ base_url }}/statistic/income"
 name: getIncomes

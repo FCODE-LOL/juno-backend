@@ -1,14 +1,19 @@
 _id: removeDiscountUsingPUT
 type: Request
 parentId: fld_wrk_4081f3afa9a443858f94361ba779257f9897c42d
-modified: 1634358995698
+modified: 1635150703859
 created: 1634358995698
-url: "{{ base_url }}/discount/delete/{{ id }}"
+url: "{{ base_url }}/discount/delete/{% request 'parameter', 'id', 0 %}"
 name: removeDiscount
 description: ""
 method: PUT
 body: {}
-parameters: []
+parameters:
+  - id: pair_4d2c2a3d3079433da19091b700d0737e
+    name: id
+    value: "1"
+    description: ""
+    disabled: true
 headers: []
 authentication: {}
 metaSortKey: -1634358995698

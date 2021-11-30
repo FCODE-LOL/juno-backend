@@ -1,18 +1,24 @@
 _id: getDiscountByIdUsingGET
 type: Request
 parentId: fld_wrk_4081f3afa9a443858f94361ba779257f9897c42d
-modified: 1634358995696
+modified: 1635150701567
 created: 1634358995696
-url: "{{ base_url }}/discount/{{ id }}"
+url: "{{ base_url }}/discount/{% request 'parameter', 'id', 0 %}"
 name: getDiscountById
 description: ""
 method: GET
 body: {}
-parameters: []
+parameters:
+  - id: pair_458880eaa7b3421dbc601bc794f25c74
+    name: id
+    value: "1"
+    description: ""
+    disabled: true
 headers:
   - name: token
     disabled: false
     value: string
+    id: pair_3c5a3044d4e74fd2982af49a7f462cfb
 authentication: {}
 metaSortKey: -1634358995696
 isPrivate: false
