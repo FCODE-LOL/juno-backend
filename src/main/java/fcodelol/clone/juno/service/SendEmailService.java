@@ -12,8 +12,7 @@ public class SendEmailService {
     final String username = "giveandgetse@gmail.com";
     final String password = "hklwsvnyjjhlbkud";
 
-    public void sendEmail(String title, String email, String content) throws Exception {
-
+    public void sendEmail(String title, String email, String content) {
         Properties props = new Properties();
         props.put("mail.smtp.ssl.trust", "smtp.gmail.com");
         props.put("mail.smtp.starttls.enable", "true");

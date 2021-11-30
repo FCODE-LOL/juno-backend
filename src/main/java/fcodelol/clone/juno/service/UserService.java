@@ -44,6 +44,8 @@ public class UserService {
             User user = userRepository.findOneById(id);
             if(user == null)
                 return "User is not exist";
+            if(user.getIsAdmin()!=null && user.getIsAdmin())
+                return "You can not ban admin";
             user.setIsDisable(true);
             userRepository.save(user);
             return "Ban user success";
