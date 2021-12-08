@@ -1,6 +1,5 @@
-package fcodelol.clone.juno.controller.response;
+package fcodelol.clone.juno.dto;
 
-import fcodelol.clone.juno.dto.BillByGroupDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

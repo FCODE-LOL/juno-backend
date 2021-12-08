@@ -1,5 +1,6 @@
 package fcodelol.clone.juno.service;
 
+import fcodelol.clone.juno.controller.response.Response;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,36 +33,35 @@ public class ExecuteDBService {
     }
 
     @Transactional
-    public String loadDBData() {
+    public Response loadDBData() {
         try {
             runScriptFile(dataScript);
-            return "Load DB data success";
+            return new Response(200,"Load DB data success");
         } catch (Exception e) {
             logger.error("Load data in DB: " + e.getMessage());
-            return e.getMessage();
-
+            return new Response(500,e.getMessage());
         }
     }
 
     @Transactional
-    public String clearDBData() {
+    public Response clearDBData() {
         try {
             runScriptFile(clearDataScript);
-            return "Clear data in DB";
+            return new Response(200,"Clear data in DB");
         } catch (Exception e) {
             logger.error("Clear data in DB: " + e.getMessage());
-            return e.getMessage();
+            return new Response(500,e.getMessage());
         }
     }
 
     @Transactional
-    public String initDB() {
+    public Response initDB() {
         try {
             runScriptFile(initDBScript);
-            return "Init DB success";
+            return new Response(200,"Init DB success");
         } catch (Exception e) {
             logger.error("Init DB: " + e.getMessage());
-            return e.getMessage();
+            return new Response(500,e.getMessage());
         }
     }
 

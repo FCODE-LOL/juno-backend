@@ -1,5 +1,6 @@
 package fcodelol.clone.juno.controller;
 
+import fcodelol.clone.juno.controller.response.Response;
 import fcodelol.clone.juno.dto.ProductByGroupDto;
 import fcodelol.clone.juno.dto.ProductDto;
 import fcodelol.clone.juno.dto.TypeDto;
@@ -18,32 +19,32 @@ public class ProductController {
     ProductService productService;
 
     @GetMapping
-    public List<ProductByGroupDto> getAllProduct() {
+    public Response<List<ProductByGroupDto>> getAllProduct() {
         return productService.getAllProduct();
     }
 
     @PostMapping
-    public ProductDto addProduct(@RequestBody ProductDto productDto) {
+    public Response<ProductDto> addProduct(@RequestBody ProductDto productDto) {
         return productService.addProduct(productDto);
     }
 
     @PutMapping
-    public ProductDto updateProduct(@RequestBody ProductDto productDto) {
+    public Response<ProductDto> updateProduct(@RequestBody ProductDto productDto) {
         return productService.updateProduct(productDto);
     }
 
     @PutMapping(value = "/delete/{id}")
-    public String deleteProduct(@PathVariable String id) {
+    public Response deleteProduct(@PathVariable String id) {
         return productService.deleteProduct(id);
     }
 
     @GetMapping(value = "/{id}")
-    public ProductDto getProductById(@PathVariable String id) {
+    public Response<ProductDto> getProductById(@PathVariable String id) {
         return productService.getProductById(id);
     }
 
     @GetMapping(value = "/type/{id}")
-    public List<ProductByGroupDto> getProductByTypeId(@PathVariable int id) {
+    public Response<List<ProductByGroupDto>> getProductByTypeId(@PathVariable int id) {
         return productService.getProductByType(id, new Comparator<ProductByGroupDto>() {
             @Override
             public int compare(ProductByGroupDto productByGroupDto1, ProductByGroupDto productByGroupDto2) {
@@ -53,27 +54,27 @@ public class ProductController {
     }
 
     @GetMapping(value = "/name/{name}")
-    public List<ProductByGroupDto> getProductByName(@PathVariable String name) {
+    public Response<List<ProductByGroupDto>> getProductByName(@PathVariable String name) {
         return productService.getProductByName(name, Sort.by(Sort.Direction.DESC, "createdTimestamp"));
     }
 
     @GetMapping(value = "/type")
-    public List<TypeDto> getAllType() {
+    public Response<List<TypeDto>> getAllType() {
         return productService.getType();
     }
 
     @PostMapping(value = "/type")
-    public String addTypes(@RequestBody List<TypeDto> types) {
+    public Response addTypes(@RequestBody List<TypeDto> types) {
         return productService.addTypeList(types);
     }
 
     @PutMapping(value = "/type")
-    public String updateTypes(@RequestBody List<TypeDto> types) {
+    public Response updateTypes(@RequestBody List<TypeDto> types) {
         return productService.updateTypeList(types);
     }
 
     @DeleteMapping(value = "/type/{id}")
-    public String deleteType(@PathVariable int id) {
+    public Response deleteType(@PathVariable int id) {
         return productService.deleteType(id);
 
     }

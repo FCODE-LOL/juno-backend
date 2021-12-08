@@ -1,5 +1,6 @@
 package fcodelol.clone.juno.controller;
 
+import fcodelol.clone.juno.controller.response.Response;
 import fcodelol.clone.juno.service.ExecuteDBService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -12,17 +13,17 @@ public class ImportDBController {
     ExecuteDBService executeDBService;
 
     @PostMapping(value = "/import")
-    public String importDB() {
+    public Response importDB() {
         return executeDBService.loadDBData();
     }
 
     @DeleteMapping(value = "/clear")
-    public String clearDB() {
+    public Response clearDB() {
         return executeDBService.clearDBData();
     }
 
     @PostMapping(value = "/init")
-    public String initDB() {
+    public Response initDB() {
         return executeDBService.initDB();
     }
 }

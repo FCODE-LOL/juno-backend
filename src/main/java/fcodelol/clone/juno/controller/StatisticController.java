@@ -1,6 +1,7 @@
 package fcodelol.clone.juno.controller;
 
 import fcodelol.clone.juno.controller.request.PeriodTime;
+import fcodelol.clone.juno.controller.response.Response;
 import fcodelol.clone.juno.dto.ProductByGroupDto;
 import fcodelol.clone.juno.dto.UserByGroupDto;
 import fcodelol.clone.juno.service.StatisticService;
@@ -17,24 +18,24 @@ public class StatisticController {
     StatisticService statisticService;
 
     @GetMapping(value = "/top/product/sale/{quantity}")
-    public List<ProductByGroupDto> getTopSaleProducts(@PathVariable int quantity) {
+    public Response<List<ProductByGroupDto>> getTopSaleProducts(@PathVariable int quantity) {
         return statisticService.getTopSaleProduct(quantity);
     }
 
     @GetMapping(value = "/top/product/income/{quantity}")
-    public List<ProductByGroupDto> getTopIncomeProducts(@PathVariable int quantity) {
+    public Response<List<ProductByGroupDto>> getTopIncomeProducts(@PathVariable int quantity) {
         return statisticService.getTopIncomeProduct(quantity);
     }
     @GetMapping(value = "/top/product/relate/{productId}&{quantity}")
-    public List<ProductByGroupDto> getTopRelatedProducts(@PathVariable int productId,@PathVariable int quantity) {
+    public Response<List<ProductByGroupDto>> getTopRelatedProducts(@PathVariable int productId,@PathVariable int quantity) {
         return statisticService.getTopRelatedProduct(productId,quantity);
     }
     @GetMapping(value = "/top/customer/{quantity}")
-    public List<UserByGroupDto> getTopCustomers(@PathVariable int quantity) {
+    public Response<List<UserByGroupDto>> getTopCustomers(@PathVariable int quantity) {
         return statisticService.getTopCustomer(quantity);
     }
     @GetMapping(value = "/income")
-    public List<BigDecimal> getIncomes(@RequestBody List<PeriodTime> periodTimes)
+    public Response<List<BigDecimal>> getIncomes(@RequestBody List<PeriodTime> periodTimes)
     {
         return statisticService.getIncomePerTime(periodTimes);
     }

@@ -26,7 +26,7 @@ public class ProductDto {
     private BigDecimal discountPrice;
     List<ModelDto> modelList;
 
-    public void setProductIdOfModel(Product product) {
+    public void setProductIdOfModel() {
         modelList.forEach(model -> model.setProduct(new ProductByGroupDto(id)));
     }
 

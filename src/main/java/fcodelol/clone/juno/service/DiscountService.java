@@ -1,8 +1,9 @@
 package fcodelol.clone.juno.service;
 
 
-import fcodelol.clone.juno.controller.response.DiscountModelResponse;
-import fcodelol.clone.juno.controller.response.DiscountResponse;
+import fcodelol.clone.juno.controller.response.Response;
+import fcodelol.clone.juno.dto.DiscountModelResponse;
+import fcodelol.clone.juno.dto.DiscountResponse;
 import fcodelol.clone.juno.dto.*;
 import fcodelol.clone.juno.repository.DiscountModelRepository;
 import fcodelol.clone.juno.repository.DiscountRepository;
@@ -86,7 +87,7 @@ public class DiscountService {
     }
 
     @Transactional
-    public String addDiscountEvent(DiscountDto discountDto) {
+    public Response addDiscountEvent(DiscountDto discountDto) {
         try {
             discountDto.setDiscountIdOfDiscountModel();
             Discount discount = discountRepository.save(modelMapper.map(discountDto, fcodelol.clone.juno.repository.entity.Discount.class));
@@ -102,21 +103,21 @@ public class DiscountService {
                 futureMap.put(discount.getId() * 2 + 1, taskScheduler.schedule(runFinishEvent(discount.getStartTime(), discount.getId())
                         , new CronTrigger(covertTimestampToCronExpression(discount.getStartTime()))));
             }
-            return "Add discount success";
+            return new Response(200, "Add discount success");
         } catch (Exception e) {
             logger.error("Add discount exception:" + e.getMessage());
-            return "Add discount exception:" + e.getMessage();
+            return new Response(500, "Add discount exception:" + e.getMessage());
         }
     }
 
-    public String updateDiscount(DiscountDto discountDto) {
+    public Response updateDiscount(DiscountDto discountDto) {
         try {
             discountDto.setDiscountIdOfDiscountModel();
             Discount discount = discountRepository.findOneByIdAndIsDisable(discountDto.getId(), false);
             Timestamp startTime = discount.getStartTime();
             Timestamp finishTime = discount.getEndTime();
             if (discount == null)
-                return "This discount is not exist";
+                return new Response(404, "This discount is not exist");
             discount = modelMapper.map(discountDto, fcodelol.clone.juno.repository.entity.Discount.class);
             discount.setIsDisable(false);
             discount = discountRepository.save(discount);
@@ -129,14 +130,14 @@ public class DiscountService {
                     futureMap.put(discount.getId(), taskScheduler.schedule(runFinishEvent(discount.getStartTime(), discount.getId())
                             , new CronTrigger(covertTimestampToCronExpression(discount.getStartTime()))));
             }
-            return "Update discount success";
+            return new Response(200, "Update discount success");
         } catch (Exception e) {
-            return "Update discount exception:" + e.getMessage();
+            return new Response(500, "Update discount exception:" + e.getMessage());
         }
     }
 
     @Transactional
-    public String removeDiscountById(int discountId) {
+    public Response removeDiscountById(int discountId) {
         try {
             Discount discount = discountRepository.getById(discountId);
             if (discount.getCode() == null) //discount without code
@@ -148,25 +149,25 @@ public class DiscountService {
             }
             discount.setIsDisable(true);
             discountRepository.save(discount);
-            return "Remove discount success";
+            return new Response(200, "Remove discount success");
         } catch (Exception e) {
-            return "Remove discount exception:" + e.getMessage();
+            return new Response(500, "Remove discount exception:" + e.getMessage());
         }
     }
 
     @Transactional
-    public String removeDiscountModel(int discountModelId) {
+    public Response removeDiscountModel(int discountModelId) {
         try {
             DiscountModel discountModel = discountModelRepository.findOneById(discountModelId);
-            if (discountModel == null) return "This discount model is not exists";
+            if (discountModel == null) return new Response(404, "This discount model is not exists");
             Discount discount = discountModel.getDiscount();
             if (discount.getStartTime().getTime() <= System.currentTimeMillis())
-                return "This event started, cannot change";
+                return new Response(405, "This event started, cannot change");
             discountModelRepository.deleteById(discountModel.getId());
-            return "Remove discount model success";
+            return new Response(200, "Remove discount model success");
         } catch (Exception e) {
             logger.error("Remove discount error:" + e.getMessage());
-            return "Remove discount error:" + e.getMessage();
+            return new Response(200, "Remove discount error:" + e.getMessage());
         }
     }
 
@@ -208,29 +209,29 @@ public class DiscountService {
         };
     }
 
-    public List<DiscountByGroupDto> getAllDiscount() {
+    public Response<List<DiscountByGroupDto>> getAllDiscount() {
         try {
             List<DiscountByGroupDto> discountByGroupDtoList = discountRepository.findByIsDisable(false, Sort.by(Sort.Direction.DESC, "startTime"))
                     .stream().map(discount -> modelMapper.map(discount, DiscountByGroupDto.class)).collect(Collectors.toList());
-            return discountByGroupDtoList;
+            return new Response(200, "Success", discountByGroupDtoList);
         } catch (Exception e) {
             logger.error("Get all discount:" + e.getMessage());
-            return null;
+            return new Response(500, "Get all discount:" + e.getMessage());
         }
     }
 
 
-    public DiscountResponse getDiscountById(int id) {
+    public Response<DiscountResponse> getDiscountById(int id) {
         try {
 
             Discount discount = discountRepository.findOneByIdAndIsDisable(id, false);
             DiscountResponse discountResponse = modelMapper.map(discount, DiscountResponse.class);
             discountResponse.setDiscountModelDtoList(discount.getDiscountModelList().stream()
                     .map(discountModel -> modelMapper.map(discountModel, DiscountModelResponse.class)).collect(Collectors.toList()));
-            return discountResponse;
+            return new Response(200, "Success", discountResponse);
         } catch (Exception e) {
             logger.error("Get discount by id error: " + e.getMessage());
-            return null;
+            return new Response(500, "Get discount by id error: " + e.getMessage());
         }
     }
 
@@ -238,15 +239,16 @@ public class DiscountService {
         LocalDateTime time =
                 LocalDateTime.ofInstant(Instant.ofEpochMilli(timestamp.getTime()),
                         TimeZone.getDefault().toZoneId());
-        return String.format("%s %s %s %s %s ?", time.getSecond(), time.getMinute(),time.getHour(), time.getDayOfMonth(), convertTimestampMonthToNumber(time.getMonth()));
+        return String.format("%s %s %s %s %s ?", time.getSecond(), time.getMinute(), time.getHour(), time.getDayOfMonth(), convertTimestampMonthToNumber(time.getMonth()));
     }
 
-    private String convertTimestampMonthToNumber(Month month){
-        return month.name().substring(0,3);
+    private String convertTimestampMonthToNumber(Month month) {
+        return month.name().substring(0, 3);
     }
-    private boolean validDiscountTime(Timestamp startTime, Timestamp endTime){
-        if(startTime.getTime() < System.currentTimeMillis()) return false;
-        if(startTime.getTime() >= endTime.getTime()) return false;
+
+    private boolean validDiscountTime(Timestamp startTime, Timestamp endTime) {
+        if (startTime.getTime() < System.currentTimeMillis()) return false;
+        if (startTime.getTime() >= endTime.getTime()) return false;
         return true;
     }
 

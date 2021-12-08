@@ -34,24 +34,8 @@ public class ProductTest {
     public void deleteProduct(){
         Assert.assertEquals("Delete successful",productService.deleteProduct("SE123"));
     }
-    @Test
-    public void getProductByType(){
-        List<ProductByGroupDto> productByGroupDtos = productService.getProductByType(1, new Comparator<ProductByGroupDto>() {
-            @Override
-            public int compare(ProductByGroupDto productByGroupDto1, ProductByGroupDto productByGroupDto2) {
-                return productByGroupDto1.getCreatedTimestamp().before(productByGroupDto2.getCreatedTimestamp()) ? 1 : -1;
-            }});
-        Assert.assertEquals(null,productByGroupDtos);
-    }
-    @Test
-    public void getProductBySort(){
-        List<ProductByGroupDto> productByGroupDtos = productService.getProductByName("b",Sort.by(Sort.Direction.DESC,"name"));
-        if(productByGroupDtos == null)
-            System.out.println("null");
-        else System.out.println(productByGroupDtos);
-        for (ProductByGroupDto product : productByGroupDtos)
-            System.out.println(product);
-    }
+
+
     @Test
     public void addType(){
         List<TypeDto> typeDtoList = new LinkedList<>();

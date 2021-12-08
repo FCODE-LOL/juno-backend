@@ -1,5 +1,6 @@
 package fcodelol.clone.juno.controller;
 
+import fcodelol.clone.juno.controller.response.Response;
 import fcodelol.clone.juno.dto.UserByGroupExtendDto;
 import fcodelol.clone.juno.dto.UserDto;
 import fcodelol.clone.juno.service.AuthorizationService;
@@ -18,22 +19,22 @@ public class UserController {
     @Autowired
     AuthorizationService authorizationService;
     @GetMapping
-    public List<UserByGroupExtendDto> getAllUsers() {
-        return userService.getAllUser();
+    public Response<List<UserByGroupExtendDto>> getAllUsers() {
+        return new Response(200,"Success",userService.getAllUser());
     }
     @GetMapping(value = "/{id}")
     @Transactional
-    public UserDto getUserById(@RequestHeader("Authorization") String token,@PathVariable int id) {
+    public Response<UserDto> getUserById(@RequestHeader("Authorization") String token,@PathVariable int id) {
         if(authorizationService.getUserIdByToken(token)!=id && !authorizationService.getRoleByToken(token).equals("ADMIN"))
             return null;
         return userService.getUserById(id);
     }
     @PutMapping(value = "/ban/{id}")
-    public String banUser(@PathVariable int id){
+    public Response banUser(@PathVariable int id){
         return userService.banUser(id);
     }
     @PutMapping(value = "/unban/{id}")
-    public String unbanUser(@PathVariable int id){
+    public Response unbanUser(@PathVariable int id){
         return userService.unbanUser(id);
     }
 }

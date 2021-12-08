@@ -3,6 +3,7 @@ package fcodelol.clone.juno.service;
 import fcodelol.clone.juno.controller.request.LoginRequest;
 import fcodelol.clone.juno.controller.request.RegisterRequest;
 import fcodelol.clone.juno.controller.request.SocialMediaLoginRequest;
+import fcodelol.clone.juno.controller.response.Response;
 import fcodelol.clone.juno.repository.UserRepository;
 import fcodelol.clone.juno.repository.entity.User;
 import org.apache.logging.log4j.LogManager;
@@ -24,39 +25,43 @@ public class AuthenticationService {
     private static final String DATA_FOR_RANDOM_STRING = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     private static SecureRandom random = new SecureRandom();
 
-    public String login(LoginRequest loginRequest) {
+    public Response login(LoginRequest loginRequest) {
         try {
             User user = userRepository.findByEmail(loginRequest.getEmail());
             if (user.getIsDisable())
-                return "This account is banned";
+                return new Response(403, "This account is banned");
             if (user.getPassword() == null)
-                return "This email account is not existed";
+                return new Response(404, "This email account is not existed");
             if (new BCryptPasswordEncoder().matches(loginRequest.getPassword(), user.getPassword())) {
                 String token = renderAuthenticationToken();
                 user.setToken(token);
-                return userRepository.save(user) != null ? token : "Login failed, please log in again";
+                //check suceess or not
+                if (userRepository.save(user) != null)
+                    return new Response(200, token);
+                else
+                    return new Response(500, "Login failed, please log in again");
             }
-            return "Wrong password";
+            return new Response(401, "Wrong password");
         } catch (Exception e) {
             logger.error("Error in login with " + loginRequest.getEmail() + " password: " + loginRequest.getPassword() + "\n");
-            return "Login failed";
+            return new Response(500, "Login failed");
         }
     }
 
-    public String loginBySocialMedia(SocialMediaLoginRequest socialMediaLoginRequest) {
+    public Response loginBySocialMedia(SocialMediaLoginRequest socialMediaLoginRequest) {
         try {
             User user = userRepository.findBySocialMediaId(socialMediaLoginRequest.getSocialMediaId());
             if (user.getIsDisable())
-                return "This account is banned";
+                return new Response(401, "This account is banned");
             String token = renderAuthenticationToken();
             if (user == null)
                 user = registerForSocialMedia(socialMediaLoginRequest);
             user.setToken(token);
             userRepository.save(user);
-            return token;
+            return new Response(200, "success");
         } catch (Exception e) {
             logger.error("Error in login with social media " + socialMediaLoginRequest.getSocialMediaId() + " password: " + socialMediaLoginRequest.getName() + '\n' + e.getMessage() + '\n');
-            return "Login failed";
+            return new Response(500, "Login failed");
         }
     }
 
@@ -64,25 +69,25 @@ public class AuthenticationService {
         return UUID.randomUUID().toString();
     }
 
-    public String register(RegisterRequest registerUser) {
+    public Response register(RegisterRequest registerUser) {
         try {
             User temporaryUser = userRepository.findByEmail(registerUser.getEmail());
             if (temporaryUser == null)
-                return "Please click sent token button";
+                return new Response(401, "Please click sent token button");
             if (temporaryUser.getIsDisable())
-                return "This account is banned";
+                return new Response(403, "This account is banned");
             if (temporaryUser.getPassword() != null)
-                return "Email has already registered";
+                return new Response(100, "Email has already registered");
             String sentToken = temporaryUser.getToken();
             if (!sentToken.equals(registerUser.getToken()))
-                return "Wrong token, please check or send another token ";
+                return new Response(401, "Wrong token, please check or send another token");
             temporaryUser.setPassword(new BCryptPasswordEncoder().encode(registerUser.getPassword()));
             temporaryUser.setIsAdmin(false);
             userRepository.save(temporaryUser);
-            return "Register success";
+            return new Response(200, "Register success");
         } catch (Exception e) {
             logger.error("Error at register:" + e.getMessage());
-            return "Register failed";
+            return new Response(500, "Register failed");
         }
     }
 
@@ -96,7 +101,7 @@ public class AuthenticationService {
         }
     }
 
-    public String sendTokenToEmail(String email) {
+    public Response sendTokenToEmail(String email) {
         try {
             User temporaryUser = userRepository.findByEmail(email);
             if (temporaryUser == null) {
@@ -104,16 +109,16 @@ public class AuthenticationService {
                 temporaryUser.setEmail(email);
             } else {
                 if (temporaryUser.getIsDisable())
-                    return "This account is banned";
+                    return new Response(403, "This account is banned");
             }
             String token = generateRandomString(6);
             temporaryUser.setToken(token);
             sendEmailService.sendEmail("Token to verify your account in Juno website", email, token);
             userRepository.save(temporaryUser);
-            return token;
+            return new Response(200, token);
         } catch (Exception e) {
             e.printStackTrace();
-            return "Send token failed";
+            return new Response(500, "Send token failed");
         }
     }
 

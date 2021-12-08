@@ -50,23 +50,7 @@ public class Product implements Serializable {
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "product")
     private List<Model> modelList;
 
-    public void setProductProperty(ProductDto productDto) {
-        ModelMapper modelMapper = new ModelMapper();
-        name = productDto.getName();
-        linkImages = productDto.getLinkImages();
-        description = productDto.getDescription();
-        origin = productDto.getOrigin();
-        material = productDto.getMaterial();
-        price = productDto.getPrice();
-        discountPrice = productDto.getDiscountPrice();
-        type = modelMapper.map(productDto.getType(), Type.class);
-        modelList = productDto.getModelList().stream().map(model -> modelMapper.map(model, Model.class)).collect(Collectors.toList());
-    }
-
     public Product(String id) {
         this.id = id;
-    }
-    public void setProductOfModel(){
-        modelList.forEach(model -> model.setProduct(this));
     }
 }

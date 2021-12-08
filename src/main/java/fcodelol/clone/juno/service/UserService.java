@@ -1,5 +1,6 @@
 package fcodelol.clone.juno.service;
 
+import fcodelol.clone.juno.controller.response.Response;
 import fcodelol.clone.juno.dto.UserByGroupExtendDto;
 import fcodelol.clone.juno.dto.UserDto;
 import fcodelol.clone.juno.repository.UserRepository;
@@ -23,50 +24,49 @@ public class UserService {
 
     public List<UserByGroupExtendDto> getAllUser() {
         try {
-            return  userRepository.getAllUser().stream().map(user -> modelMapper.map(user,UserByGroupExtendDto.class)).collect(Collectors.toList());
+            return userRepository.getAllUser().stream().map(user -> modelMapper.map(user, UserByGroupExtendDto.class)).collect(Collectors.toList());
         } catch (Exception e) {
             logger.error("Get all users error: " + e.getMessage());
             return null;
         }
     }
 
-    public UserDto getUserById(int id) {
+    public Response<UserDto> getUserById(int id) {
         try {
-            return modelMapper.map(userRepository.getById(id), UserDto.class);
+            return new Response(200, "Success", modelMapper.map(userRepository.getById(id), UserDto.class));
         } catch (Exception e) {
             logger.error("Get user by id: " + e.getMessage());
-            return null;
+            return new Response(500, "Error");
         }
     }
 
-    public String banUser(int id){
+    public Response banUser(int id) {
         try {
             User user = userRepository.findOneById(id);
-            if(user == null)
-                return "User is not exist";
-            if(user.getIsAdmin()!=null && user.getIsAdmin())
-                return "You can not ban admin";
+            if (user == null)
+                return new Response(404, "User is not exist");
+            if (user.getIsAdmin() != null && user.getIsAdmin())
+                return new Response(403, "You can not ban admin");
             user.setIsDisable(true);
             userRepository.save(user);
-            return "Ban user success";
-        }
-        catch (Exception e){
+            return new Response(200, "Ban user success");
+        } catch (Exception e) {
             logger.error("Ban user error:" + e.getMessage());
-            return "Ban user failed";
+            return new Response(500, "Ban user failed");
         }
     }
-    public String unbanUser(int id){
+
+    public Response unbanUser(int id) {
         try {
             User user = userRepository.findOneById(id);
-            if(user == null)
-                return "User is not exist";
+            if (user == null)
+                return new Response(404, "User is not exist");
             user.setIsDisable(false);
             userRepository.save(user);
-            return "Unban user success";
-        }
-        catch (Exception e){
+            return new Response(200, "Unban user success");
+        } catch (Exception e) {
             logger.error("Ban user error:" + e.getMessage());
-            return "Unban user failed";
+            return new Response(500, "Unban user failed");
         }
     }
 }
