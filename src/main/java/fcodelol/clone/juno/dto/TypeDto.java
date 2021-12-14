@@ -19,10 +19,12 @@ public class TypeDto {
         this.parentId = parentId;
     }
 
-    public TypeDto(int id) {
-        this.id = id;
+    @Override
+    public String toString() {
+        return "TypeDto{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", parentId=" + parentId +
+                '}';
     }
-
-
-
 }

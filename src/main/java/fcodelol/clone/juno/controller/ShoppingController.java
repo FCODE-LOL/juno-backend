@@ -2,7 +2,7 @@ package fcodelol.clone.juno.controller;
 
 import fcodelol.clone.juno.controller.request.UpdateBillStatusRequest;
 import fcodelol.clone.juno.controller.response.Response;
-import fcodelol.clone.juno.dto.BillResponse;
+import fcodelol.clone.juno.controller.response.BillResponse;
 import fcodelol.clone.juno.dto.BillByGroupDto;
 import fcodelol.clone.juno.dto.BillDto;
 import fcodelol.clone.juno.dto.UserByGroupDto;

@@ -140,9 +140,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `junodb`.`BILL_PRODUCT`
+-- Table `junodb`.`BILL_MODEL`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `junodb`.`BILL_PRODUCT` (
+CREATE TABLE IF NOT EXISTS `junodb`.`BILL_MODEL` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
   `BILL_id` INT(11) NOT NULL,
   `MODEL_id` INT NOT NULL,

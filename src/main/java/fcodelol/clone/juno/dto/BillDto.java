@@ -12,7 +12,12 @@ import java.util.List;
 public class BillDto extends BillByGroupDto {
 
     private List<BillProductDto> billProductDtoList;
-    public void setBillIdOfBillProduct(){
-        billProductDtoList.forEach(billProductDto -> billProductDto.setBill(new BillByGroupDto(getId())));
+
+    @Override
+    public String toString() {
+        String billConvert = "";
+        for(BillProductDto billProductDto : billProductDtoList)
+            billConvert += billProductDto;
+        return billConvert + super.toString();
     }
 }

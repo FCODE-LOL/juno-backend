@@ -5,7 +5,6 @@ import lombok.*;
 @Getter
 @Setter
 @NoArgsConstructor
-
 public class UserByGroupDto {
     private Integer id;
     private String name;

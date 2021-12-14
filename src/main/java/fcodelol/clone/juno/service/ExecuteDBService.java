@@ -24,52 +24,33 @@ public class ExecuteDBService {
 
     @Transactional
     public void runScriptFile(String filename) {
-        try {
-            ResourceDatabasePopulator resourceDatabasePopulator = new ResourceDatabasePopulator(false, false, "UTF-8", new ClassPathResource(filename));
-            resourceDatabasePopulator.execute(dataSource);
-        } catch (Exception e) {
-            logger.error("Run file " + filename + "exception: " + e.getMessage());
-        }
+        ResourceDatabasePopulator resourceDatabasePopulator = new ResourceDatabasePopulator(false, false, "UTF-8", new ClassPathResource(filename));
+        resourceDatabasePopulator.execute(dataSource);
     }
 
     @Transactional
     public Response loadDBData() {
-        try {
-            runScriptFile(dataScript);
-            return new Response(200,"Load DB data success");
-        } catch (Exception e) {
-            logger.error("Load data in DB: " + e.getMessage());
-            return new Response(500,e.getMessage());
-        }
+        runScriptFile(dataScript);
+        return new Response(200, "Load DB data success");
     }
 
     @Transactional
     public Response clearDBData() {
-        try {
-            runScriptFile(clearDataScript);
-            return new Response(200,"Clear data in DB");
-        } catch (Exception e) {
-            logger.error("Clear data in DB: " + e.getMessage());
-            return new Response(500,e.getMessage());
-        }
+        runScriptFile(clearDataScript);
+        return new Response(200, "Clear data in DB");
     }
 
     @Transactional
     public Response initDB() {
-        try {
-            runScriptFile(initDBScript);
-            return new Response(200,"Init DB success");
-        } catch (Exception e) {
-            logger.error("Init DB: " + e.getMessage());
-            return new Response(500,e.getMessage());
-        }
+        runScriptFile(initDBScript);
+        return new Response(200, "Init DB success");
     }
 
-    void turnOffDBSecurity(){
+    void turnOffDBSecurity() {
         runScriptFile(turnOffSecurityScript);
     }
 
-    void turnOnSecurityScript(){
+    void turnOnSecurityScript() {
         runScriptFile(turnOnSecurityScript);
     }
 }

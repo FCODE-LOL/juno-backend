@@ -22,17 +22,17 @@ public interface ProductRepository extends JpaRepository<Product, String> {
     Product findByIdAndIsDisable(String id, boolean isDisable);
 
     //get products sold with the largest number
-    @Query(nativeQuery = true, value = "SELECT P.id, P.name, P.link_images, P.created_timestamp FROM `MODEL` AS `M` JOIN `BILL_PRODUCT` AS `B` ON  M.id = B.MODEL_id " +
+    @Query(nativeQuery = true, value = "SELECT P.id, P.name, P.link_images, P.created_timestamp FROM `MODEL` AS `M` JOIN `BILL_MODEL` AS `B` ON  M.id = B.MODEL_id " +
             "JOIN `PRODUCT` AS P ON M.PRODUCT_id = P.id WHERE P.is_disable = 0 GROUP BY `PRODUCT_id` ORDER BY SUM(B.quantity) DESC LIMIT ?1 ")
     List<?> getTopSaleProduct(int numberOfProduct);
 
     //get products sold with the best income
-    @Query(nativeQuery = true, value = "SELECT P.id, P.name, P.link_images, P.created_timestamp FROM `MODEL` AS `M` JOIN `BILL_PRODUCT` AS `B` ON  M.id = B.MODEL_id " +
+    @Query(nativeQuery = true, value = "SELECT P.id, P.name, P.link_images, P.created_timestamp FROM `MODEL` AS `M` JOIN `BILL_MODEL` AS `B` ON  M.id = B.MODEL_id " +
             "JOIN `PRODUCT` AS P ON M.PRODUCT_id = P.id WHERE P.is_disable = 0 GROUP BY `PRODUCT_id` ORDER BY SUM(B.price) DESC LIMIT ?1")
     List<?> getTopIncomeProduct(int numberOfProduct);
     //get products bought with product having
     @Query(nativeQuery = true, value = "SELECT DISTINCT `P`.id,`P`.name,`P`.link_images, `P`.created_timestamp FROM `PRODUCT` AS P,`MODEL`AS `M`, " +
-            "(SELECT `BP2`.`MODEL_id` AS model ,COUNT(`BP2`.id) AS `quantity` FROM `BILL_PRODUCT` AS `BP1`,`BILL_PRODUCT` AS `BP2` WHERE `BP1`.`MODEL_id` = ?1 AND `BP1`.`BILL_id` = `BP2`.`BILL_id` AND `BP2`.`MODEL_id` != ?1 GROUP BY model) AS `BP` " +
+            "(SELECT `BP2`.`MODEL_id` AS model ,COUNT(`BP2`.id) AS `quantity` FROM `BILL_MODEL` AS `BP1`,`BILL_MODEL` AS `BP2` WHERE `BP1`.`MODEL_id` = ?1 AND `BP1`.`BILL_id` = `BP2`.`BILL_id` AND `BP2`.`MODEL_id` != ?1 GROUP BY model) AS `BP` " +
             "WHERE `M`.id = `BP`.model  AND `P`.id = `M`.`PRODUCT_id` AND P.`is_disable` = 0 ORDER BY `BP`.quantity DESC LIMIT ?2")
     List<?> getTopRelatedProduct(int productId,int numberOfProduct);
 }

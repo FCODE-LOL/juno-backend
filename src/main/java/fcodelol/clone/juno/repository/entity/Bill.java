@@ -3,7 +3,6 @@ package fcodelol.clone.juno.repository.entity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -55,13 +54,13 @@ public class Bill implements Serializable {
     @org.hibernate.annotations.Type(type = "org.hibernate.type.NumericBooleanType")
     private Boolean isDisable;
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "bill", cascade = {CascadeType.ALL})
-    private List<BillProduct> billProductList;
+    private List<BillModel> billModelList;
 
     public Bill(Integer id) {
         this.id = id;
     }
 
     public void setBillOfBillProductList(){
-        billProductList.forEach(billProduct -> billProduct.setBill(this));
+        billModelList.forEach(billModel -> billModel.setBill(this));
     }
 }

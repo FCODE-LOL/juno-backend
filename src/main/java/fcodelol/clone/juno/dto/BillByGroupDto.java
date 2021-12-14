@@ -32,4 +32,23 @@ public class BillByGroupDto {
     public BillByGroupDto(int id) {
         this.id = id;
     }
+
+    @Override
+    public String toString() {
+        return "BillByGroupDto{" +
+                "id=" + id +
+                ", user=" + user +
+                ", customerName='" + customerName + '\'' +
+                ", phone='" + phone + '\'' +
+                ", areaId=" + areaId +
+                ", address='" + address + '\'' +
+                ", paymentMethod=" + paymentMethod +
+                ", discountCode='" + discountCode + '\'' +
+                ", payment=" + payment +
+                ", transportFee=" + transportFee +
+                ", receiveTimestamp=" + receiveTimestamp +
+                ", status=" + status +
+                ", info='" + info + '\'' +
+                '}';
+    }
 }

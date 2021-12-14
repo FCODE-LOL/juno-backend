@@ -32,53 +32,28 @@ public class StatisticService {
 
     @Transactional
     public Response<List<BigDecimal>> getIncomePerTime(List<PeriodTime> periodTimes) {
-        try {
-            List<BigDecimal> incomes = new LinkedList<>();
-            periodTimes.forEach(periodTime -> incomes.add(billRepository.getIncome(periodTime.getStartTime(), periodTime.getEndTime())));
-            return new Response(200, "Success", incomes);
-        } catch (Exception e) {
-            logger.error("Get income error" + e.getMessage());
-            return new Response(500, "Get income error");
-        }
+        List<BigDecimal> incomes = new LinkedList<>();
+        periodTimes.forEach(periodTime -> incomes.add(billRepository.getIncome(periodTime.getStartTime(), periodTime.getEndTime())));
+        return new Response(200, "Success", incomes);
     }
 
     public Response<List<UserByGroupDto>> getTopCustomer(int numberOfCustomer) {
-        try {
-            return new Response(200, "Success", userRepository.getTopCustomer(PageRequest.of(0, numberOfCustomer)));
-        } catch (Exception e) {
-            logger.error("Error get top customer:" + e.getMessage());
-            return new Response(500, "Error");
-        }
+        return new Response(200, "Success", userRepository.getTopCustomer(PageRequest.of(0, numberOfCustomer)));
     }
 
     public Response<List<ProductByGroupDto>> getTopSaleProduct(int numberOfProduct) {
-        try {
-            return new Response(200, "Success",
-                    productRepository.getTopSaleProduct(numberOfProduct).stream().map(product -> new ProductByGroupDto((Object[]) product)).collect(Collectors.toList()));
-        } catch (Exception e) {
-            logger.error("Get top sale product:" + e.getMessage());
-            return new Response(500, "Get top sale product error");
-        }
+        return new Response(200, "Success",
+                productRepository.getTopSaleProduct(numberOfProduct).stream().map(product -> new ProductByGroupDto((Object[]) product)).collect(Collectors.toList()));
     }
 
     public Response<List<ProductByGroupDto>> getTopIncomeProduct(int numberOfProduct) {
-        try {
-            return new Response(200, "Success",
-                    productRepository.getTopIncomeProduct(numberOfProduct).stream().map(product -> new ProductByGroupDto((Object[]) product)).collect(Collectors.toList()));
-        } catch (Exception e) {
-            logger.error("Get top income product:" + e.getMessage());
-            return new Response(500, "Error");
-        }
+        return new Response(200, "Success",
+                productRepository.getTopIncomeProduct(numberOfProduct).stream().map(product -> new ProductByGroupDto((Object[]) product)).collect(Collectors.toList()));
     }
 
     public Response<List<ProductByGroupDto>> getTopRelatedProduct(int productId, int numberOfProduct) {
-        try {
-            return new Response(200, "Success",
-                    productRepository.getTopRelatedProduct(productId, numberOfProduct).stream()
-                            .map(product -> new ProductByGroupDto((Object[]) product)).collect(Collectors.toList()));
-        } catch (Exception e) {
-            logger.error("Get top income product:" + e.getMessage());
-            return new Response(500, "Error");
-        }
+        return new Response(200, "Success",
+                productRepository.getTopRelatedProduct(productId, numberOfProduct).stream()
+                        .map(product -> new ProductByGroupDto((Object[]) product)).collect(Collectors.toList()));
     }
 }

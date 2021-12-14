@@ -30,4 +30,19 @@ public class ProductDto {
         modelList.forEach(model -> model.setProduct(new ProductByGroupDto(id)));
     }
 
+    @Override
+    public String toString() {
+        return "ProductDto{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", linkImages='" + linkImages + '\'' +
+                ", description='" + description + '\'' +
+                ", origin='" + origin + '\'' +
+                ", material='" + material + '\'' +
+                ", type=" + type +
+                ", price=" + price +
+                ", discountPrice=" + discountPrice +
+                ", modelList=" + modelList +
+                '}';
+    }
 }

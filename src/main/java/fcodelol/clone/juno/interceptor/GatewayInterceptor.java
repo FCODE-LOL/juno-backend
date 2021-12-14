@@ -47,9 +47,7 @@ public class GatewayInterceptor implements HandlerInterceptor {
         String role;
         logger.info("Access token:" + accessToken != null ? accessToken : "There is no access token ");
         role = accessToken != null ? authorizationService.getRoleByToken(accessToken) : null;
-        if (role != null)
-            logger.info("Api:" + servletPath + " Role:" + role + "\n");
-
+        logger.info("Api:" + servletPath + " Role:" + role + "\n");
         ApiEntity apiEntity = getMatchingAPI(httpMethod, servletPath);
         if (apiEntity != null) {
             if (accessToken == null) {

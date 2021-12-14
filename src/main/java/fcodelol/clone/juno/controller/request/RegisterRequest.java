@@ -1,17 +1,16 @@
 package fcodelol.clone.juno.controller.request;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
+@ToString
 public class RegisterRequest extends LoginRequest {
+    private String email;
+    private String password;
     private String token;
 
-    public RegisterRequest(String email, String password, String token) {
-        super(email,password);
-        this.token = token;
-    }
+
 }

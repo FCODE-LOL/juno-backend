@@ -19,7 +19,7 @@ public class ProductController {
     ProductService productService;
 
     @GetMapping
-    public Response<List<ProductByGroupDto>> getAllProduct() {
+    public Response<List<ProductByGroupDto>> getAllProduct() throws Exception {
         return productService.getAllProduct();
     }
 

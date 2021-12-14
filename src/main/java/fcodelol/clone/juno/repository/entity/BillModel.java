@@ -10,11 +10,11 @@ import java.math.BigDecimal;
 
 
 @Entity
-@Table(name = "`BILL_PRODUCT`")
+@Table(name = "`BILL_MODEL`")
 @Getter
 @Setter
 @NoArgsConstructor
-public class BillProduct implements Serializable {
+public class BillModel implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Access(AccessType.PROPERTY)
@@ -30,7 +30,5 @@ public class BillProduct implements Serializable {
     private Integer quantity;
     @Column
     private BigDecimal price;
-
-
 
 }
