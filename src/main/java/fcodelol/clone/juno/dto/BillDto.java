@@ -11,13 +11,13 @@ import java.util.List;
 @NoArgsConstructor
 public class BillDto extends BillByGroupDto {
 
-    private List<BillProductDto> billProductDtoList;
+    private List<BillModelDto> billModelDtoList;
 
     @Override
     public String toString() {
         String billConvert = "";
-        for(BillProductDto billProductDto : billProductDtoList)
-            billConvert += billProductDto;
+        for(BillModelDto billModelDto : billModelDtoList)
+            billConvert += billModelDto;
         return billConvert + super.toString();
     }
 }

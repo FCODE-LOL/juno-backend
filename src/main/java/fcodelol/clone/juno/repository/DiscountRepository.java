@@ -11,6 +11,9 @@ import java.util.List;
 public interface DiscountRepository extends JpaRepository<Discount, Integer> {
     Discount findOneByIdAndIsDisable(int id, Boolean isDisable);
 
+    Discount findOneByCodeAndIsDisable(String discountCode, Boolean isDisable);
+
+    Boolean existsByCodeAndIsDisable(String discountCode, Boolean isDisable);
     List<Discount> findByIsDisable(Boolean isDisable);
 
     List<Discount> findByIsDisable(Boolean isDisable, Sort sort);

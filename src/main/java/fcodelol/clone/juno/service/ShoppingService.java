@@ -7,16 +7,10 @@ import fcodelol.clone.juno.controller.response.BillProductResponse;
 import fcodelol.clone.juno.controller.response.BillResponse;
 import fcodelol.clone.juno.dto.BillByGroupDto;
 import fcodelol.clone.juno.dto.BillDto;
-import fcodelol.clone.juno.dto.BillProductDto;
+import fcodelol.clone.juno.dto.BillModelDto;
 import fcodelol.clone.juno.exception.CustomException;
-import fcodelol.clone.juno.repository.BillModelRepository;
-import fcodelol.clone.juno.repository.BillRepository;
-import fcodelol.clone.juno.repository.ModelRepository;
-import fcodelol.clone.juno.repository.UserRepository;
-import fcodelol.clone.juno.repository.entity.Bill;
-import fcodelol.clone.juno.repository.entity.BillModel;
-import fcodelol.clone.juno.repository.entity.Model;
-import fcodelol.clone.juno.repository.entity.User;
+import fcodelol.clone.juno.repository.*;
+import fcodelol.clone.juno.repository.entity.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.modelmapper.ModelMapper;
@@ -40,23 +34,25 @@ public class ShoppingService {
     @Autowired
     UserRepository userRepository;
     @Autowired
+    DiscountRepository discountRepository;
+    @Autowired
     ModelMapper modelMapper;
     private static final Logger logger = LogManager.getLogger(ShoppingService.class);
 
     @Transactional
     public Response addBill(BillDto billDto) {
         logger.info("Add bill:" + billDto);
-        billDto.setBillProductDtoList(setBillProductPrice(billDto.getBillProductDtoList()));
-        billDto.setPayment(calculateBillPrice(billDto.getBillProductDtoList()));
-        billDto.getBillProductDtoList().forEach(billProductDto -> {
-            Model model = modelRepository.findOneById(billProductDto.getModel().getId());
-            if (model.getQuantity() < billProductDto.getQuantity()) {
-                logger.warn("Add bill: Not enough quantity of " + billProductDto.getModel());
-                throw new IllegalArgumentException("Not enough quantity of " + billProductDto.getModel());
+        billDto.setBillModelDtoList(setBillProductPrice(billDto.getBillModelDtoList(), billDto.getDiscountCode()));
+        billDto.setPayment(calculateBillPrice(billDto.getBillModelDtoList()));
+        billDto.getBillModelDtoList().forEach(billModelDto -> {
+            Model model = modelRepository.findOneById(billModelDto.getModel().getId());
+            if (model.getQuantity() < billModelDto.getQuantity()) {
+                logger.warn("Add bill: Not enough quantity of " + billModelDto.getModel());
+                throw new IllegalArgumentException("Not enough quantity of " + billModelDto.getModel());
             }
             if (billDto.getStatus() == 1) // customer bought products
             {
-                model.setQuantity(model.getQuantity() - billProductDto.getQuantity());
+                model.setQuantity(model.getQuantity() - billModelDto.getQuantity());
                 modelRepository.save(model);
             }
         });
@@ -80,22 +76,22 @@ public class ShoppingService {
             logger.warn("Update bill: This bill had been confirmed, cannot be changed");
             throw new CustomException(404, "This bill had been confirmed, cannot be changed");
         }
-        billDto.setBillProductDtoList(setBillProductPrice(billDto.getBillProductDtoList()));
-        billDto.setPayment(calculateBillPrice(billDto.getBillProductDtoList()));
-        List<BillProductDto> billProductDtoList = billDto.getBillProductDtoList();
-        if (billProductDtoList != null) {
-            for (BillProductDto billProductDto : billProductDtoList) {
-                Model model = modelRepository.findOneById(billProductDto.getModel().getId());
-                if (model.getQuantity() < billProductDto.getQuantity()) {
-                    logger.warn("Update bill: Not enough quantity of " + billProductDto.getModel());
-                    throw new IllegalArgumentException("Not enough quantity of " + billProductDto.getModel());
+        billDto.setBillModelDtoList(setBillProductPrice(billDto.getBillModelDtoList(), billDto.getDiscountCode()));
+        billDto.setPayment(calculateBillPrice(billDto.getBillModelDtoList()));
+        List<BillModelDto> billModelDtoList = billDto.getBillModelDtoList();
+        if (billModelDtoList != null) {
+            for (BillModelDto billModelDto : billModelDtoList) {
+                Model model = modelRepository.findOneById(billModelDto.getModel().getId());
+                if (model.getQuantity() < billModelDto.getQuantity()) {
+                    logger.warn("Update bill: Not enough quantity of " + billModelDto.getModel());
+                    throw new IllegalArgumentException("Not enough quantity of " + billModelDto.getModel());
                 }
                 if (bill.getStatus() == 1) // customer bought products
                 {
-                    model.setQuantity(model.getQuantity() - billProductDto.getQuantity());
+                    model.setQuantity(model.getQuantity() - billModelDto.getQuantity());
                     modelRepository.save(model);
                 }
-                billProductDto.setBill(new BillByGroupDto(bill.getId()));
+                billModelDto.setBill(new BillByGroupDto(bill.getId()));
             }
         }
         bill = modelMapper.map(billDto, fcodelol.clone.juno.repository.entity.Bill.class);
@@ -106,17 +102,35 @@ public class ShoppingService {
 
     }
 
-    public List<BillProductDto> setBillProductPrice(List<BillProductDto> billProductDtoList) {
-        for (BillProductDto billProductDto : billProductDtoList) {
-            billProductDto.setPrice(modelRepository.findDiscountPrice(billProductDto.getModel().getId()));
+    public List<BillModelDto> setBillProductPrice(List<BillModelDto> billModelDtoList, String discountCode) {
+
+        if (discountCode != null) {
+            Discount discount = discountRepository.findOneByCodeAndIsDisable(discountCode, false);
+            if (discount == null) {
+                logger.warn("Bill: Wrong discount code");
+                throw new CustomException(400, "Wrong discount code");
+            }
+            for (BillModelDto billModelDto : billModelDtoList) {
+                BigDecimal modelOfBillPrice = modelRepository.findDiscountPrice(billModelDto.getModel().getId());
+                //check discount by percent or price
+                if (discount.getPrice() != null)
+                    modelOfBillPrice = modelOfBillPrice.min(discount.getPrice());
+                else
+                    modelOfBillPrice = modelOfBillPrice.min(modelRepository.findPrice(billModelDto.getModel().getId()).multiply(new BigDecimal(discount.getPercent())));
+                billModelDto.setPrice(modelOfBillPrice);
+            }
+        } else {
+            for (BillModelDto billModelDto : billModelDtoList) {
+                billModelDto.setPrice(modelRepository.findDiscountPrice(billModelDto.getModel().getId()));
+            }
         }
-        return billProductDtoList;
+        return billModelDtoList;
     }
 
-    public BigDecimal calculateBillPrice(List<BillProductDto> billProductDtoList) {
+    public BigDecimal calculateBillPrice(List<BillModelDto> billModelDtoList) {
         BigDecimal price = new BigDecimal(0);
-        for (BillProductDto billProductDto : billProductDtoList) {
-            price = price.add(billProductDto.getPrice());
+        for (BillModelDto billModelDto : billModelDtoList) {
+            price = price.add(billModelDto.getPrice());
         }
         return price;
     }
@@ -146,7 +160,7 @@ public class ShoppingService {
         }
         billModelRepository.deleteById(billModel.getId());
         bill.setPayment(calculateBillPrice(bill.getBillModelList().stream()
-                .map(billModelArgs -> modelMapper.map(billModelArgs, BillProductDto.class)).collect(Collectors.toList())));
+                .map(billModelArgs -> modelMapper.map(billModelArgs, BillModelDto.class)).collect(Collectors.toList())));
         billRepository.save(bill);
         logger.info("Remove bill-product by id success");
         return new Response(200, "Remove bill product success");
@@ -210,15 +224,15 @@ public class ShoppingService {
     }
 
     public Response<List<BillByGroupDto>> getAllBill() {
-            List<BillByGroupDto> billByGroupDtoList = billRepository.findAll(Sort.by(Sort.Direction.DESC, "updateTimestamp"))
-                    .stream().map(bill -> modelMapper.map(bill, BillByGroupDto.class)).collect(Collectors.toList());
-            return new Response(200, "Success", billByGroupDtoList);
+        List<BillByGroupDto> billByGroupDtoList = billRepository.findAll(Sort.by(Sort.Direction.DESC, "updateTimestamp"))
+                .stream().map(bill -> modelMapper.map(bill, BillByGroupDto.class)).collect(Collectors.toList());
+        return new Response(200, "Success", billByGroupDtoList);
     }
 
     public Response<List<BillByGroupDto>> getBillOfUser(int userId) {
-            List<BillByGroupDto> billByGroupDtoList = billRepository.findByUser(new User(userId))
-                    .stream().map(bill -> modelMapper.map(bill, BillByGroupDto.class)).collect(Collectors.toList());
-            return new Response(200, "Success", billByGroupDtoList);
+        List<BillByGroupDto> billByGroupDtoList = billRepository.findByUser(new User(userId))
+                .stream().map(bill -> modelMapper.map(bill, BillByGroupDto.class)).collect(Collectors.toList());
+        return new Response(200, "Success", billByGroupDtoList);
     }
 
     public Response<BillResponse> getBillById(int id) {

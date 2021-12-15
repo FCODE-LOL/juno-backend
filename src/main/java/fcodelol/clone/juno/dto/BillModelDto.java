@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class BillProductDto {
+public class BillModelDto {
     private Integer id;
     private BillByGroupDto bill;
     private ModelDto model;
