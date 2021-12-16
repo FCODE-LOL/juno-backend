@@ -2,6 +2,7 @@ package fcodelol.clone.juno.controller;
 
 import fcodelol.clone.juno.controller.request.LoginRequest;
 import fcodelol.clone.juno.controller.request.RegisterRequest;
+import fcodelol.clone.juno.controller.request.RetrievePasswordRequest;
 import fcodelol.clone.juno.controller.request.SocialMediaLoginRequest;
 import fcodelol.clone.juno.controller.response.Response;
 import fcodelol.clone.juno.service.AuthenticationService;
@@ -30,5 +31,9 @@ public class AuthenticationController {
     @PostMapping("/send-token/{email}")
     public Response sendTokenToVerify(@PathVariable String email){
         return authenticationService.sendTokenToEmail(email);
+    }
+    @PutMapping("/retrieve/password")
+    public Response retrievePassword(@RequestBody RetrievePasswordRequest retrievePasswordRequest){
+        return authenticationService.retrievePassword(retrievePasswordRequest);
     }
 }

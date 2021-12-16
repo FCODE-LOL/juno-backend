@@ -1,5 +1,6 @@
 package fcodelol.clone.juno.repository.entity;
 
+import fcodelol.clone.juno.controller.request.UpdateUserInfoRequest;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -68,5 +69,13 @@ public class User implements Serializable {
         this.registerTimestamp = registerTimestamp;
         this.point = point;
         this.isDisable = isDisable;
+    }
+
+    public void updateInfo(UpdateUserInfoRequest updateUserInfoRequest){
+        this.phone = updateUserInfoRequest.getPhone();
+        this.name = updateUserInfoRequest.getName();
+        this.dateOfBirth = updateUserInfoRequest.getDateOfBirth();
+        this.areaId = updateUserInfoRequest.getAreaId();
+        this.address = updateUserInfoRequest.getAddress();
     }
 }

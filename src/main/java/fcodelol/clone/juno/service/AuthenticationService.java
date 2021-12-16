@@ -2,6 +2,7 @@ package fcodelol.clone.juno.service;
 
 import fcodelol.clone.juno.controller.request.LoginRequest;
 import fcodelol.clone.juno.controller.request.RegisterRequest;
+import fcodelol.clone.juno.controller.request.RetrievePasswordRequest;
 import fcodelol.clone.juno.controller.request.SocialMediaLoginRequest;
 import fcodelol.clone.juno.controller.response.Response;
 import fcodelol.clone.juno.exception.CustomException;
@@ -12,6 +13,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.security.SecureRandom;
 import java.util.UUID;
@@ -117,7 +119,28 @@ public class AuthenticationService {
         logger.info("Sent token success: " + token);
         return new Response(200, token);
     }
-
+    @Transactional
+    public Response retrievePassword(RetrievePasswordRequest retrievePasswordRequest) {
+        logger.info("Retrieve password:" + retrievePasswordRequest);
+        User temporaryUser = userRepository.findByEmail(retrievePasswordRequest.getEmail());
+        String password;
+        if ( temporaryUser.getPassword() == null)
+        {
+            logger.info("Retrieve password: Email has not been registered" );
+            throw new CustomException(400,"Email have not been registered");
+        }
+        String sentToken = temporaryUser.getToken();
+        if (!sentToken.equals(retrievePasswordRequest.getToken()))
+        {
+            logger.info("Wrong token, please check or send another token");
+            throw new CustomException(400,"Wrong token, please check or send another token");
+        }
+        password = generateRandomString(6);
+        temporaryUser.setPassword(new BCryptPasswordEncoder().encode(password));
+        userRepository.save(temporaryUser);
+        logger.info("Retrieve password success:" + password);
+        return new Response(200,"Password: " + password);
+    }
     public String generateRandomString(int length) {
         if (length < 1) throw new IllegalArgumentException();
         StringBuilder sb = new StringBuilder(length);
