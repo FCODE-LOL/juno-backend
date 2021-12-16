@@ -68,11 +68,7 @@ public class UserService {
     public Response updatePassword(UpdatePasswordRequest updatePasswordRequest, Integer id) {
         logger.info("Change password:" + updatePasswordRequest);
         User user = userRepository.findOneById(id);
-        if (user.getPassword() == null) {
-            logger.info("Email is not correct");
-            throw new CustomException(400, "Email is not correct");
-        }
-        if (new BCryptPasswordEncoder().matches(updatePasswordRequest.getNewPassword(), updatePasswordRequest.getOldPassword())) {
+        if (!new BCryptPasswordEncoder().matches(updatePasswordRequest.getOldPassword(), user.getPassword())) {
             logger.info("Password is not correct");
             throw new CustomException(400, "Password is not correct");
         }
@@ -89,8 +85,8 @@ public class UserService {
         User user = userRepository.findOneById(id);
         user.updateInfo(updateUserInfoRequest);
         userRepository.save(user);
-        logger.info("Change password success");
-        return new Response(200, "Change password success");
+        logger.info("Change user info success");
+        return new Response(200, "Change user info success");
     }
 }
 

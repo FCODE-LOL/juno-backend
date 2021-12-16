@@ -35,7 +35,7 @@ public class User implements Serializable {
     @Column(name = "is_admin")
     private Boolean isAdmin;
     @Column(name = "area_id")
-    private String areaId;
+    private Integer areaId;
     @Column
     private String address;
     @Column(name = "register_timestamp", updatable = false, insertable = false)

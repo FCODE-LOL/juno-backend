@@ -19,10 +19,6 @@ import java.io.PrintWriter;
 @Service
 public class GatewayInterceptor implements HandlerInterceptor {
     private static Logger logger = LogManager.getLogger(GatewayInterceptor.class);
-    private static final String ERROR_JSON="{\n" +
-            "  \"code\": 400,\n" +
-            "  \"message\": \"Token time out or wrong token\",\n" +
-            "}";
     @Autowired
     AuthorizationService authorizationService;
 
@@ -31,10 +27,7 @@ public class GatewayInterceptor implements HandlerInterceptor {
         try {
             return verifyRequest(request);
         } catch (Exception e) {
-            PrintWriter out = response.getWriter();
-            response.setContentType("application/json");
-            response.setCharacterEncoding("UTF-8");
-            out.print(ERROR_JSON);
+            response.sendError(400,"Wrong token or token time out ");
             return false;
         }
     }
