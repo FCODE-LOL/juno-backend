@@ -2,6 +2,7 @@ package fcodelol.clone.juno.interceptor;
 
 
 import fcodelol.clone.juno.dto.ApiEntity;
+import fcodelol.clone.juno.exception.CustomException;
 import fcodelol.clone.juno.service.AuthorizationService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -45,9 +46,20 @@ public class GatewayInterceptor implements HandlerInterceptor {
         String servletPath = request.getServletPath();
         String accessToken = request.getHeader(GatewayConstant.AUTHORIZATION_HEADER);
         String role;
-        logger.info("Access token:" + accessToken != null ? accessToken : "There is no access token ");
-        role = accessToken != null ? authorizationService.getRoleByToken(accessToken) : null;
-        logger.info("Api:" + servletPath + " Role:" + role + "\n");
+        if(accessToken == null){
+            logger.info("No access token");
+            role = null;
+        }
+        else {
+            logger.info("Access token:" + accessToken);
+            authorizationService.getRoleByToken(accessToken);
+            role = accessToken;
+            if(role == null)
+            {
+                throw new CustomException(400,"Wrong token or token time out");
+            }
+        }
+        logger.info("Api:" + servletPath + " Role:" + role == null ? "null" : role + "\n");
         ApiEntity apiEntity = getMatchingAPI(httpMethod, servletPath);
         if (apiEntity != null) {
             if (accessToken == null) {
