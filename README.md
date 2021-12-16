@@ -2,6 +2,8 @@
 
 This is a prenium version of juno website by Spring Boot
 
+Domain: http://fcode-lol.xyz
+
 ## Feature 
 
 <pre>
@@ -44,6 +46,7 @@ This is a prenium version of juno website by Spring Boot
 Download insominia: https://insomnia.rest/download
 
 Download this file , extract and import json file.
-[Insomnia_2021-12-17.zip](https://github.com/FCODE-LOL/juno-backend/files/7729837/Insomnia_2021-12-17.zip)
+
+[Insomnia_2021-12-17.zip](https://github.com/FCODE-LOL/juno-backend/files/7730582/Insomnia_2021-12-17.zip)
 
 Choose debug to use the right documentation
