@@ -1,6 +1,5 @@
 package fcodelol.clone.juno.controller.response;
 
-import fcodelol.clone.juno.controller.response.BillProductResponse;
 import fcodelol.clone.juno.dto.BillByGroupDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

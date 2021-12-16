@@ -14,19 +14,27 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.PrintWriter;
 
 @Service
 public class GatewayInterceptor implements HandlerInterceptor {
     private static Logger logger = LogManager.getLogger(GatewayInterceptor.class);
+    private static final String ERROR_JSON="{\n" +
+            "  \"code\": 400,\n" +
+            "  \"message\": \"Token time out or wrong token\",\n" +
+            "}";
     @Autowired
     AuthorizationService authorizationService;
 
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         try {
             return verifyRequest(request);
         } catch (Exception e) {
-            e.printStackTrace();
+            PrintWriter out = response.getWriter();
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+            out.print(ERROR_JSON);
             return false;
         }
     }
@@ -53,9 +61,11 @@ public class GatewayInterceptor implements HandlerInterceptor {
         else {
             logger.info("Access token:" + accessToken);
             authorizationService.getRoleByToken(accessToken);
-            role = accessToken;
-            if(role == null)
+            role = authorizationService.getRoleByToken(accessToken);
+            //if token is not valid
+            if(role == "GUESS")
             {
+                logger.warn("Wrong token or token time out");
                 throw new CustomException(400,"Wrong token or token time out");
             }
         }

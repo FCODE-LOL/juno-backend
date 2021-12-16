@@ -54,7 +54,7 @@ public class UserService {
     }
 
     public Response unbanUser(int id) {
-        logger.info("Un");
+        logger.info("Unban user with id:" + id);
         User user = userRepository.findOneById(id);
         if (user == null) {
             logger.warn("Unban user: This id is not exist");
@@ -65,9 +65,9 @@ public class UserService {
         return new Response(200, "Unban user success");
     }
 
-    public Response updatePassword(UpdatePasswordRequest updatePasswordRequest) {
+    public Response updatePassword(UpdatePasswordRequest updatePasswordRequest, Integer id) {
         logger.info("Change password:" + updatePasswordRequest);
-        User user = userRepository.findByEmail(updatePasswordRequest.getEmail());
+        User user = userRepository.findOneById(id);
         if (user.getPassword() == null) {
             logger.info("Email is not correct");
             throw new CustomException(400, "Email is not correct");
@@ -80,8 +80,9 @@ public class UserService {
         user.setPassword(new BCryptPasswordEncoder().encode(updatePasswordRequest.getNewPassword()));
         userRepository.save(user);
         logger.info("Change password success");
-        return new Response(200,"Change password success");
+        return new Response(200, "Change password success");
     }
+
     @Transactional
     public Response updateUserInfo(UpdateUserInfoRequest updateUserInfoRequest, Integer id) {
         logger.info("Update user info:" + updateUserInfoRequest);
@@ -89,7 +90,7 @@ public class UserService {
         user.updateInfo(updateUserInfoRequest);
         userRepository.save(user);
         logger.info("Change password success");
-        return new Response(200,"Change password success");
+        return new Response(200, "Change password success");
     }
 }
 

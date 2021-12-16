@@ -12,11 +12,9 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @SpringBootApplication(exclude = {SecurityAutoConfiguration.class})
 @EnableScheduling
 public class JunoApplication {
-
     public static void main(String[] args) {
         GatewayConstant.addApiEntities();
         SpringApplication.run(JunoApplication.class, args);
-
     }
 
 }

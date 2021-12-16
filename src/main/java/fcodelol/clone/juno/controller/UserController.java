@@ -47,8 +47,12 @@ public class UserController {
     }
 
     @PutMapping(value = "/update/password")
-    public Response updatePassword(@RequestBody UpdatePasswordRequest updatePasswordRequest) {
-        return userService.updatePassword(updatePasswordRequest);
+    public Response updatePassword(@RequestHeader("Authorization") String token, @RequestBody UpdatePasswordRequest updatePasswordRequest) {
+        Integer id = authorizationService.getUserIdByToken(token);
+        if (id == null && !authorizationService.getRoleByToken(token).equals("ADMIN")) {
+            throw new CustomException(403, "You don't have permission for this API");
+        }
+        return userService.updatePassword(updatePasswordRequest, id);
     }
 
     @PutMapping(value = "/update/info")
@@ -57,6 +61,6 @@ public class UserController {
         if (id == null && !authorizationService.getRoleByToken(token).equals("ADMIN")) {
             throw new CustomException(403, "You don't have permission for this API");
         }
-        return userService.updateUserInfo(updateUserInfoRequest,id);
+        return userService.updateUserInfo(updateUserInfoRequest, id);
     }
 }
