@@ -41,7 +41,15 @@ Domain: http://fcode-lol.xyz
   
   d. Update infomation 
 </pre>
-  
+
+## Author
+
+This project is belong to F-Code LOL team with Four member:
+- Trần Nhật Hoàng (Back-end deverloper).
+- Nguyễn Trọng Nghĩa (Front-end deverloper).
+- Trần Quan Sáng (Front-end deverloper).
+- Đào Thiên Bình (Front-end deverloper).
+
 ## Api docmumentation
 Download insominia: https://insomnia.rest/download
 
