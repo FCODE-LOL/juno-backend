@@ -28,6 +28,8 @@ public class BillByGroupDto {
     private Timestamp receiveTimestamp;
     private int status;
     private String info;
+    // max number names: three
+    private String productNamesOfBill;
 
     public BillByGroupDto(int id) {
         this.id = id;

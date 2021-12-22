@@ -232,15 +232,28 @@ public class ShoppingService {
     public Response<List<BillByGroupDto>> getAllBill() {
         List<BillByGroupDto> billByGroupDtoList = billRepository.findAll(Sort.by(Sort.Direction.DESC, "updateTimestamp"))
                 .stream().map(bill -> modelMapper.map(bill, BillByGroupDto.class)).collect(Collectors.toList());
-        return new Response(200, "Success", billByGroupDtoList);
+        return new Response(200, "Success", setProductNamesOfBill(billByGroupDtoList));
     }
 
     public Response<List<BillByGroupDto>> getBillOfUser(int userId) {
         List<BillByGroupDto> billByGroupDtoList = billRepository.findByUser(new User(userId))
                 .stream().map(bill -> modelMapper.map(bill, BillByGroupDto.class)).collect(Collectors.toList());
-        return new Response(200, "Success", billByGroupDtoList);
+        return new Response(200, "Success", setProductNamesOfBill(billByGroupDtoList));
     }
-
+    public List<BillByGroupDto> setProductNamesOfBill(List<BillByGroupDto> billByGroupDtoList){
+        return billByGroupDtoList.stream().map(billByGroupDto -> {
+            billByGroupDto.setProductNamesOfBill(convertListProductsNameToString(billRepository.getProductNamesFromBill(billByGroupDto.getId())));
+            return billByGroupDto;
+        }).collect(Collectors.toList());
+    }
+    public String convertListProductsNameToString(List<String> productNameList){
+        String productNames = "";
+        for(String productName : productNameList)
+        {
+            productNames += '&'+productName;
+        }
+        return productNames.substring(1);
+    }
     public Response<BillResponse> getBillById(int id) {
         try {
             Bill bill = billRepository.findOneByIdAndIsDisable(id, false);
