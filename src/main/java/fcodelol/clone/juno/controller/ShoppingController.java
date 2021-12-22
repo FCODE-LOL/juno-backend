@@ -36,7 +36,7 @@ public class ShoppingController {
         if (authorizationService.getUserIdByToken(token) != userId)
             return new Response(403,"This is not your bill");
         billDto.setUser(new UserByGroupDto(userId));
-        return shoppingService.updateBill(billDto);
+        return shoppingService.updateBillInfo(billDto);
     }
 
 

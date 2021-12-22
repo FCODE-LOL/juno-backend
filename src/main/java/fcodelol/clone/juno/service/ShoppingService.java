@@ -38,7 +38,11 @@ public class ShoppingService {
     @Autowired
     ModelMapper modelMapper;
     private static final Logger logger = LogManager.getLogger(ShoppingService.class);
-
+    private static final int NOT_CONFIRMED_BILL_STATUS = 0;
+    private static final int CONFIRMED_BILL_STATUS = 1;
+    private static final int TRANSPORT_BILL_STATUS = 2;
+    private static final int COMPLETE_BILL_STATUS = 3;
+    private static final int CANCEL_BILL_STATUS = 4;
     @Transactional
     public Response addBill(BillDto billDto) {
         logger.info("Add bill:" + billDto);
@@ -65,14 +69,14 @@ public class ShoppingService {
 
 
     @Transactional
-    public Response updateBill(BillDto billDto) {
+    public Response updateBillInfo(BillDto billDto) {
         logger.info("Update bill:" + billDto);
         Bill bill = billRepository.findOneById(billDto.getId());
         if (bill == null) {
             logger.warn("Update bill: This bill is not exist");
             throw new CustomException(404, "This bill is not exist");
         }
-        if (bill.getStatus() != 0) {
+        if (bill.getStatus() != NOT_CONFIRMED_BILL_STATUS) {
             logger.warn("Update bill: This bill had been confirmed, cannot be changed");
             throw new CustomException(404, "This bill had been confirmed, cannot be changed");
         }
@@ -86,7 +90,7 @@ public class ShoppingService {
                     logger.warn("Update bill: Not enough quantity of " + billModelDto.getModel());
                     throw new IllegalArgumentException("Not enough quantity of " + billModelDto.getModel());
                 }
-                if (bill.getStatus() == 1) // customer bought products
+                if (bill.getStatus() == CONFIRMED_BILL_STATUS) // customer bought products
                 {
                     model.setQuantity(model.getQuantity() - billModelDto.getQuantity());
                     modelRepository.save(model);
@@ -94,6 +98,8 @@ public class ShoppingService {
                 billModelDto.setBill(new BillByGroupDto(bill.getId()));
             }
         }
+        // this function only update bill basic info only, cannot change bill status
+        billDto.setStatus(bill.getStatus());
         bill = modelMapper.map(billDto, fcodelol.clone.juno.repository.entity.Bill.class);
         bill.setIsDisable(false);
         billRepository.save(bill);
@@ -237,7 +243,6 @@ public class ShoppingService {
 
     public Response<BillResponse> getBillById(int id) {
         try {
-
             Bill bill = billRepository.findOneByIdAndIsDisable(id, false);
             BillResponse billResponse = modelMapper.map(bill, BillResponse.class);
             billResponse.setProductOfBill(bill.getBillModelList().stream()
