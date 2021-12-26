@@ -176,20 +176,20 @@ public class ShoppingService {
     public Response updateBillStatus(UpdateBillStatusRequest updateBillStatusRequest) {
         logger.info("Update bill status: " + updateBillStatusRequest);
         Bill bill = billRepository.findOneById(updateBillStatusRequest.getBillId());
-        if (updateBillStatusRequest.getStatus() == 0) // change bill to unconfirmed status
+        if (updateBillStatusRequest.getStatus() == NOT_CONFIRMED_BILL_STATUS) // change bill to unconfirmed status
         {
             logger.warn("Update bill status: Cannot change bill to pre-status");
             throw new CustomException(400, "Cannot change bill to pre-status");
         }
-        if (updateBillStatusRequest.getStatus() == 6) //cancel
+        if (updateBillStatusRequest.getStatus() == CANCEL_BILL_STATUS) //cancel
             getProduct(bill);
-        if (updateBillStatusRequest.getStatus() == 5 && bill.getStatus() != 5) // complete shopping
+        if (updateBillStatusRequest.getStatus() == COMPLETE_BILL_STATUS && bill.getStatus() != COMPLETE_BILL_STATUS) // complete shopping
         {
             User user = bill.getUser();
             user.setPoint(user.getPoint() + (Integer) bill.getPayment().intValue());//increase point
             userRepository.save(user);
         }
-        if (updateBillStatusRequest.getStatus() != 5 && bill.getStatus() == 5) // complete shopping
+        if (updateBillStatusRequest.getStatus() != COMPLETE_BILL_STATUS && bill.getStatus() == COMPLETE_BILL_STATUS) // complete shopping
         {
             User user = bill.getUser();
             user.setPoint(user.getPoint() - (Integer) bill.getPayment().intValue());//decrease point
