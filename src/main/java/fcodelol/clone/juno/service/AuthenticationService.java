@@ -31,6 +31,11 @@ public class AuthenticationService {
     public Response login(LoginRequest loginRequest) {
         logger.info("Login: " + loginRequest);
         User user = userRepository.findByEmail(loginRequest.getEmail());
+        if(user == null)
+        {
+
+            logger.info("WORET");
+        }
         if (user.getIsDisable()) {
             logger.warn("Login: This account is banned");
             throw new CustomException(403, "This account is banned");

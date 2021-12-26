@@ -20,7 +20,10 @@ public class GatewayConstant {
         apiEntities.add(new ApiEntity("productPost","/product/**","POST","ADMIN"));
         apiEntities.add(new ApiEntity("productPut","/product/**","PUT","ADMIN"));
         apiEntities.add(new ApiEntity("productDelete","/product/**","DELETE","ADMIN"));
-        apiEntities.add(new ApiEntity("removeBill","/buy/delete/product/**","PUT","ADMIN"));
+        apiEntities.add(new ApiEntity("removeBill","/bill/delete/product/**","PUT","ADMIN"));
+        apiEntities.add(new ApiEntity("getAllBillOfUser","/bill/user/**","PUT","ADMIN&&MEMBER"));
+        apiEntities.add(new ApiEntity("getBillById","/bill/*","PUT","ADMIN&&MEMBER"));
+        apiEntities.add(new ApiEntity("getAllBillOfUser","/bill/user/**","PUT","ADMIN"));
         apiEntities.add(new ApiEntity("updateStatus","/update/status","PUT","ADMIN"));
         apiEntities.add(new ApiEntity("addDiscount","/discount/**","POST","ADMIN"));
         apiEntities.add(new ApiEntity("updateDiscount","/discount/**","PUT","ADMIN"));

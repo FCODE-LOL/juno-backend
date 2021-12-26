@@ -23,6 +23,7 @@ public class BillDto {
     private String discountCode;
     private BigDecimal payment;
     private BigDecimal transportFee;
+    private Timestamp createdTimestamp;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss.SSS", timezone = "Asia/Ho_Chi_Minh")
     private Timestamp receiveTimestamp;
     private int status;

@@ -25,7 +25,7 @@ public class ShoppingController {
     @PostMapping(value = "/add")
     public Response addBill(@RequestHeader("Authorization") String token, @RequestBody BillDto billDto) {
         billDto.setUser(new UserByGroupDto(authorizationService.getUserIdByToken(token)));
-        if(billDto.getUser().getId() == null)
+        if (billDto.getUser().getId() == null)
             billDto.setUser(null);
         return shoppingService.addBill(billDto);
     }
@@ -34,7 +34,7 @@ public class ShoppingController {
     public Response updateBill(@RequestHeader("Authorization") String token, @RequestBody BillDto billDto) {
         Integer userId = shoppingService.getUserId(billDto.getId());
         if (authorizationService.getUserIdByToken(token) != userId)
-            return new Response(403,"This is not your bill");
+            return new Response(403, "This is not your bill");
         billDto.setUser(new UserByGroupDto(userId));
         return shoppingService.updateBillInfo(billDto);
     }
@@ -48,7 +48,7 @@ public class ShoppingController {
     @DeleteMapping(value = "/delete/product/{billProductId}")
     public Response removeBillProduct(@RequestHeader("Authorization") String token, @PathVariable int billProductId) {
         if (authorizationService.getUserIdByToken(token) != shoppingService.getUserIdByBillProductId(billProductId))
-            return new Response(403,"This is not your bill");
+            return new Response(403, "This is not your bill");
         return shoppingService.removeBillProduct(billProductId);
     }
 
@@ -64,15 +64,15 @@ public class ShoppingController {
 
     @GetMapping(value = "/{id}")
     public Response<BillResponse> getBillById(@RequestHeader("Authorization") String token, @PathVariable int id) {
-        if (authorizationService.getUserIdByToken(token) != shoppingService.getUserId(id) && !authorizationService.getRoleByToken(token).equals("ADMIN"))
-            return null;
-        return shoppingService.getBillById(id);
+        if (authorizationService.getRoleByToken(token).equals("ADMIN"))
+            return shoppingService.getBillById(id);
+        else return shoppingService.getBillById(authorizationService.getUserIdByToken(token));
     }
 
     @GetMapping(value = "/user/{id}")
     public Response<List<BillByGroupDto>> getAllBillOfUser(@RequestHeader("Authorization") String token, @PathVariable int id) {
-        if (authorizationService.getUserIdByToken(token) != id && !authorizationService.getRoleByToken(token).equals("ADMIN"))
-            return null;
-        return shoppingService.getBillOfUser(id);
+        if (authorizationService.getRoleByToken(token).equals("ADMIN"))
+            return shoppingService.getBillOfUser(id);
+        else return shoppingService.getBillOfUser(authorizationService.getUserIdByToken(token));
     }
 }
