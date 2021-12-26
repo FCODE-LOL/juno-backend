@@ -18,6 +18,7 @@ public class ProductByGroupDto {
     private String linkImages;
     private BigDecimal price;
     private BigDecimal discountPrice;
+    private String colorIds;
     private Timestamp createdTimestamp;
 
     public ProductByGroupDto(Object[] property) {

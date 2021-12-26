@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -43,6 +44,7 @@ public class ShoppingService {
     private static final int TRANSPORT_BILL_STATUS = 2;
     private static final int COMPLETE_BILL_STATUS = 3;
     private static final int CANCEL_BILL_STATUS = 4;
+
     @Transactional
     public Response addBill(BillDto billDto) {
         logger.info("Add bill:" + billDto);
@@ -109,7 +111,6 @@ public class ShoppingService {
     }
 
     public List<BillModelDto> setBillProductPrice(List<BillModelDto> billModelDtoList, String discountCode) {
-
         if (discountCode != null) {
             Discount discount = discountRepository.findOneByCodeAndIsDisable(discountCode, false);
             if (discount == null) {
@@ -186,7 +187,8 @@ public class ShoppingService {
         if (updateBillStatusRequest.getStatus() == COMPLETE_BILL_STATUS && bill.getStatus() != COMPLETE_BILL_STATUS) // complete shopping
         {
             User user = bill.getUser();
-            user.setPoint(user.getPoint() + (Integer) bill.getPayment().intValue());//increase point
+            user.setPoint(user.getPoint() + (Integer) bill.getPayment().intValue());//increase point\
+            bill.setCreatedTimestamp(new Timestamp(System.currentTimeMillis()));
             userRepository.save(user);
         }
         if (updateBillStatusRequest.getStatus() != COMPLETE_BILL_STATUS && bill.getStatus() == COMPLETE_BILL_STATUS) // complete shopping
@@ -240,31 +242,29 @@ public class ShoppingService {
                 .stream().map(bill -> modelMapper.map(bill, BillByGroupDto.class)).collect(Collectors.toList());
         return new Response(200, "Success", setProductNamesOfBill(billByGroupDtoList));
     }
-    public List<BillByGroupDto> setProductNamesOfBill(List<BillByGroupDto> billByGroupDtoList){
+
+    public List<BillByGroupDto> setProductNamesOfBill(List<BillByGroupDto> billByGroupDtoList) {
         return billByGroupDtoList.stream().map(billByGroupDto -> {
             billByGroupDto.setProductNamesOfBill(convertListProductsNameToString(billRepository.getProductNamesFromBill(billByGroupDto.getId())));
             return billByGroupDto;
         }).collect(Collectors.toList());
     }
-    public String convertListProductsNameToString(List<String> productNameList){
+
+    public String convertListProductsNameToString(List<String> productNameList) {
         String productNames = "";
-        for(String productName : productNameList)
-        {
-            productNames += '&'+productName;
+        for (String productName : productNameList) {
+            productNames += '&' + productName;
         }
         return productNames.substring(1);
     }
-    public Response<BillResponse> getBillById(int id) {
-        try {
-            Bill bill = billRepository.findOneByIdAndIsDisable(id, false);
-            BillResponse billResponse = modelMapper.map(bill, BillResponse.class);
-            billResponse.setProductOfBill(bill.getBillModelList().stream()
-                    .map(billModel -> modelMapper.map(billModel, BillProductResponse.class)).collect(Collectors.toList()));
-            return new Response(200, "Success", billResponse);
-        } catch (Exception e) {
-            logger.error("Get bill by id error: " + e.getMessage());
-            return new Response(500, "Get bill by id error");
-        }
-    }
 
+    public Response<BillResponse> getBillById(int id) {
+        logger.info("Get bill with id: " + id);
+        Bill bill = billRepository.findOneByIdAndIsDisable(id, false);
+        BillResponse billResponse = modelMapper.map(bill, BillResponse.class);
+        billResponse.setProductOfBill(bill.getBillModelList().stream()
+                .map(billModel -> modelMapper.map(billModel, BillProductResponse.class)).collect(Collectors.toList()));
+        logger.info("Get bill success");
+        return new Response(200, "Success", billResponse);
+    }
 }

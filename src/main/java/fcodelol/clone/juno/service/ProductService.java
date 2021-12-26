@@ -56,7 +56,6 @@ public class ProductService {
 
     }
 
-
     public Response deleteProduct(String id) {
         logger.info("Delete product:" + id);
         Product product = productRepository.findByIdAndIsDisable(id, false);
@@ -85,7 +84,7 @@ public class ProductService {
             Optional.ofNullable(productByGroupDtos).ifPresent(productByGroupDtoList::addAll);
         }
         Collections.sort(productByGroupDtoList, comparator);
-        return new Response(200, "success", productByGroupDtoList);
+        return new Response(200, "success", setColorIdsListProductByGroupDto(productByGroupDtoList));
     }
 
     @Transactional
@@ -94,14 +93,14 @@ public class ProductService {
         List<ProductByGroupDto> productByGroupDtos =
                 productRepository.findByIsDisable(false).stream().map(product -> modelMapper.map(product, ProductByGroupDto.class)).collect(Collectors.toList());
         Optional.ofNullable(productByGroupDtos).ifPresent(productByGroupDtoList::addAll);
-        return new Response(200, "success", productByGroupDtoList);
+        return new Response(200, "success", setColorIdsListProductByGroupDto(productByGroupDtoList));
     }
 
     public Response<List<ProductByGroupDto>> getProductByName(String name, Sort sort) {
         logger.info("Get product by name:" + name);
         return new Response(200, "success",
-                productRepository.findByNameContainingIgnoreCaseAndIsDisable(name, false, sort).stream()
-                        .map(product -> modelMapper.map(product, ProductByGroupDto.class)).collect(Collectors.toList()));
+                setColorIdsListProductByGroupDto(productRepository.findByNameContainingIgnoreCaseAndIsDisable(name, false, sort).stream()
+                        .map(product -> modelMapper.map(product, ProductByGroupDto.class)).collect(Collectors.toList())));
     }
 
     public Response<ProductDto> getProductById(String id) {
@@ -176,5 +175,19 @@ public class ProductService {
         typeList.forEach(type -> typeRepository.deleteById(type.getId()));
         logger.info("Delete type success");
         return new Response(200, "Delete type success");
+    }
+
+    public List<ProductByGroupDto> setColorIdsListProductByGroupDto(List<ProductByGroupDto> productByGroupDtoList) {
+        return productByGroupDtoList.stream().map(productByGroupDto -> setColorIdsProductByGroupDto(productByGroupDto)).collect(Collectors.toList());
+    }
+
+    public ProductByGroupDto setColorIdsProductByGroupDto(ProductByGroupDto productByGroupDto) {
+        List<String> colorIdList = productRepository.getColorsOfdProduct(productByGroupDto.getId());
+        String colorIds = "";
+        for (String color : colorIdList) {
+            colorIds += color;
+        }
+        productByGroupDto.setColorIds(colorIds);
+        return productByGroupDto;
     }
 }

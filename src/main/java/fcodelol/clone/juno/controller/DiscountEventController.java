@@ -24,7 +24,6 @@ public class DiscountEventController {
 
     @PutMapping(value = "/update")
     public Response updateDiscount(@RequestBody DiscountDto discountDto) {
-
         return discountService.updateDiscount(discountDto);
     }
 

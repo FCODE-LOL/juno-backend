@@ -27,6 +27,8 @@ public class StatisticService {
     UserRepository userRepository;
     @Autowired
     ProductRepository productRepository;
+    @Autowired
+    ProductService productService;
     private static final Logger logger = LogManager.getLogger(StatisticService.class);
 
 
@@ -43,17 +45,19 @@ public class StatisticService {
 
     public Response<List<ProductByGroupDto>> getTopSaleProduct(int numberOfProduct) {
         return new Response(200, "Success",
-                productRepository.getTopSaleProduct(numberOfProduct).stream().map(product -> new ProductByGroupDto((Object[]) product)).collect(Collectors.toList()));
+                productService.setColorIdsListProductByGroupDto(
+                        productRepository.getTopSaleProduct(numberOfProduct).stream().map(product -> new ProductByGroupDto((Object[]) product)).collect(Collectors.toList())));
     }
 
     public Response<List<ProductByGroupDto>> getTopIncomeProduct(int numberOfProduct) {
         return new Response(200, "Success",
-                productRepository.getTopIncomeProduct(numberOfProduct).stream().map(product -> new ProductByGroupDto((Object[]) product)).collect(Collectors.toList()));
+                productService.setColorIdsListProductByGroupDto(
+                        productRepository.getTopIncomeProduct(numberOfProduct).stream().map(product -> new ProductByGroupDto((Object[]) product)).collect(Collectors.toList())));
     }
 
     public Response<List<ProductByGroupDto>> getTopRelatedProduct(int productId, int numberOfProduct) {
         return new Response(200, "Success",
-                productRepository.getTopRelatedProduct(productId, numberOfProduct).stream()
-                        .map(product -> new ProductByGroupDto((Object[]) product)).collect(Collectors.toList()));
+                productService.setColorIdsListProductByGroupDto(productRepository.getTopRelatedProduct(productId, numberOfProduct).stream()
+                        .map(product -> new ProductByGroupDto((Object[]) product)).collect(Collectors.toList())));
     }
 }
