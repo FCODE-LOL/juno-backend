@@ -9,13 +9,12 @@ import java.util.Properties;
 
 @Service
 public class SendEmailService {
-    final String username = "giveandgetse@gmail.com";
-    final String password = "hklwsvnyjjhlbkud";
+    private static final String USERNAME = "giveandgetse@gmail.com";
+    private static final String PASSWORD = "hklwsvnyjjhlbkud";
 
     public void sendEmail(String title, String email, String content) {
         Properties props = new Properties();
         props.put("mail.smtp.ssl.trust", "smtp.gmail.com");
-        props.put("mail.smtp.starttls.enable", "true");
         props.put("mail.smtp.host", "smtp.gmail.com");
         props.put("mail.smtp.port", "465");
         props.put("mail.smtp.auth", "true");
@@ -25,14 +24,15 @@ public class SendEmailService {
         props.put("mail.smtp.ssl.protocols", "TLSv1.2");
         Session session = Session.getInstance(props,
                 new javax.mail.Authenticator() {
+                    @Override
                     protected PasswordAuthentication getPasswordAuthentication() {
-                        return new PasswordAuthentication(username, password);
+                        return new PasswordAuthentication(USERNAME, PASSWORD);
                     }
                 });
 
         try {
             Message message = new MimeMessage(session);
-            message.setFrom(new InternetAddress(username));
+            message.setFrom(new InternetAddress(USERNAME));
             message.setRecipients(
                     Message.RecipientType.TO,
                     InternetAddress.parse(email)

@@ -41,20 +41,20 @@ public class ShoppingService {
     private static final Logger logger = LogManager.getLogger(ShoppingService.class);
     private static final int NOT_CONFIRMED_BILL_STATUS = 0;
     private static final int CONFIRMED_BILL_STATUS = 1;
-    private static final int TRANSPORT_BILL_STATUS = 2;
+    //private static final int TRANSPORT_BILL_STATUS = 2;
     private static final int COMPLETE_BILL_STATUS = 3;
     private static final int CANCEL_BILL_STATUS = 4;
-
+    private static final String SUCCESS_MESSAGE = "Success";
     @Transactional
-    public Response addBill(BillDto billDto) {
-        logger.info("Add bill:" + billDto);
+    public Response<String> addBill(BillDto billDto) {
+        logger.info("Add bill: {}",billDto);
         billDto.setBillModelDtoList(setBillProductPrice(billDto.getBillModelDtoList(), billDto.getDiscountCode()));
         billDto.setPayment(calculateBillPrice(billDto.getBillModelDtoList()));
         billDto.getBillModelDtoList().forEach(billModelDto -> {
             Model model = modelRepository.findOneById(billModelDto.getModel().getId());
             if (model.getQuantity() < billModelDto.getQuantity()) {
-                logger.warn("Add bill: Not enough quantity of " + billModelDto.getModel());
-                throw new IllegalArgumentException("Not enough quantity of " + billModelDto.getModel());
+                logger.warn("Add bill: Not enough quantity of {}",billModelDto.getModel());
+                throw new IllegalArgumentException("Not enough quantity of "+ billModelDto.getModel());
             }
             if (billDto.getStatus() == 1) // customer bought products
             {
@@ -65,14 +65,14 @@ public class ShoppingService {
         Bill bill = modelMapper.map(billDto, fcodelol.clone.juno.repository.entity.Bill.class);
         bill.setBillOfBillProductList();
         billRepository.save(bill);
-        logger.info("Add bill success:" + billDto);
-        return new Response(200, "Add bill success");
+        logger.info("Add bill success: {}",billDto);
+        return new Response<>(200, "Add bill success");
     }
 
 
     @Transactional
-    public Response updateBillInfo(BillDto billDto) {
-        logger.info("Update bill:" + billDto);
+    public Response<String> updateBillInfo(BillDto billDto) {
+        logger.info("Update bill:{}",billDto);
         Bill bill = billRepository.findOneById(billDto.getId());
         if (bill == null) {
             logger.warn("Update bill: This bill is not exist");
@@ -89,8 +89,8 @@ public class ShoppingService {
             for (BillModelDto billModelDto : billModelDtoList) {
                 Model model = modelRepository.findOneById(billModelDto.getModel().getId());
                 if (model.getQuantity() < billModelDto.getQuantity()) {
-                    logger.warn("Update bill: Not enough quantity of " + billModelDto.getModel());
-                    throw new IllegalArgumentException("Not enough quantity of " + billModelDto.getModel());
+                    logger.warn("Update bill: Not enough quantity of {}",billModelDto.getModel());
+                    throw new IllegalArgumentException("Not enough quantity of {}" + billModelDto.getModel());
                 }
                 if (bill.getStatus() == CONFIRMED_BILL_STATUS) // customer bought products
                 {
@@ -105,8 +105,8 @@ public class ShoppingService {
         bill = modelMapper.map(billDto, fcodelol.clone.juno.repository.entity.Bill.class);
         bill.setIsDisable(false);
         billRepository.save(bill);
-        logger.info("Update bill success:" + billDto);
-        return new Response(200, "Update bill success");
+        logger.info("Update bill success:{}",billDto);
+        return new Response<>(200, "Update bill success");
 
     }
 
@@ -143,18 +143,18 @@ public class ShoppingService {
     }
 
     @Transactional
-    public Response removeBillById(int billId) {
-        logger.info("Remove bill by id: " + billId);
+    public Response<String> removeBillById(int billId) {
+        logger.info("Remove bill by id: {}",billId);
         Bill bill = billRepository.getById(billId);
         bill.setIsDisable(true);
         billRepository.save(bill);
         logger.info("Remove bill by id success");
-        return new Response(200, "Remove bill success");
+        return new Response<>(200, "Remove bill success");
     }
 
 
-    public Response removeBillProduct(int billProductId) {
-        logger.info("Remove bill-product by id: " + billProductId);
+    public Response<String> removeBillProduct(int billProductId) {
+        logger.info("Remove bill-product by id: {}",billProductId);
         BillModel billModel = billModelRepository.findOneById(billProductId);
         if (billModel == null) {
             logger.warn("Remove bill-product: This id is not exist");
@@ -170,12 +170,12 @@ public class ShoppingService {
                 .map(billModelArgs -> modelMapper.map(billModelArgs, BillModelDto.class)).collect(Collectors.toList())));
         billRepository.save(bill);
         logger.info("Remove bill-product by id success");
-        return new Response(200, "Remove bill product success");
+        return new Response<>(200, "Remove bill product success");
     }
 
     @Transactional
-    public Response updateBillStatus(UpdateBillStatusRequest updateBillStatusRequest) {
-        logger.info("Update bill status: " + updateBillStatusRequest);
+    public Response<String> updateBillStatus(UpdateBillStatusRequest updateBillStatusRequest) {
+        logger.info("Update bill status: {}",updateBillStatusRequest);
         Bill bill = billRepository.findOneById(updateBillStatusRequest.getBillId());
         if (updateBillStatusRequest.getStatus() == NOT_CONFIRMED_BILL_STATUS) // change bill to unconfirmed status
         {
@@ -187,21 +187,21 @@ public class ShoppingService {
         if (updateBillStatusRequest.getStatus() == COMPLETE_BILL_STATUS && bill.getStatus() != COMPLETE_BILL_STATUS) // complete shopping
         {
             User user = bill.getUser();
-            user.setPoint(user.getPoint() + (Integer) bill.getPayment().intValue());//increase point\
+            user.setPoint(user.getPoint() + bill.getPayment().intValue());//increase point\
             bill.setCreatedTimestamp(new Timestamp(System.currentTimeMillis()));
             userRepository.save(user);
         }
         if (updateBillStatusRequest.getStatus() != COMPLETE_BILL_STATUS && bill.getStatus() == COMPLETE_BILL_STATUS) // complete shopping
         {
             User user = bill.getUser();
-            user.setPoint(user.getPoint() - (Integer) bill.getPayment().intValue());//decrease point
+            user.setPoint(user.getPoint() - bill.getPayment().intValue());//decrease point
             userRepository.save(user);
         }
         bill.setStatus(updateBillStatusRequest.getStatus());
         bill.setInfo(updateBillStatusRequest.getInfo());
         bill.setReceiveTimestamp(updateBillStatusRequest.getReceiveTimestamp());
         logger.info("Update bill status success");
-        return new Response(200, "Update bill success");
+        return new Response<>(200, "Update bill success");
     }
 
     @Transactional
@@ -217,7 +217,7 @@ public class ShoppingService {
         try {
             return billRepository.getUserIdFromBill(billId);
         } catch (Exception e) {
-            logger.error("Get user id by bill id:" + e.getMessage());
+            logger.error("Get user id by bill id:{}",e.getMessage());
             return null;
         }
     }
@@ -226,7 +226,7 @@ public class ShoppingService {
         try {
             return billRepository.getUserIdFromBill(billModelRepository.findBillId(id));
         } catch (Exception e) {
-            logger.error("Get user id by bill id:" + e.getMessage());
+            logger.error("Get user id by bill id:{}",e.getMessage());
             return null;
         }
     }
@@ -234,13 +234,13 @@ public class ShoppingService {
     public Response<List<BillByGroupDto>> getAllBill() {
         List<BillByGroupDto> billByGroupDtoList = billRepository.findAll(Sort.by(Sort.Direction.DESC, "updateTimestamp"))
                 .stream().map(bill -> modelMapper.map(bill, BillByGroupDto.class)).collect(Collectors.toList());
-        return new Response(200, "Success", setProductNamesOfBill(billByGroupDtoList));
+        return new Response<>(200, SUCCESS_MESSAGE, setProductNamesOfBill(billByGroupDtoList));
     }
 
     public Response<List<BillByGroupDto>> getBillOfUser(int userId) {
         List<BillByGroupDto> billByGroupDtoList = billRepository.findByUser(new User(userId))
                 .stream().map(bill -> modelMapper.map(bill, BillByGroupDto.class)).collect(Collectors.toList());
-        return new Response(200, "Success", setProductNamesOfBill(billByGroupDtoList));
+        return new Response<>(200, SUCCESS_MESSAGE, setProductNamesOfBill(billByGroupDtoList));
     }
 
     public List<BillByGroupDto> setProductNamesOfBill(List<BillByGroupDto> billByGroupDtoList) {
@@ -251,20 +251,20 @@ public class ShoppingService {
     }
 
     public String convertListProductsNameToString(List<String> productNameList) {
-        String productNames = "";
+        StringBuilder stringBuilder = new StringBuilder();
         for (String productName : productNameList) {
-            productNames += '&' + productName;
+            stringBuilder.append('&'+ productName);
         }
-        return productNames.substring(1);
+        return stringBuilder.substring(1);
     }
 
     public Response<BillResponse> getBillById(int id) {
-        logger.info("Get bill with id: " + id);
+        logger.info("Get bill with id: {}",id);
         Bill bill = billRepository.findOneByIdAndIsDisable(id, false);
         BillResponse billResponse = modelMapper.map(bill, BillResponse.class);
         billResponse.setProductOfBill(bill.getBillModelList().stream()
                 .map(billModel -> modelMapper.map(billModel, BillProductResponse.class)).collect(Collectors.toList()));
         logger.info("Get bill success");
-        return new Response(200, "Success", billResponse);
+        return new Response<>(200, SUCCESS_MESSAGE, billResponse);
     }
 }

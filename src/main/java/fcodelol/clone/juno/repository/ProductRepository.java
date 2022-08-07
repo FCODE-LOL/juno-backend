@@ -1,6 +1,5 @@
 package fcodelol.clone.juno.repository;
 
-import fcodelol.clone.juno.dto.ProductByGroupDto;
 import fcodelol.clone.juno.repository.entity.Product;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -21,7 +20,7 @@ public interface ProductRepository extends JpaRepository<Product, String> {
 
     Product findByIdAndIsDisable(String id, boolean isDisable);
 
-    //get products sold with the largest number
+    //get products sold with the largest number,
     @Query(nativeQuery = true, value = "SELECT P.id, P.name, P.link_images, P.created_timestamp FROM `MODEL` AS `M` JOIN `BILL_MODEL` AS `B` ON  M.id = B.MODEL_id " +
             "JOIN `PRODUCT` AS P ON M.PRODUCT_id = P.id WHERE P.is_disable = 0 GROUP BY `PRODUCT_id` ORDER BY SUM(B.quantity) DESC LIMIT ?1 ")
     List<?> getTopSaleProduct(int numberOfProduct);

@@ -13,17 +13,17 @@ public class ImportDBController {
     ExecuteDBService executeDBService;
 
     @PostMapping(value = "/import")
-    public Response importDB() {
+    public Response<String> importDB() {
         return executeDBService.loadDBData();
     }
 
     @DeleteMapping(value = "/clear")
-    public Response clearDB() {
+    public Response<String> clearDB() {
         return executeDBService.clearDBData();
     }
 
     @PostMapping(value = "/init")
-    public Response initDB() {
+    public Response<String> initDB() {
         return executeDBService.initDB();
     }
 }

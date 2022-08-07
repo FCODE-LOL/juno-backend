@@ -14,7 +14,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.PrintWriter;
 
 @Service
 public class GatewayInterceptor implements HandlerInterceptor {
@@ -49,20 +48,20 @@ public class GatewayInterceptor implements HandlerInterceptor {
         String role;
         if(accessToken == null){
             logger.info("No access token");
-            role = null;
+            role = "none";
         }
         else {
-            logger.info("Access token:" + accessToken);
+            logger.info("Access token:{}",accessToken);
             authorizationService.getRoleByToken(accessToken);
             role = authorizationService.getRoleByToken(accessToken);
             //if token is not valid
-            if(role == "GUESS")
+            if(role.equals(GatewayConstant.ROLE_GUESS))
             {
                 logger.warn("Wrong token or token time out");
                 throw new CustomException(400,"Wrong token or token time out");
             }
         }
-        logger.info("Api:" + servletPath + " Role:" + role == null ? "null" : role + "\n");
+        logger.info("Api:{} Role:{}",servletPath,role);
         ApiEntity apiEntity = getMatchingAPI(httpMethod, servletPath);
         if (apiEntity != null) {
             if (accessToken == null) {
@@ -82,7 +81,7 @@ public class GatewayInterceptor implements HandlerInterceptor {
     }
 
     private boolean verifyRole(String pathRole, String userRole) {
-        String roles[] = pathRole.split("&");
+        String[] roles = pathRole.split(GatewayConstant.ROLE_SPLIT_STRING);
         for (String role : roles)
             if (role.equals(userRole)) {
                 return true;

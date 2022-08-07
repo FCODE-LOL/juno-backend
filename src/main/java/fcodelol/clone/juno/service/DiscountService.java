@@ -46,7 +46,13 @@ public class DiscountService {
     private HashMap<Integer, Future> futureMap;
 
     private static final Logger logger = LogManager.getLogger(DiscountService.class);
-
+    private static final String CODE_EXIST_MESSAGE = "Code is already exist";
+    private static final String ADD_DISCOUNT_MESSAGE = "Add discount: ";
+    private static final String UPDATE_DISCOUNT_MESSAGE = "Update discount: ";
+    private static final String UNSUITABLE_TIME_MESSAGE= "Start and end time is not suitable";
+    private static final String ADD_DISCOUNT_SUCCESS_MESSAGE = "Add discount success";
+    private static final String UPDATE_DISCOUNT_SUCCESS_MESSAGE = "Update discount success";
+    private static final String REMOVE_DISCOUNT_SUCCESS_MESSAGE = "Remove discount success";
     public DiscountService() {
         taskScheduler = new ThreadPoolTaskScheduler();
         taskScheduler.setPoolSize(50);
@@ -63,7 +69,7 @@ public class DiscountService {
     }
 
     @Transactional
-    public void restartAllDiscountEvent() throws Exception {
+    public void restartAllDiscountEvent() {
         logger.info("Start restart all discount event");
         List<Discount> discountList = discountRepository.findByIsDisable(false);
         if (discountList == null) return;
@@ -80,15 +86,15 @@ public class DiscountService {
     }
 
     @Transactional
-    public Response addDiscountEvent(DiscountDto discountDto) {
-        logger.info("Add discount: " + discountDto);
+    public Response<String> addDiscountEvent(DiscountDto discountDto) {
+        logger.info("{}{}",ADD_DISCOUNT_MESSAGE,discountDto);
         if (!validDiscountTime(discountDto.getStartTime(), discountDto.getEndTime())) {
-            logger.warn("Start and end time is not suitable");
-            throw new CustomException(400, "Start and end time is not suitable");
+            logger.warn("{}{}",ADD_DISCOUNT_MESSAGE,UNSUITABLE_TIME_MESSAGE);
+            throw new CustomException(400, UNSUITABLE_TIME_MESSAGE);
         }
         if (discountDto.getCode() != null && discountRepository.existsByCodeAndIsDisable(discountDto.getCode(), false)) {
-            logger.warn("Code is already exist");
-            throw new CustomException(400, "Code is already exist");
+            logger.warn("{}{}",ADD_DISCOUNT_MESSAGE,CODE_EXIST_MESSAGE);
+            throw new CustomException(400, CODE_EXIST_MESSAGE);
         }
         discountDto.setDiscountIdOfDiscountModel();
         Discount discount = discountRepository.save(modelMapper.map(discountDto, fcodelol.clone.juno.repository.entity.Discount.class));
@@ -101,12 +107,13 @@ public class DiscountService {
                 , new CronTrigger(covertTimestampToCronExpression(discount.getStartTime()))));
         futureMap.put(discount.getId() * 2 + 1, taskScheduler.schedule(runFinishEvent(discount.getStartTime(), discount.getId())
                 , new CronTrigger(covertTimestampToCronExpression(discount.getStartTime()))));
-        logger.info("Add discount success");
-        return new Response(200, "Add discount success");
+        logger.info(ADD_DISCOUNT_SUCCESS_MESSAGE);
+        return new Response(200, ADD_DISCOUNT_SUCCESS_MESSAGE);
     }
 
-    public Response updateDiscount(DiscountDto discountDto) {
-        logger.info("Update discount: " + discountDto);
+    @Transactional
+     public Response<String> updateDiscount(DiscountDto discountDto) {
+        logger.info("{}{}",UPDATE_DISCOUNT_MESSAGE,discountDto);
         discountDto.setDiscountIdOfDiscountModel();
         Discount discount = discountRepository.findOneByIdAndIsDisable(discountDto.getId(), false);
         Timestamp startTime = discount.getStartTime();
@@ -116,8 +123,8 @@ public class DiscountService {
             throw new CustomException(404, "This discount is not exist");
         }
         if (discountDto.getCode() != null && discountRepository.existsByCodeAndIsDisable(discountDto.getCode(), false)) {
-            logger.warn("Code is already exist");
-            throw new CustomException(400, "Code is already exist");
+            logger.warn("{}{}",UPDATE_DISCOUNT_MESSAGE,CODE_EXIST_MESSAGE);
+            throw new CustomException(400, CODE_EXIST_MESSAGE);
         }
         discount = modelMapper.map(discountDto, fcodelol.clone.juno.repository.entity.Discount.class);
         discount.setIsDisable(false);
@@ -128,13 +135,13 @@ public class DiscountService {
         if (discount.getEndTime() != finishTime)
             futureMap.put(discount.getId(), taskScheduler.schedule(runFinishEvent(discount.getStartTime(), discount.getId())
                     , new CronTrigger(covertTimestampToCronExpression(discount.getStartTime()))));
-        logger.info("Update discount success");
-        return new Response(200, "Update discount success");
+        logger.info(UPDATE_DISCOUNT_SUCCESS_MESSAGE);
+        return new Response(200, UPDATE_DISCOUNT_SUCCESS_MESSAGE);
     }
 
     @Transactional
-    public Response removeDiscountById(int discountId) {
-        logger.info("Remove discount by id" + discountId);
+    public Response<String> removeDiscountById(int discountId) {
+        logger.info("{}{}","Remove discount by id",discountId);
         Discount discount = discountRepository.getById(discountId);
         if (discount.getCode() == null) //discount without code
         {
@@ -145,12 +152,12 @@ public class DiscountService {
         }
         discount.setIsDisable(true);
         discountRepository.save(discount);
-        logger.info("Remove discount success");
-        return new Response(200, "Remove discount success");
+        logger.info(REMOVE_DISCOUNT_SUCCESS_MESSAGE);
+        return new Response(200, REMOVE_DISCOUNT_SUCCESS_MESSAGE);
     }
 
     @Transactional
-    public Response removeDiscountModel(int discountModelId) {
+    public Response<String> removeDiscountModel(int discountModelId) {
         logger.info("Remove discount model by id" + discountModelId);
         DiscountModel discountModel = discountModelRepository.findOneById(discountModelId);
         if (discountModel == null) return new Response(404, "This discount model is not exists");
@@ -162,7 +169,6 @@ public class DiscountService {
         return new Response(200, "Remove discount model success");
     }
 
-    @Transactional
     public Runnable runStartEvent(Timestamp startTime, int discountId) {
         return () -> {
             Discount discount = discountRepository.findOneByIdAndIsDisable(discountId, false);

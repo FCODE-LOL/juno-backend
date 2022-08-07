@@ -16,5 +16,4 @@ public class BillModelDto {
     private ModelDto model;
     private Integer quantity;
     private BigDecimal price;
-
 }

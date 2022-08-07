@@ -1,7 +1,6 @@
 package fcodelol.clone.juno.dto;
 
 
-import fcodelol.clone.juno.repository.entity.Product;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

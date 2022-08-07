@@ -47,8 +47,11 @@ public class BillDto {
                 ", status=" + status +
                 ", info='" + info + '\'';
 
+        // add products in bill
+        StringBuilder builder = new StringBuilder();
+        builder.append(billConvert);
         for (BillModelDto billModelDto : billModelDtoList)
-            billConvert += billModelDto;
-        return billConvert;
+            builder.append(billModelDto);
+        return builder.toString();
     }
 }

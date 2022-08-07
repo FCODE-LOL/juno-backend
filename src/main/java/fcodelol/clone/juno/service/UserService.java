@@ -25,7 +25,10 @@ public class UserService {
     UserRepository userRepository;
     @Autowired
     ModelMapper modelMapper;
-    private static final Logger logger = LogManager.getLogger(StatisticService.class);
+    private static final Logger logger = LogManager.getLogger(UserService.class);
+    private static final String BAN_USER_MESSAGE = "Ban user: ";
+    private static final String USER_ID_NOT_EXIST_MESSAGE = "This user id is not exist";
+    private static final String UNBAN_USER_MESSAGE = "Unban user: ";
 
     public List<UserByGroupExtendDto> getAllUser() {
         return userRepository.getAllUser().stream().map(user -> modelMapper.map(user, UserByGroupExtendDto.class)).collect(Collectors.toList());
@@ -33,15 +36,15 @@ public class UserService {
     }
 
     public Response<UserDto> getUserById(int id) {
-        return new Response(200, "Success", modelMapper.map(userRepository.getById(id), UserDto.class));
+        return new Response<>(200, "Success", modelMapper.map(userRepository.getById(id), UserDto.class));
     }
 
-    public Response banUser(int id) {
-        logger.info("Ban user with id:" + id);
+    public Response<String> banUser(int id) {
+        logger.info(BAN_USER_MESSAGE + id);
         User user = userRepository.findOneById(id);
         if (user == null) {
-            logger.warn("Ban user: This id is not exist");
-            throw new CustomException(404, "User is not exist");
+            logger.warn("{}{}",BAN_USER_MESSAGE,USER_ID_NOT_EXIST_MESSAGE);
+            throw new CustomException(404, USER_ID_NOT_EXIST_MESSAGE);
         }
         if (user.getIsAdmin() != null && user.getIsAdmin()) {
             logger.warn("Ban user: You can not ban admin");
@@ -50,22 +53,22 @@ public class UserService {
         user.setIsDisable(true);
         userRepository.save(user);
         logger.info("Ban user success");
-        return new Response(200, "Ban user success");
+        return new Response<>(200, "Ban user success");
     }
 
-    public Response unbanUser(int id) {
-        logger.info("Unban user with id:" + id);
+    public Response<String> unbanUser(int id) {
+        logger.info(UNBAN_USER_MESSAGE + id);
         User user = userRepository.findOneById(id);
         if (user == null) {
             logger.warn("Unban user: This id is not exist");
-            throw new CustomException(404, "User is not exist");
+            throw new CustomException(404, USER_ID_NOT_EXIST_MESSAGE);
         }
         user.setIsDisable(false);
         userRepository.save(user);
-        return new Response(200, "Unban user success");
+        return new Response<>(200, "Unban user success");
     }
 
-    public Response updatePassword(UpdatePasswordRequest updatePasswordRequest, Integer id) {
+    public Response<String> updatePassword(UpdatePasswordRequest updatePasswordRequest, Integer id) {
         logger.info("Change password:" + updatePasswordRequest);
         User user = userRepository.findOneById(id);
         if (!new BCryptPasswordEncoder().matches(updatePasswordRequest.getOldPassword(), user.getPassword())) {
@@ -76,17 +79,17 @@ public class UserService {
         user.setPassword(new BCryptPasswordEncoder().encode(updatePasswordRequest.getNewPassword()));
         userRepository.save(user);
         logger.info("Change password success");
-        return new Response(200, "Change password success");
+        return new Response<>(200, "Change password success");
     }
 
     @Transactional
-    public Response updateUserInfo(UpdateUserInfoRequest updateUserInfoRequest, Integer id) {
+    public Response<String> updateUserInfo(UpdateUserInfoRequest updateUserInfoRequest, Integer id) {
         logger.info("Update user info:" + updateUserInfoRequest);
         User user = userRepository.findOneById(id);
         user.updateInfo(updateUserInfoRequest);
         userRepository.save(user);
         logger.info("Change user info success");
-        return new Response(200, "Change user info success");
+        return new Response<>(200, "Change user info success");
     }
 }
 

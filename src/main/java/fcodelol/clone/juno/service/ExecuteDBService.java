@@ -1,8 +1,7 @@
 package fcodelol.clone.juno.service;
 
+
 import fcodelol.clone.juno.controller.response.Response;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
@@ -15,13 +14,11 @@ import javax.sql.DataSource;
 public class ExecuteDBService {
     @Autowired
     DataSource dataSource;
-    private static final String dataScript = "sql/data.sql";
-    private static final String clearDataScript = "sql/clear.sql";
-    private static final String initDBScript = "sql/juno.sql";
-    private static final String turnOffSecurityScript = "sql/turnOnSecurity.sql";
-    private static final String turnOnSecurityScript = "sql/turnOffSecurity.sql";
-    private static final Logger logger = LogManager.getLogger(ProductService.class);
-
+    private static final String DATA_SCRIPT = "sql/data.sql";
+    private static final String CLEAR_DATA_SCRIPT = "sql/clear.sql";
+    private static final String INIT_DB_SCRIPT = "sql/juno.sql";
+    private static final String TURN_OFF_SECURITY_SCRIPT = "sql/turnOnSecurity.sql";
+    private static final String TURN_ON_SECURITY_SCRIPT = "sql/turnOffSecurity.sql";
     @Transactional
     public void runScriptFile(String filename) {
         ResourceDatabasePopulator resourceDatabasePopulator = new ResourceDatabasePopulator(false, false, "UTF-8", new ClassPathResource(filename));
@@ -29,28 +26,28 @@ public class ExecuteDBService {
     }
 
     @Transactional
-    public Response loadDBData() {
-        runScriptFile(dataScript);
-        return new Response(200, "Load DB data success");
+    public Response<String> loadDBData() {
+        runScriptFile(DATA_SCRIPT);
+        return new Response<>(200, "Load DB data success");
     }
 
     @Transactional
-    public Response clearDBData() {
-        runScriptFile(clearDataScript);
-        return new Response(200, "Clear data in DB");
+    public Response<String> clearDBData() {
+        runScriptFile(CLEAR_DATA_SCRIPT);
+        return new Response<>(200, "Clear data in DB");
     }
 
     @Transactional
-    public Response initDB() {
-        runScriptFile(initDBScript);
-        return new Response(200, "Init DB success");
+    public Response<String> initDB() {
+        runScriptFile(INIT_DB_SCRIPT);
+        return new Response<>(200, "Init DB success");
     }
 
     void turnOffDBSecurity() {
-        runScriptFile(turnOffSecurityScript);
+        runScriptFile(TURN_OFF_SECURITY_SCRIPT);
     }
 
     void turnOnSecurityScript() {
-        runScriptFile(turnOnSecurityScript);
+        runScriptFile(TURN_ON_SECURITY_SCRIPT);
     }
 }

@@ -21,8 +21,8 @@ public class AuthorizationService {
         try {
             Boolean isAdmin = userRepository.findRoleByToken(token, new Timestamp(System.currentTimeMillis() + GatewayConstant.VALID_AUTHENTICATION_TIME));
             if (isAdmin == null)
-                return "GUESS";
-            return isAdmin.booleanValue() ? "ADMIN" : "MEMBER";
+                return GatewayConstant.ROLE_GUESS;
+            return isAdmin.booleanValue() ? GatewayConstant.ROLE_ADMIN : GatewayConstant.ROLE_MEMBER;
         } catch (Exception e) {
             logger.error(e.getMessage());
             return null;
@@ -33,7 +33,7 @@ public class AuthorizationService {
         try {
             return userRepository.getIdByToken(token);
         } catch (Exception e) {
-            logger.error("Get id by token" + e.getMessage());
+            logger.error("Get id by token {}",e.getMessage());
             return 0;
         }
     }
